@@ -12,6 +12,20 @@ export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
   const title = formData.get("title");
   const body = formData.get("body");
+  const enderecoEmpresa = formData.get("enderecoEmpresa");
+  const cidadeEmpresa = formData.get("cidadeEmpresa");
+  const tipoNegocio = formData.get("tipoNegocio");
+  const imagemDestacada = formData.get("imagemDestacada");
+  const miniaturaEmpresa = formData.get("miniaturaEmpresa");
+  const galeria1 = formData.get("galeria1");
+ // const galeria2 = formData.get("galeria2");
+ // const galeria3 = formData.get("galeria3");
+  //const galeria4 = formData.get("galeria4");
+  // Pesquisar depois com cuidado sobre galeria de imagens && disponibilidade. 
+  // ver se consigo implementar cloudflare para imagens.
+// ver alternativas grátis
+
+
 
   if (typeof title !== "string" || title.length === 0) {
     return json(
@@ -25,6 +39,47 @@ export const action = async ({ request }: ActionArgs) => {
       { errors: { body: "Body is required", title: null } },
       { status: 400 },
     );
+  }
+
+  if(typeof enderecoEmpresa !== "string" || enderecoEmpresa.length === 0){
+    return json(
+      { errors: { body: null, title: null, enderecoEmpresa: "Endereço da Empresa precisa ser informado." } },
+      { status: 400 },
+    )
+  }
+// cidadeEmpresa NÃO É STRING, mas sim puxa um ID correspondente ao select que listará as opções buscadas diretamente de dentro do banco.
+  if(typeof cidadeEmpresa !== "string" || cidadeEmpresa.length === 0){
+    return json(
+      { errors: { body: null, title: null, enderecoEmpresa: null, cidadeEmpresa: "Cidade da Empresa precisa ser informada." } },
+      { status: 400 },
+    )
+  }
+
+  if(typeof tipoNegocio !== "string" || tipoNegocio.length === 0){
+    return json(
+      { errors: { body: null, title: null, enderecoEmpresa: null, cidadeEmpresa: null, tipoNegocio: "Tipo de Negócio precisa ser informado."} },
+      { status: 400 },
+    )
+  }
+// Esse ImagemDestacada deverá ser visto com atenção, pois mexerá com manipulação e upload de arquivos. Portanto, estudar essa parte com cuidado.
+  if(typeof imagemDestacada !== "string" || imagemDestacada.length === 0){
+    return json(
+      { errors: { body: null, title: null, enderecoEmpresa: null, cidadeEmpresa: null, tipoNegocio: null, imagemDestacada: "URL da imagem destacada precisa ser informada."} },
+      { status: 400 },
+    )
+  }
+// Ainda estou pensando se vou ou não colocar como obrigatório o upload da miniatura da empresa.
+  if(typeof miniaturaEmpresa !== "string" || miniaturaEmpresa.length === 0){
+    return json(
+      { errors: { body: null, title: null, enderecoEmpresa: null, cidadeEmpresa: null, tipoNegocio: null, imagemDestacada: null, miniaturaEmpresa: "É necessário colocar uma foto de miniatura da empresa"} },
+      { status: 400 },
+    )
+  }
+  if(typeof galeria1 !== "string" || galeria1.length === 0){
+    return json(
+      { errors: { body: null, title: null, enderecoEmpresa: null, cidadeEmpresa: null, tipoNegocio: null, imagemDestacada: null, miniaturaEmpresa: null, galeria1: "Insira pelo menos uma imagem para aparecer na galeria."} },
+      { status: 400 },
+    )
   }
 
   const note = await createEmpresa({ body, title, userId });
@@ -57,7 +112,7 @@ export default function NewNotePage() {
     >
       <div>
         <label className="flex w-full flex-col gap-1">
-          <span>Nome: </span>
+          <span>Nome da Empresa: </span>
           <input
             ref={titleRef}
             name="title"
