@@ -1,10 +1,10 @@
-import type { User, Anuncios, Empresa } from "@prisma/client";
+import type { User, Empresa } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
-export type { Anuncios, Empresa } from "@prisma/client";
+export type { Empresa } from "@prisma/client";
 
-export function getAnuncios({
+export function getEmpresa({
   id,
   userId,
 }: Pick<Empresa, "id"> & {
@@ -16,7 +16,7 @@ export function getAnuncios({
   });
 }
 
-export function getAnunciosListItems({ userId }: { userId: User["id"] }) {
+export function getEmpresaListItems({ userId }: { userId: User["id"] }) {
   return prisma.note.findMany({
     where: { userId },
     select: { id: true, title: true },
@@ -24,7 +24,7 @@ export function getAnunciosListItems({ userId }: { userId: User["id"] }) {
   });
 }
 
-export function createAnuncio({
+export function createEmpresa({
   body,
   title,
   userId,
@@ -44,7 +44,7 @@ export function createAnuncio({
   });
 }
 
-export function updateAnuncio({
+export function updateEmpresa({
   id,
   body,
   title,
@@ -65,7 +65,7 @@ export function updateAnuncio({
   })
 }
 
-export function deleteAnuncio({
+export function deleteEmpresa({
   id,
   userId,
 }: Pick<Empresa, "id"> & { userId: User["id"] }) {
