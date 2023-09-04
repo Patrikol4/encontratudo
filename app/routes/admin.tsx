@@ -12,7 +12,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   return json({ cidadeListItems });
 };
 
-export default function CidadesPage() {
+export default function AdminPage() {
   const data = useLoaderData<typeof loader>();
   const user = useUser();
 
@@ -34,13 +34,35 @@ export default function CidadesPage() {
       </header>
 
       <main className="flex h-full bg-white">
-        <div className="h-full w-80 border-r bg-gray-50">
-            <h1 className="text-3xl font-bold">Cidades cadastradas no sistema</h1>
-          <Link to="new" className="block p-4 text-xl text-blue-500">
+        <div className="h-full w-80 border-r bg-gray-50">          <Link to="new" className="block p-4 text-xl text-blue-500">
             + Nova cidade
           </Link>
 
           <hr />
+
+          <Link to="new" className="block p-4 text-xl text-blue-500">
+            + Nova categoria de usuário
+          </Link>
+
+          <hr />
+
+          <Link to="new" className="block p-4 text-xl text-blue-500">
+            + Nova categoria de negócios
+          </Link>
+
+          <hr />
+
+          <Link to="new" className="block p-4 text-xl text-blue-500">
+            + Nova Empresa
+          </Link>
+
+          <hr />
+
+          <Link to="new" className="block p-4 text-xl text-blue-500">
+            + Novo anúncio
+          </Link>
+
+
 
           {data.cidadeListItems.length === 0 ? (
             <p className="p-4">Nenhuma cidade ainda</p>

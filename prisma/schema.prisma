@@ -16,6 +16,7 @@ model User {
 
   password         Password?
   notes            Note[]
+  Cidades          Cidades[]
   Anuncio          Anuncio[]
   Categoria        Categoria[]
   Empresa          Empresa[]
@@ -45,6 +46,9 @@ model Cidades {
   id         String    @id @default(cuid())
   nomeCidade String
   Empresa    Empresa[]
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
 }
 
 model Anuncio {
