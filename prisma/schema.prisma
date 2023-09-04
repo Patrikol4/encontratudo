@@ -14,8 +14,12 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  password Password?
-  notes    Note[]
+  password         Password?
+  notes            Note[]
+  Anuncio          Anuncio[]
+  Categoria        Categoria[]
+  Empresa          Empresa[]
+  CategoriaUsuario CategoriaUsuario[]
 }
 
 model Password {
@@ -32,6 +36,75 @@ model Note {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+}
+
+model Cidades {
+  id         String    @id @default(cuid())
+  nomeCidade String
+  Empresa    Empresa[]
+}
+
+model Anuncio {
+  id    String @id @default(cuid())
+  title String
+  body  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+}
+
+model Categoria {
+  id                 String @id @default(cuid())
+  nomeCategoria      String
+  descricaoCategoria String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+}
+
+model Empresa {
+  id                  String        @id @default(cuid())
+  nomeEmpresa         String
+  enderecoEmpresa     String // depois será substituído por : lista de endereços da API dos correios
+  cidadeEmpresa       Cidades       @relation(fields: [cidadeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  tipoNegocio         TiposNegocios @relation(fields: [negocioId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  descricaoEmpresa    String
+  imagemDestacada     String
+  miniaturaImgempresa String
+  // as imagens de galeria, bem como a imagemDestacada e a miniaturaEmpresa, irão receber 
+  // valores de URL, que posteriormente serão inseridos dinamicamente nas páginas.
+  galeriaum           String
+  galeriadois         String
+  galeriatres         String
+  galeriaquatro       String
+  cidadeId            String // cidadeId será ref. a model Cidades
+  negocioId           String // negocioId será ref. a model TiposNegocio
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+}
+
+model TiposNegocios {
+  id                   String @id @default(cuid())
+  tipoNegocio          String
+  descricaoTipoNegocio String
+
+  Empresa Empresa[]
+}
+
+model CategoriaUsuario {
+  id                String @id @default(cuid())
+  nomeCategoriaUser String
+  descricaoCatUser  String
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String

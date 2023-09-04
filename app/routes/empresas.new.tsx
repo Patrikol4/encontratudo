@@ -1,7 +1,7 @@
 import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
-import { useEffect, useRef } from "react";
+import { HTMLAttributes, useEffect, useRef } from "react";
 
 import { createEmpresa } from "~/models/empresa.server";
 import { requireUserId } from "~/session.server";
@@ -13,6 +13,7 @@ export const action = async ({ request }: ActionArgs) => {
   const title = formData.get("title");
   const body = formData.get("body");
   const enderecoEmpresa = formData.get("enderecoEmpresa");
+  //const descricaoEmpresa = formData.get("descricaoEmpresa");
   const cidadeEmpresa = formData.get("cidadeEmpresa");
   const tipoNegocio = formData.get("tipoNegocio");
   const imagemDestacada = formData.get("imagemDestacada");
@@ -47,6 +48,7 @@ export const action = async ({ request }: ActionArgs) => {
       { status: 400 },
     )
   }
+
 // cidadeEmpresa NÃO É STRING, mas sim puxa um ID correspondente ao select que listará as opções buscadas diretamente de dentro do banco.
   if(typeof cidadeEmpresa !== "string" || cidadeEmpresa.length === 0){
     return json(
@@ -87,12 +89,19 @@ export const action = async ({ request }: ActionArgs) => {
   return redirect(`/minha-empresa/${note.id}`);
 };
 
-export default function NewNotePage() {
+export default function NewEmpresasPage() {
   const actionData = useActionData<typeof action>();
   const titleRef = useRef<HTMLInputElement>(null);
-  const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const bodyRef = useRef<HTMLTextAreaElement>(null); // esse vai ser o "descricaoEmpresa, no futuro"
+  const enderecoEmpresaRef = useRef<HTMLInputElement>(null);
+  const cidadeEmpresaRef = useRef<HTMLSelectElement>(null);
+  const tipoNegocioRef = useRef<HTMLSelectElement>(null);
+  const imagemDestacadaRef = useRef<HTMLInputElement>(null);
+  const miniaturaEmpresaRef = useRef<HTMLInputElement>(null);
+  const galeria1Ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    // trocar esse if else , else if por => switch
     if (actionData?.errors?.title) {
       titleRef.current?.focus();
     } else if (actionData?.errors?.body) {
@@ -151,12 +160,12 @@ export default function NewNotePage() {
         ) : null}
       </div>
 
-      <div className="text-right">
+      <div className="text-center">
         <button
           type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
+          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-green-600 focus:bg-green-400"
         >
-          Criar
+          Finalizar Criação
         </button>
       </div>
     </Form>
