@@ -28,7 +28,7 @@ export function createCidade({
   body,
   title,
   userId,
-}: Pick<Note, "body" | "title"> & {
+}: Pick<Cidades, "body" | "title"> & {
   userId: User["id"];
 }) {
   return prisma.note.create({

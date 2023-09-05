@@ -1,10 +1,13 @@
-import type { LoaderArgs } from "@remix-run/node";
+import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
 import { getCidadeListItems } from "~/models/cidades.server";
 import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
+
+export const meta: V2_MetaFunction = () => [{ title: "EncontraTudo" }];
+
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userId = await requireUserId(request);

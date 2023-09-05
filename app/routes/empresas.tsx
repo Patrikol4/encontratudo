@@ -5,7 +5,7 @@ import { useOptionalUser } from "~/utils";
 
 export const meta: V2_MetaFunction = () => [{ title: "EncontraTudo" }];
 
-export default function Index() {
+export default function Empresas() {
   const user = useOptionalUser();
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
