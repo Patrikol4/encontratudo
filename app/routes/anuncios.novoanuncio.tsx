@@ -109,6 +109,23 @@ export default function AnuncioNovoPage() {
         ) : null}
       </div>
 
+      <div>
+        <label className="flex w-full flex-col gap-1">
+          <span>Forma de Pagamento </span>
+          <select name="cars" id="cars" className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose">
+            <option value="volvo">PIX</option>
+            <option value="saab">Boleto</option>
+            <option value="mercedes">Cartão de Crédito</option>
+            <option value="audi">Depósito Bancário</option>
+          </select>
+        </label>
+        {actionData?.errors?.title ? (
+          <div className="pt-1 text-red-700" id="title-error">
+            {actionData.errors.title}
+          </div>
+        ) : null}
+      </div>
+
 
 
       <div className="text-center">
