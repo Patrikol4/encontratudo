@@ -7,7 +7,7 @@ export type { Anuncios, Empresa } from "@prisma/client";
 export function getAnuncios({
   id,
   userId,
-}: Pick<Empresa, "id"> & {
+}: Pick<Anuncios, "id"> & {
   userId: User["id"];
 }) {
   return prisma.note.findFirst({

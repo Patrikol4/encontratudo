@@ -8,14 +8,14 @@ import {
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { deleteNote, getNote } from "~/models/note.server";
+import { deleteAnuncio, getAnuncios } from "~/models/anuncios.server";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const userId = await requireUserId(request);
   invariant(params.noteId, "noteId not found");
 
-  const note = await getNote({ id: params.noteId, userId });
+  const note = await getAnuncios({ id: params.noteId, userId });
   if (!note) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -26,12 +26,12 @@ export const action = async ({ params, request }: ActionArgs) => {
   const userId = await requireUserId(request);
   invariant(params.noteId, "noteId not found");
 
-  await deleteNote({ id: params.noteId, userId });
+  await deleteAnuncio({ id: params.noteId, userId });
 
-  return redirect("/notes");
+  return redirect("/anuncios");
 };
 
-export default function NoteDetailsPage() {
+export default function AnunciosDetailsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
@@ -44,7 +44,7 @@ export default function NoteDetailsPage() {
           type="submit"
           className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
         >
-          Deletar
+          Deletar Anúncio
         </button>
       </Form>
     </div>
