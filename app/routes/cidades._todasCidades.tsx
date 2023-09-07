@@ -16,7 +16,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   return json({ noteListItems });
 };
 
-export default function Cidades() {
+export default function TodasCidades() {
   //const user = useOptionalUser();
   //const data = useLoaderData<typeof loader>();
   //const userLoggedIn = useUser();
