@@ -1,10 +1,13 @@
-import type { ActionArgs } from "@remix-run/node";
+import type { ActionArgs, V2_MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Outlet, useActionData } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 import { createAnuncio } from "~/models/anuncios.server";
 
 import { requireUserId } from "~/session.server";
+
+export const meta: V2_MetaFunction = () => [{ title: "EncontraTudo : Novo Anúncio" }];
+
 
 export const action = async ({ request }: ActionArgs) => {
   const userId = await requireUserId(request);
@@ -56,7 +59,7 @@ export default function AnuncioNovoPage() {
       }}
     >
       <div>
-        <label className="flex w-full flex-col gap-1">
+        <label className="flex flex-col">
           <span>Nome do Anúncio </span>
           <input
             ref={titleRef}
