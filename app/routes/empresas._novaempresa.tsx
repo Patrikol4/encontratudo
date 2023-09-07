@@ -32,7 +32,7 @@ export const action = async ({ request }: ActionArgs) => {
   return redirect(`/anuncios/${note.id}`);
 };
 
-export default function NewNotePage() {
+export default function EmpresaNovaPage() {
   const actionData = useActionData<typeof action>();
   const titleRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
@@ -57,7 +57,7 @@ export default function NewNotePage() {
     >
       <div>
         <label className="flex w-full flex-col gap-1">
-          <span>Nome: </span>
+          <span>Nome da Empresa:</span>
           <input
             ref={titleRef}
             name="title"
@@ -96,12 +96,12 @@ export default function NewNotePage() {
         ) : null}
       </div>
 
-      <div className="text-right">
+      <div className="text-center">
         <button
           type="submit"
           className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
         >
-          Criar Anúncio
+          Criar Empresa
         </button>
       </div>
     </Form>

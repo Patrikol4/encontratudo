@@ -176,7 +176,7 @@ export default function AnunciosIndexPage() {
                             <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
                                 <p>
                                     Nenhum anúncio encontrado. Vá até a aba Anúncios na barra de navegação e{" "}
-                                    <Link to="/novoanuncio" className="text-white underline">
+                                    <Link to="novoanuncio" className="text-white underline">
                                         crie um novo.
                                     </Link>
                                 </p>
