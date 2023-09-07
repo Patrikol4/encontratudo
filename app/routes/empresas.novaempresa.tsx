@@ -1,6 +1,6 @@
 import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, Outlet, useActionData } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 
 import { createNote } from "~/models/note.server";
@@ -29,7 +29,7 @@ export const action = async ({ request }: ActionArgs) => {
 
   const note = await createNote({ body, title, userId });
 
-  return redirect(`/anuncios/${note.id}`);
+  return redirect(`/empresas/${note.id}`);
 };
 
 export default function EmpresaNovaPage() {
@@ -103,6 +103,7 @@ export default function EmpresaNovaPage() {
         >
           Criar Empresa
         </button>
+        <Outlet/>
       </div>
     </Form>
   );

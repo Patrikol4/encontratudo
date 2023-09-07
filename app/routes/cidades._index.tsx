@@ -169,7 +169,7 @@ export default function CidadesIndexPage() {
                         <div className="relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32">
                             <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
                                 <span className="block uppercase text-black drop-shadow-md">
-                                    Anúncios
+                                    Cidades
                                 </span>
                             </h1>
 

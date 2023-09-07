@@ -69,7 +69,7 @@ export default function Empresas() {
                   className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
                 >
                   Busca
-                  </Link>
+                </Link>
               </li>
 
               <li>
@@ -178,13 +178,20 @@ export default function Empresas() {
             <div className="relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32">
               <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
                 <span className="block uppercase text-black drop-shadow-md">
-                  Categorias
+                  Empresas
                 </span>
               </h1>
 
               <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
-             
-            
+
+                <p>
+                  Nenhuma empresa encontrada. Vá até a aba Empresas na barra de navegação e{" "}
+                  <Link to="novaempresa" className="text-white underline">
+                    crie uma nova empresa.
+                  </Link>
+                </p>
+
+
               </div>
             </div>
           </div>
