@@ -112,97 +112,98 @@ export default function AnuncioNovoPage() {
   // }, [actionData]);
 
   return (
-    <Form
-      method="post"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 8,
-        width: "100%",
-      }}
-    >
-      <div>
-        <label className="flex flex-col">
-          <span>Nome do Anúncio </span>
-          <input
-            ref={titleRef}
-            name="title"
-            className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
-            aria-invalid={actionData?.errors?.title ? true : undefined}
-            aria-errormessage={
-              actionData?.errors?.title ? "title-error" : undefined
-            }
-          />
-        </label>
-        {actionData?.errors?.title ? (
-          <div className="pt-1 text-red-700" id="title-error">
-            {actionData.errors.title}
-          </div>
-        ) : null}
-      </div>
+    <div className="h-screen bg-gray-600 justify-center">
+      <Form
+        method="post"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        <div>
+          <label className="flex flex-col">
+            <span>Nome do Anúncio </span>
+            <input
+              ref={titleRef}
+              name="title"
+              className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
+              aria-invalid={actionData?.errors?.title ? true : undefined}
+              aria-errormessage={
+                actionData?.errors?.title ? "title-error" : undefined
+              }
+            />
+          </label>
+          {actionData?.errors?.title ? (
+            <div className="pt-1 text-red-700" id="title-error">
+              {actionData.errors.title}
+            </div>
+          ) : null}
+        </div>
 
-      <div>
-        <label className="flex w-full flex-col gap-1">
-          <span>Selecionar empresa </span>
-          <select name="empresa" ref={empresaRef} id="empresa" className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose">
-            <option value="volvo">Empresa 1</option>
-            <option value="saab">Empresa 2</option>
-            <option value="mercedes">Empresa 3</option>
-            <option value="audi">Empresa 4</option>
-          </select>
-        </label>
-        {actionData?.errors?.empresa ? (
-          <div className="pt-1 text-red-700" id="title-error">
-            {actionData.errors.empresa}
-          </div>
-        ) : null}
-      </div>
+        <div>
+          <label className="flex flex-col gap-1">
+            <span>Selecionar empresa </span>
+            <select name="empresa" ref={empresaRef} id="empresa" className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose">
+              <option value="volvo">Empresa 1</option>
+              <option value="saab">Empresa 2</option>
+              <option value="mercedes">Empresa 3</option>
+              <option value="audi">Empresa 4</option>
+            </select>
+          </label>
+          {actionData?.errors?.empresa ? (
+            <div className="pt-1 text-red-700" id="title-error">
+              {actionData.errors.empresa}
+            </div>
+          ) : null}
+        </div>
 
-      <div>
-        <label className="flex w-full flex-col gap-1">
-          <span>Pacote de divulgação </span>
-          <select name="pacoteDivulgacao" id="pacoteDivulgacao" className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose">
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="mercedes">Mercedes</option>
-            <option value="audi">Audi</option>
-          </select>
-        </label>
-        {actionData?.errors?.pacoteDivulgacao ? (
-          <div className="pt-1 text-red-700" id="title-error">
-            {actionData.errors.pacoteDivulgacao}
-          </div>
-        ) : null}
-      </div>
+        <div>
+          <label className="flex flex-col gap-1">
+            <span>Pacote de divulgação </span>
+            <select name="pacoteDivulgacao" id="pacoteDivulgacao" className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose">
+              <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+              <option value="mercedes">Mercedes</option>
+              <option value="audi">Audi</option>
+            </select>
+          </label>
+          {actionData?.errors?.pacoteDivulgacao ? (
+            <div className="pt-1 text-red-700" id="title-error">
+              {actionData.errors.pacoteDivulgacao}
+            </div>
+          ) : null}
+        </div>
 
-      <div>
-        <label className="flex w-full flex-col gap-1">
-          <span>Forma de Pagamento </span>
-          <select name="formaPagamento" id="formaPagamento" className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose">
-            <option value="volvo">PIX</option>
-            <option value="saab">Boleto</option>
-            <option value="mercedes">Cartão de Crédito</option>
-            <option value="audi">Depósito Bancário</option>
-          </select>
-        </label>
-        {actionData?.errors?.formaPagamento ? (
-          <div className="pt-1 text-red-700" id="title-error">
-            {actionData.errors.formaPagamento}
-          </div>
-        ) : null}
-      </div>
+        <div>
+          <label className="flex flex-col gap-1">
+            <span>Forma de Pagamento </span>
+            <select name="formaPagamento" id="formaPagamento" className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose">
+              <option value="volvo">PIX</option>
+              <option value="saab">Boleto</option>
+              <option value="mercedes">Cartão de Crédito</option>
+              <option value="audi">Depósito Bancário</option>
+            </select>
+          </label>
+          {actionData?.errors?.formaPagamento ? (
+            <div className="pt-1 text-red-700" id="title-error">
+              {actionData.errors.formaPagamento}
+            </div>
+          ) : null}
+        </div>
 
 
 
-      <div className="text-center">
-        <button
-          type="submit"
-          className="rounded bg-green-500 px-4 py-2 text-black hover:bg-green-600 focus:bg-green-400"
-        >
-          Criar Anúncio
-        </button>
-        <Outlet />
-      </div>
-    </Form>
+        <div className="text-center">
+          <button
+            type="submit"
+            className="rounded bg-green-500 px-4 py-2 text-black hover:bg-green-600 focus:bg-green-400"
+          >
+            Criar Anúncio
+          </button>
+          <Outlet />
+        </div>
+      </Form>
+    </div>
   );
 }
