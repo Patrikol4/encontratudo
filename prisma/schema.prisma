@@ -13,7 +13,29 @@ datasource db {
 model User {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique
-  password String
+  password Password[]
+  notes    Note[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Password {
+  hash String @id @map("_id")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique @db.ObjectId
+}
+
+model Note {
+  id    String @id @default(cuid()) @map("_id")
+  title String
+  body  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique @db.ObjectId
+}
+
+  
