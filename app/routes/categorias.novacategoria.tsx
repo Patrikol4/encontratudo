@@ -172,24 +172,24 @@ export default function CidadesIndexPage() {
             <div className="relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32">
               <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
                 <span className="block uppercase text-black drop-shadow-md">
-                  Nova Cidade
+                  Nova Categoria
                 </span>
               </h1>
 
               <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
-                <p>Insira o nome da cidade</p>
+                <p>Insira o nome da categoria</p>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
                   <input
                     type="search"
                     id="default-search"
                     className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Digite o que quer procurar"
+                    placeholder="Digite o nome da categoria que quer criar"
                     required
                   />
                  <div className="mx-auto mt-10 flex max-w-none justify-center">
                   <button className="bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
-                    Criar cidade
+                    Criar Categoria
                   </button>
                 </div>
                 </div>
