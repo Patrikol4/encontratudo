@@ -110,8 +110,8 @@ export default function CidadesIndexPage() {
                   >
                     <path
                       stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       stroke-width="2"
                       d="m1 1 4 4 4-4"
                     />
@@ -128,7 +128,7 @@ export default function CidadesIndexPage() {
                   >
                     <li>
                       <a
-                        href="#"
+                        href="/admin"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Painel de Controle
@@ -136,7 +136,7 @@ export default function CidadesIndexPage() {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/config"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Settings
@@ -144,7 +144,7 @@ export default function CidadesIndexPage() {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/saldo"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Earnings
@@ -153,7 +153,7 @@ export default function CidadesIndexPage() {
                   </ul>
                   <div className="py-1">
                     <a
-                      href="#"
+                      href="/logout"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
                     >
                       Sair
@@ -216,7 +216,6 @@ export default function CidadesIndexPage() {
                     <option value="29">Crédito</option>
                     <option value="49">Débito</option>
                   </select>
-
 
                   <div className="mx-auto mt-10 flex max-w-none justify-center">
                     <button className="bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
