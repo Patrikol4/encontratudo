@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -8,7 +8,7 @@ generator client {
 }
 
 model User {
-  id    String @id @default(cuid())
+  id    String @id @default(cuid()) @map("_id")
   email String @unique
 
   createdAt DateTime @default(now())
@@ -24,14 +24,14 @@ model User {
 }
 
 model Password {
-  hash String
+  hash String @id @map("_id")
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique
 }
 
 model Note {
-  id    String @id @default(cuid())
+  id    String @id @default(cuid()) @map("_id")
   title String
   body  String
 
@@ -43,7 +43,7 @@ model Note {
 }
 
 model Cidades {
-  id         String    @id @default(cuid())
+  id         String    @id @default(cuid()) @map("_id")
   nomeCidade String
   Empresa    Empresa[]
 
@@ -52,7 +52,7 @@ model Cidades {
 }
 
 model Anuncio {
-  id    String @id @default(cuid())
+  id    String @id @default(cuid()) @map("_id")
   title String
   body  String
 
@@ -64,7 +64,7 @@ model Anuncio {
 }
 
 model Categoria {
-  id                 String @id @default(cuid())
+  id                 String @id @default(cuid()) @map("_id")
   nomeCategoria      String
   descricaoCategoria String
 
@@ -76,7 +76,7 @@ model Categoria {
 }
 
 model Empresa {
-  id                  String        @id @default(cuid())
+  id                  String        @id @default(cuid()) @map("_id")
   nomeEmpresa         String
   enderecoEmpresa     String // depois será substituído por : lista de endereços da API dos correios
   cidadeEmpresa       Cidades       @relation(fields: [cidadeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -98,7 +98,7 @@ model Empresa {
 }
 
 model TiposNegocios {
-  id                   String @id @default(cuid())
+  id                   String @id @default(cuid()) @map("_id")
   tipoNegocio          String
   descricaoTipoNegocio String
 
@@ -106,7 +106,7 @@ model TiposNegocios {
 }
 
 model CategoriaUsuario {
-  id                String @id @default(cuid())
+  id                String @id @default(cuid()) @map("_id")
   nomeCategoriaUser String
   descricaoCatUser  String
 
