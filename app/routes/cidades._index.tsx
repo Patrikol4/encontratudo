@@ -184,19 +184,24 @@ export default function CidadesIndexPage() {
                                     </p>
                                 ) : (
                                     <ol>
-                                        {data.cidadeListItems.map((cidade : any) => (
-                                            <li key={cidade.id}>
-                                                <NavLink
-                                                    className={({ isActive }) =>
-                                                        `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
-                                                    }
-                                                    to={cidade.id}
-                                                >
-                                                    {cidade.nomeCidade}
-                                                </NavLink>
+
+                                        {data.cidadeListItems.map((cidades: any) => (
+
+                                            <li key={cidades.id}>
+                                                <button>
+                                                    <NavLink
+                                                        className={({ isActive }) =>
+                                                            `rounded border-b p-2 text-xl ${isActive ? "bg-green-500" : "bg-green-700"}`
+                                                        }
+                                                        to={cidades.id}
+                                                    >
+                                                        {cidades.nomeCidade}
+                                                    </NavLink>
+                                                </button>
                                             </li>
                                         ))}
                                     </ol>
+
                                 )}
 
                             </div>
