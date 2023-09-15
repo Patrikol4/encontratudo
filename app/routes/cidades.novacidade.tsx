@@ -1,17 +1,30 @@
-import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import type { V2_MetaFunction, LoaderArgs, ActionArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
-import { getCidadeListItems } from "~/models/cidades.server";
+import { createCidade } from "~/models/cidades.server";
 import { requireUserId } from "~/session.server";
 
 export const meta: V2_MetaFunction = () => [{ title: "EncontraTudo" }];
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const action = async ({ request }: ActionArgs) => {
   const userId = await requireUserId(request);
-  const cidadeListItems = await getCidadeListItems({ userId }); // a cidadeListItems sempre requere o userId do usuario, posteriormente será removido isso.
-  return json({ cidadeListItems });
+
+  const formData = await request.formData();
+  const nomeCidade = formData.get("nomeCidade");
+
+  if (typeof nomeCidade !== "string" || nomeCidade.length === 0) {
+    return json(
+      { errors: { nomeCidade: "nome da cidade é obrigatório" } },
+      { status: 400 },
+    );
+  }
+
+  const cidade = await createCidade({ nomeCidade, userId });
+
+  return redirect(`/cidades/${cidade.id}`);
 };
+
 
 export default function CidadesIndexPage() {
   // const data = useLoaderData<typeof loader>();

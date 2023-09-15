@@ -10,31 +10,29 @@ export function getCidade({
 }: Pick<Cidades, "id"> & {
   userId: User["id"];
 }) {
-  return prisma.note.findFirst({
-    select: { id: true, body: true, title: true },
+  return prisma.cidades.findFirst({
+    select: { id: true, nomeCidade: true },
     where: { id, userId },
   });
 }
 
 export function getCidadeListItems({ userId }: { userId: User["id"] }) {
-  return prisma.note.findMany({
+  return prisma.cidades.findMany({
     where: { userId }, // esse where pode ser excluído depois, para que o adm tenha acesso a TODAS as cidades cadastradas no sistema.
-    select: { id: true, title: true },
-    orderBy: { updatedAt: "desc" },
+    select: { id: true, nomeCidade: true },
+    //orderBy: { updatedAt: "desc" },
   });
 }
 
 export function createCidade({
-  body,
-  title,
+  nomeCidade,
   userId,
-}: Pick<Cidades, "body" | "title"> & {
+}: Pick<Cidades, "nomeCidade"> & {
   userId: User["id"];
 }) {
-  return prisma.note.create({
+  return prisma.cidades.create({
     data: {
-      title,
-      body,
+      nomeCidade,
       user: {
         connect: {
           id: userId,
@@ -47,8 +45,8 @@ export function createCidade({
 export function deleteCidade({
   id,
   userId,
-}: Pick<Note, "id"> & { userId: User["id"] }) {
-  return prisma.note.deleteMany({
+}: Pick<Cidades, "id"> & { userId: User["id"] }) {
+  return prisma.cidades.deleteMany({
     where: { id, userId },
   });
 }

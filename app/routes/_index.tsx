@@ -213,7 +213,7 @@ export default function Index() {
                   </div>
                 </form>
                 <div className="mx-auto mt-10 flex max-w-none justify-center">
-                  <button className="bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
+                  <button className="bg-green-800 hover:bg-green-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
                     Pesquisar
                   </button>
                 </div>
