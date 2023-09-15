@@ -1,6 +1,7 @@
 import type { V2_MetaFunction, LoaderArgs, ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, NavLink, Outlet, useActionData, useLoaderData } from "@remix-run/react";
+import { useEffect, useRef } from "react";
 
 import { createCidade } from "~/models/cidades.server";
 import { requireUserId } from "~/session.server";
@@ -26,9 +27,15 @@ export const action = async ({ request }: ActionArgs) => {
 };
 
 
-export default function CidadesIndexPage() {
-  // const data = useLoaderData<typeof loader>();
-  //const user = useUser();
+export default function CidadeNovaPage() {
+  const actionData = useActionData<typeof action>();
+  const nomeCidadeRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (actionData?.errors?.nomeCidade) {
+      nomeCidadeRef.current?.focus();
+    }
+  }, [actionData]);
 
   return (
     <main className="h-screen bg-gray-600">
@@ -193,18 +200,21 @@ export default function CidadesIndexPage() {
                 <p>Insira o nome da cidade</p>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
+                  <form>
                   <input
+                    ref={nomeCidadeRef}
                     type="search"
-                    id="default-search"
+                    id="nomeCidade"
                     className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Digite o que quer procurar"
+                    placeholder="Digite o nome da Cidade"
                     required
                   />
-                 <div className="mx-auto mt-10 flex max-w-none justify-center">
-                  <button className="bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
-                    Criar cidade
-                  </button>
-                </div>
+                  </form>
+                  <div className="mx-auto mt-10 flex max-w-none justify-center">
+                    <button className="bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
+                      Criar cidade
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

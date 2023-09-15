@@ -1,9 +1,10 @@
 import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, NavLink, useLoaderData } from "@remix-run/react";
 
 import { getCidadeListItems } from "~/models/cidades.server";
 import { requireUserId } from "~/session.server";
+//import { requireUserId } from "~/session.server";
 
 export const meta: V2_MetaFunction = () => [{ title: "EncontraTudo" }];
 
@@ -15,7 +16,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 export default function CidadesIndexPage() {
-    // const data = useLoaderData<typeof loader>();
+    const data = useLoaderData<typeof loader>();
     //const user = useUser();
 
     return (
@@ -125,7 +126,7 @@ export default function CidadesIndexPage() {
                                     >
                                         <li>
                                             <a
-                                                href="#"
+                                                href="/"
                                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             >
                                                 Painel de Controle
@@ -133,7 +134,7 @@ export default function CidadesIndexPage() {
                                         </li>
                                         <li>
                                             <a
-                                                href="#"
+                                                href="/"
                                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             >
                                                 Settings
@@ -141,7 +142,7 @@ export default function CidadesIndexPage() {
                                         </li>
                                         <li>
                                             <a
-                                                href="#"
+                                                href="/"
                                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             >
                                                 Earnings
@@ -150,7 +151,7 @@ export default function CidadesIndexPage() {
                                     </ul>
                                     <div className="py-1">
                                         <a
-                                            href="#"
+                                            href="/"
                                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
                                         >
                                             Sair
@@ -174,12 +175,29 @@ export default function CidadesIndexPage() {
                             </h1>
 
                             <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
-                                <p>
-                                    Nenhuma cidade encontrada. Vá até a aba Cidade na barra de navegação e{" "}
-                                    <Link to="/novacidade" className="text-white underline">
-                                        cadastre uma.
-                                    </Link>
-                                </p>
+                                {data.cidadeListItems.length === 0 ? (
+                                    <p>
+                                        Nenhuma cidade encontrada. Vá até a aba Cidade na barra de navegação e{" "}
+                                        <Link to="/novacidade" className="text-white underline">
+                                            cadastre uma.
+                                        </Link>
+                                    </p>
+                                ) : (
+                                    <ol>
+                                        {data.cidadeListItems.map((cidade : any) => (
+                                            <li key={cidade.id}>
+                                                <NavLink
+                                                    className={({ isActive }) =>
+                                                        `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
+                                                    }
+                                                    to={cidade.id}
+                                                >
+                                                    {cidade.nomeCidade}
+                                                </NavLink>
+                                            </li>
+                                        ))}
+                                    </ol>
+                                )}
 
                             </div>
                         </div>
@@ -187,7 +205,7 @@ export default function CidadesIndexPage() {
                 </div>
             </div>
 
-          
+
         </main>
     );
 }
