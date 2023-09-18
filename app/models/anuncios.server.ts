@@ -1,23 +1,23 @@
-import type { User, Anuncios, Empresa } from "@prisma/client";
+import type { User, Anuncio } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
-export type { Anuncios, Empresa } from "@prisma/client";
+export type { Anuncio, Empresa } from "@prisma/client";
 
 export function getAnuncios({
   id,
   userId,
-}: Pick<Anuncios, "id"> & {
+}: Pick<Anuncio, "id"> & {
   userId: User["id"];
 }) {
-  return prisma.note.findFirst({
+  return prisma.anuncio.findFirst({
     select: { id: true, body: true, title: true },
     where: { id, userId },
   });
 }
 
 export function getAnunciosListItems({ userId }: { userId: User["id"] }) {
-  return prisma.note.findMany({
+  return prisma.anuncio.findMany({
     where: { userId },
     select: { id: true, title: true },
     orderBy: { updatedAt: "desc" },
@@ -28,10 +28,10 @@ export function createAnuncio({
   body,
   title,
   userId,
-}: Pick<Empresa, "body" | "title"> & {
+}: Pick<Anuncio, "body" | "title"> & {
   userId: User["id"];
 }) {
-  return prisma.note.create({
+  return prisma.anuncio.create({
     data: {
       title,
       body,
@@ -48,10 +48,10 @@ export function updateAnuncio({
   id,
   body,
   title,
-}: Pick<Empresa, "id" | "body" | "title"> & {
+}: Pick<Anuncio, "id" | "body" | "title"> & {
   userId: User["id"];
 }) {
-  return prisma.note.update({
+  return prisma.anuncio.update({
     where: { id },
     data: {
       title,
@@ -68,8 +68,8 @@ export function updateAnuncio({
 export function deleteAnuncio({
   id,
   userId,
-}: Pick<Empresa, "id"> & { userId: User["id"] }) {
-  return prisma.note.deleteMany({
+}: Pick<Anuncio, "id"> & { userId: User["id"] }) {
+  return prisma.anuncio.deleteMany({
     where: { id, userId },
   });
 }

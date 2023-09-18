@@ -1,4 +1,4 @@
-import type { User, Empresa } from "@prisma/client";
+import type { User, Empresa, Cidades, Categoria } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
@@ -7,34 +7,37 @@ export type { Empresa } from "@prisma/client";
 export function getEmpresa({
   id,
   userId,
-}: Pick<Empresa, "id"> & {
-  userId: User["id"];
+}: Pick<Empresa, "id" | "nomeEmpresa"> & {
+  userId: User["id"]; cidadeId: Cidades["id"]; negocioId: Categoria["id"];
 }) {
   return prisma.note.findFirst({
-    select: { id: true, body: true, title: true },
+    select: { id: true },
     where: { id, userId },
   });
 }
 
 export function getEmpresaListItems({ userId }: { userId: User["id"] }) {
-  return prisma.note.findMany({
+  return prisma.empresa.findMany({
     where: { userId },
-    select: { id: true, title: true },
-    orderBy: { updatedAt: "desc" },
+    select: { id: true },
   });
 }
 
 export function createEmpresa({
-  body,
-  title,
+  nomeEmpresa,
+  enderecoEmpresa,
+  cidadeId,
+  negocioId,
+  descricaoEmpresa,
   userId,
-}: Pick<Empresa, "body" | "title"> & {
-  userId: User["id"];
+}: Pick<Empresa, "nomeEmpresa" | "enderecoEmpresa" | "descricaoEmpresa"> & {
+  userId: User["id"]; cidadeId: Cidades["id"]; negocioId: ["id"];
 }) {
-  return prisma.note.create({
+  return prisma.empresa.create({
     data: {
-      title,
-      body,
+      nomeEmpresa,
+      enderecoEmpresa,
+      descricaoEmpresa,
       user: {
         connect: {
           id: userId,
@@ -46,21 +49,28 @@ export function createEmpresa({
 
 export function updateEmpresa({
   id,
-  body,
-  title,
-}: Pick<Empresa, "id" | "body" | "title"> & {
+  nomeEmpresa,
+  enderecoEmpresa,
+  cidadeId,
+  negocioId,
+  descricaoEmpresa,
+
+}: Pick<Empresa, "id" | "nomeEmpresa" | "enderecoEmpresa" | "cidadeId" | "negocioId" | "descricaoEmpresa"> & {
   userId: User["id"];
 }) {
-  return prisma.note.update({
+  return prisma.empresa.update({
     where: { id },
     data: {
-      title,
-      body,
+      nomeEmpresa,
+      enderecoEmpresa,
+      descricaoEmpresa,
+
       user: {
         connect: {
           id: id,
-        }
-      }
+        },
+      },
+      cidadeId: id,
     }
   })
 }
@@ -69,7 +79,7 @@ export function deleteEmpresa({
   id,
   userId,
 }: Pick<Empresa, "id"> & { userId: User["id"] }) {
-  return prisma.note.deleteMany({
+  return prisma.empresa.deleteMany({
     where: { id, userId },
   });
 }
