@@ -14,7 +14,7 @@ export async function getUserByEmail(email: User["email"]) {
 }
 
 export async function createUser(email: User["email"], password: string) {
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = bcrypt.hashSync(password, 10);
 
   return prisma.user.create({
     data: {
@@ -47,9 +47,9 @@ export async function verifyLogin(
     return null;
   }
 
-  const isValid = await bcrypt.compare(
+  const isValid = bcrypt.compare(
     password,
-    userWithPassword.password.hash,
+    email,
   );
 
   if (!isValid) {
