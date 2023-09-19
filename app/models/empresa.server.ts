@@ -1,4 +1,4 @@
-import type { User, Empresa, Cidades, Categoria } from "@prisma/client";
+import type { User, Empresa } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
@@ -7,31 +7,32 @@ export type { Empresa } from "@prisma/client";
 export function getEmpresa({
   id,
   userId,
-}: Pick<Empresa, "id" | "nomeEmpresa"> & {
-  userId: User["id"]; cidadeId: Cidades["id"]; negocioId: Categoria["id"];
+}: Pick<Empresa, "id"> & {
+  userId: User["id"];
 }) {
-  return prisma.note.findFirst({
-    select: { id: true },
-    where: { id, userId },
+  return prisma.empresa.findFirst({
+    select: { id: true, nomeEmpresa: true, enderecoEmpresa: true, descricaoEmpresa: true },
+    where: { id, userId, },
   });
 }
 
 export function getEmpresaListItems({ userId }: { userId: User["id"] }) {
   return prisma.empresa.findMany({
     where: { userId },
-    select: { id: true },
+    select: { id: true, nomeEmpresa: true, enderecoEmpresa: true, descricaoEmpresa: true },
+    orderBy: {nomeEmpresa: "asc"},
   });
 }
 
 export function createEmpresa({
   nomeEmpresa,
   enderecoEmpresa,
+  descricaoEmpresa,
   cidadeId,
   negocioId,
-  descricaoEmpresa,
   userId,
-}: Pick<Empresa, "nomeEmpresa" | "enderecoEmpresa" | "descricaoEmpresa"> & {
-  userId: User["id"]; cidadeId: Cidades["id"]; negocioId: ["id"];
+}: Pick<Empresa, "nomeEmpresa" | "enderecoEmpresa" | "descricaoEmpresa" | "cidadeId" | "negocioId"> & {
+  userId: User["id"];
 }) {
   return prisma.empresa.create({
     data: {
@@ -43,6 +44,8 @@ export function createEmpresa({
           id: userId,
         },
       },
+      cidadeId,
+      negocioId,
     },
   });
 }

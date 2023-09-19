@@ -44,24 +44,22 @@ model Note {
 }
 
 model Cidades {
-  id         String    @id @default(cuid()) @map("_id")
+  id         String @id @default(cuid()) @map("_id")
   nomeCidade String
-  
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique @db.ObjectId
 }
 
 model Anuncio {
-  id    String @id @default(cuid()) @map("_id")
-  title String
-  body  String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid()) @map("_id")
+  nomeAnuncio String
+  empresa     String   @unique @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String @unique @db.ObjectId
+  userId String @db.ObjectId
 }
 
 model Categoria {
@@ -73,27 +71,17 @@ model Categoria {
   updatedAt DateTime @updatedAt
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String @unique @db.ObjectId
+  userId String @db.ObjectId
 }
 
 model Empresa {
   id               String        @id @default(cuid()) @map("_id")
   nomeEmpresa      String
   enderecoEmpresa  String // depois será substituído por : lista de endereços da API dos correios
-  cidadeId         String
+  cidadeId         String        @db.ObjectId
   tipoNegocio      TiposNegocios @relation(fields: [negocioId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   negocioId        String
   descricaoEmpresa String
-  //imagemDestacada     String
-  //miniaturaImgempresa String
-  // as imagens de galeria, bem como a imagemDestacada e a miniaturaEmpresa, irão receber 
-  // valores de URL, que posteriormente serão inseridos dinamicamente nas páginas.
-  // galeriaum           String
-  // galeriadois         String
-  // galeriatres         String
-  // galeriaquatro       String
-  // cidadeId            String // cidadeId será ref. a model Cidades
-  // negocioId           String // negocioId será ref. a model TiposNegocio
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @db.ObjectId
@@ -113,5 +101,5 @@ model CategoriaUsuario {
   descricaoCatUser  String
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String @unique @db.ObjectId
+  userId String @db.ObjectId
 }
