@@ -1,6 +1,6 @@
 import type { V2_MetaFunction, LoaderArgs, ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Link, NavLink, Outlet, useActionData, useLoaderData } from "@remix-run/react";
+import { Link, useActionData, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 
 import { createCidade } from "~/models/cidades.server";
@@ -148,7 +148,7 @@ export default function CidadeNovaPage() {
                   >
                     <li>
                       <a
-                        href="#"
+                        href="/dash"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Painel de Controle
@@ -156,7 +156,7 @@ export default function CidadeNovaPage() {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/setting"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Settings
@@ -164,7 +164,7 @@ export default function CidadeNovaPage() {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Earnings
@@ -173,7 +173,7 @@ export default function CidadeNovaPage() {
                   </ul>
                   <div className="py-1">
                     <a
-                      href="#"
+                      href="/logout"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
                     >
                       Sair
@@ -200,21 +200,23 @@ export default function CidadeNovaPage() {
                 <p>Insira o nome da cidade</p>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
-                  <form>
-                  <input
-                    ref={nomeCidadeRef}
-                    type="search"
-                    id="nomeCidade"
-                    className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Digite o nome da Cidade"
-                    required
-                  />
+                  <form method="POST">
+                    <input
+                      ref={nomeCidadeRef}
+                      type="text"
+                      name="nomeCidade"
+                      id="nomeCidade"
+                      className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Digite o nome da Cidade"
+                      required
+                    />
+                    <div className="mx-auto mt-10 flex max-w-none justify-center">
+                      <button className="bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded" type="submit">
+                        Criar cidade
+                      </button>
+                    </div>
                   </form>
-                  <div className="mx-auto mt-10 flex max-w-none justify-center">
-                    <button className="bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
-                      Criar cidade
-                    </button>
-                  </div>
+
                 </div>
               </div>
             </div>

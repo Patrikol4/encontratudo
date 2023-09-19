@@ -178,7 +178,7 @@ export default function CidadesIndexPage() {
                                 {data.cidadeListItems.length === 0 ? (
                                     <p>
                                         Nenhuma cidade encontrada. Vá até a aba Cidade na barra de navegação e{" "}
-                                        <Link to="/novacidade" className="text-white underline">
+                                        <Link to="novacidade" className="text-white underline">
                                             cadastre uma.
                                         </Link>
                                     </p>
