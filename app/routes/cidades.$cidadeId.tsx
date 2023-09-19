@@ -8,14 +8,14 @@ import {
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { deleteAnuncio, getAnuncios } from "~/models/anuncios.server";
+import { deleteCidade, getCidade } from "~/models/cidades.server";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const userId = await requireUserId(request);
-  invariant(params.noteId, "Id da Cidade não encontrado.");
+  invariant(params.cidadeId, "Id da Cidade não encontrado.");
 
-  const note = await getAnuncios({ id: params.noteId, userId });
+  const note = await getCidade({ id: params.cidadeId, userId });
   if (!note) {
     throw new Response("Não encontrado", { status: 404 });
   }
@@ -24,9 +24,9 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
 export const action = async ({ params, request }: ActionArgs) => {
   const userId = await requireUserId(request);
-  invariant(params.noteId, "cidadeId não encontrado.");
+  invariant(params.cidadeId, "cidadeId não encontrado.");
 
-  await deleteAnuncio({ id: params.noteId, userId });
+  await deleteCidade({ id: params.cidadeId, userId });
 
   return redirect("/cidades/");
 };
@@ -36,8 +36,7 @@ export default function CidadesIdPage() {
 
   return (
     <div>
-      <h3 className="text-2xl font-bold">{data.note.title}</h3>
-      <p className="py-6">{data.note.body}</p>
+      <h3 className="text-2xl font-bold">{data.cidades.nomeCidade}</h3>
       <hr className="my-4" />
       <Form method="post">
         <button
@@ -55,16 +54,16 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   if (error instanceof Error) {
-    return <div>An unexpected error occurred: {error.message}</div>;
+    return <div>Um erro inesperado ocorreu: {error.message}</div>;
   }
 
   if (!isRouteErrorResponse(error)) {
-    return <h1>Unknown Error</h1>;
+    return <h1>Erro desconhecido</h1>;
   }
 
   if (error.status === 404) {
-    return <div>Note not found</div>;
+    return <div>Cidade não encontrada.</div>;
   }
 
-  return <div>An unexpected error occurred: {error.statusText}</div>;
+  return <div>Um erro inesperado aconteceu. Código : {error.statusText}</div>;
 }
