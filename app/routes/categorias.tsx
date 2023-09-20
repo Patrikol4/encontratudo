@@ -134,7 +134,7 @@ export default function Categorias() {
                   >
                     <li>
                       <a
-                        href="#"
+                        href="/"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Painel de Controle
@@ -142,7 +142,7 @@ export default function Categorias() {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Settings
@@ -150,7 +150,7 @@ export default function Categorias() {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Earnings
@@ -159,7 +159,7 @@ export default function Categorias() {
                   </ul>
                   <div className="py-1">
                     <a
-                      href="#"
+                      href="/"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
                     >
                       Sair
