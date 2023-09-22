@@ -1,21 +1,51 @@
-import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
-
-import { getCidadeListItems } from "~/models/cidades.server";
+import type { V2_MetaFunction, ActionArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Link, useActionData } from "@remix-run/react";
+import { useEffect, useRef } from "react";
+import { createCategoria } from "~/models/categorias.server";
 import { requireUserId } from "~/session.server";
 
 export const meta: V2_MetaFunction = () => [{ title: "EncontraTudo" }];
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const action = async ({ request }: ActionArgs) => {
   const userId = await requireUserId(request);
-  const cidadeListItems = await getCidadeListItems({ userId }); // a cidadeListItems sempre requere o userId do usuario, posteriormente será removido isso.
-  return json({ cidadeListItems });
+
+  const formData = await request.formData();
+  const nomeCategoria = formData.get("nomeCategoria");
+  const descricaoCategoria = formData.get("descricaoCategoria");
+
+  if (typeof nomeCategoria !== "string" || nomeCategoria.length === 0) {
+    return json(
+      { errors: { nomeCategoria: "nome da categoria é obrigatório" } },
+      { status: 400 },
+    );
+  }
+  if (typeof descricaoCategoria !== "string" || descricaoCategoria.length === 0) {
+    return json(
+      { errors: { descricaoCategoria: "Descrição da categoria é obrigatório" } },
+      { status: 400 },
+    );
+  }
+
+  const categoria = await createCategoria({ nomeCategoria, descricaoCategoria, userId });
+
+  return redirect(`/categorias/${categoria.id}`);
 };
 
 export default function CidadesIndexPage() {
-  // const data = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
+  const nomeCategoriaRef = useRef<HTMLInputElement>(null);
+  const descricaoCategoriaRef = useRef<HTMLInputElement>(null);
   //const user = useUser();
+
+  useEffect(() => {
+    if(actionData?.errors?.nomeCategoria){
+      nomeCategoriaRef.current?.focus();
+    }
+    if(actionData?.errors?.descricaoCategoria){
+      descricaoCategoriaRef.current?.focus();
+    }
+  }, [actionData])
 
   return (
     <main className="h-screen bg-gray-600">
@@ -128,7 +158,7 @@ export default function CidadesIndexPage() {
                   >
                     <li>
                       <a
-                        href="#"
+                        href="/"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Painel de Controle
@@ -136,7 +166,7 @@ export default function CidadesIndexPage() {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Settings
@@ -144,7 +174,7 @@ export default function CidadesIndexPage() {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Earnings
@@ -153,7 +183,7 @@ export default function CidadesIndexPage() {
                   </ul>
                   <div className="py-1">
                     <a
-                      href="#"
+                      href="/"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
                     >
                       Sair
@@ -177,21 +207,32 @@ export default function CidadesIndexPage() {
               </h1>
 
               <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
-                <p>Insira o nome da categoria</p>
+
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
                   <input
-                    type="search"
-                    id="default-search"
+                    ref={nomeCategoriaRef}
+                    type="text"
+                    id="nomeCategoria"
+                    name="nomeCategoria"
                     className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Digite o nome da categoria que quer criar"
                     required
                   />
-                 <div className="mx-auto mt-10 flex max-w-none justify-center">
-                  <button className="bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
-                    Criar Categoria
-                  </button>
-                </div>
+                  <input
+                    ref={descricaoCategoriaRef}
+                    type="text"
+                    id="descricaoCategoria"
+                    name="descricaoCategoria"
+                    className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Digite a descricao da categoria que quer criar"
+                    required
+                  />
+                  <div className="mx-auto mt-10 flex max-w-none justify-center">
+                    <button className="bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
+                      Criar Categoria
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,9 +1,9 @@
 import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import { Link, NavLink, useLoaderData } from "@remix-run/react";
 //import { Link } from "@remix-run/react";
 
-import { getNoteListItems } from "~/models/note.server";
+import { getCategoriasListItems } from "~/models/categorias.server";
 import { requireUserId } from "~/session.server";
 
 //import { useOptionalUser } from "~/utils";
@@ -12,13 +12,13 @@ export const meta: V2_MetaFunction = () => [{ title: "EncontraTudo" }];
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userId = await requireUserId(request);
-  const noteListItems = await getNoteListItems({ userId });
-  return json({ noteListItems });
+  const categorias = await getCategoriasListItems({ userId });
+  return json({ categorias });
 };
 
-export default function Categorias() {
+export default function CategoriasIndexPage() {
   //const user = useOptionalUser();
-  //const data = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
   //const userLoggedIn = useUser();
   return (
     <main className="h-screen bg-gray-600">
@@ -184,87 +184,42 @@ export default function Categorias() {
 
               <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8 mb-8">
 
-                <div className="grid grid-rows-4 grid-flow-col gap-4 mb-4">
+                {data.categorias.length === 0 ? (
+                  <p>
+                    Nenhuma categoria encontrada. Vá até a aba Categoria na barra de navegação e{" "}
+                    <Link to="novacategoria" className="text-white underline">
+                      cadastre uma.
+                    </Link>
+                  </p>
+                ) : (
+                  <ol>
+
+                    {data.categorias.map((categorias: any) => (
+
+                      <li key={categorias.id}>
+                        <button>
+                          <NavLink
+                            className={({ isActive }) =>
+                              `rounded border-b p-2 text-xl ${isActive ? "bg-green-500" : "bg-green-700"}`
+                            }
+                            to={categorias.id}
+                          >
+                            {categorias.nomeCategoria}
+                          </NavLink>
+                        </button>
+                      </li>
+                    ))}
+                  </ol>
+
+                )}
+
+                {/* <div className="grid grid-rows-4 grid-flow-col gap-4 mb-4">
                   <div className="">
                     <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
                       <p className="">Save changes</p>
                     </div>
                   </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div></div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      <p>Save changes</p>
-                    </div>
-                  </div>
-                </div>
+                  </div> */}
 
 
               </div>

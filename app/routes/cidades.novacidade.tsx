@@ -1,6 +1,6 @@
-import type { V2_MetaFunction, LoaderArgs, ActionArgs } from "@remix-run/node";
+import type { V2_MetaFunction, ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Link, useActionData, useLoaderData } from "@remix-run/react";
+import { Link, useActionData } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 
 import { createCidade } from "~/models/cidades.server";
