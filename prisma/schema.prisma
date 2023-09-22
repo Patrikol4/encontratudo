@@ -78,8 +78,8 @@ model Empresa {
   id               String        @id @default(cuid()) @map("_id")
   nomeEmpresa      String
   enderecoEmpresa  String // depois será substituído por : lista de endereços da API dos correios
-  cidadeId         String        @db.ObjectId
-  tipoNegocio      TiposNegocios @relation(fields: [negocioId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cidadeId         String       
+  tipoNegocio      String
   negocioId        String
   descricaoEmpresa String
 
@@ -91,8 +91,6 @@ model TiposNegocios {
   id                   String @id @default(cuid()) @map("_id")
   tipoNegocio          String
   descricaoTipoNegocio String
-
-  Empresa Empresa[]
 }
 
 model CategoriaUsuario {

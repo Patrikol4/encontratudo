@@ -26,26 +26,18 @@ export function getEmpresaListItems({ userId }: { userId: User["id"] }) {
 
 export function createEmpresa({
   nomeEmpresa,
-  enderecoEmpresa,
-  descricaoEmpresa,
-  cidadeId,
-  negocioId,
   userId,
-}: Pick<Empresa, "nomeEmpresa" | "enderecoEmpresa" | "descricaoEmpresa" | "cidadeId" | "negocioId"> & {
+}: Pick<Empresa, "nomeEmpresa"> & {
   userId: User["id"];
 }) {
   return prisma.empresa.create({
     data: {
       nomeEmpresa,
-      enderecoEmpresa,
-      descricaoEmpresa,
       user: {
         connect: {
           id: userId,
         },
       },
-      cidadeId,
-      negocioId,
     },
   });
 }

@@ -13,22 +13,22 @@ import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const userId = await requireUserId(request);
-  invariant(params.noteId, "noteId not found");
+  invariant(params.noteId, "anúncioId não foi encontrado");
 
-  const note = await getAnuncios({ id: params.noteId, userId });
-  if (!note) {
-    throw new Response("Not Found", { status: 404 });
+  const anuncios = await getAnuncios({ id: params.anuncioId, userId });
+  if (!anuncios) {
+    throw new Response("Não encontrado", { status: 404 });
   }
-  return json({ note });
+  return json({ anuncios });
 };
 
 export const action = async ({ params, request }: ActionArgs) => {
   const userId = await requireUserId(request);
-  invariant(params.noteId, "noteId not found");
+  invariant(params.anuncioId, "anuncioId não encontrado");
 
-  await deleteAnuncio({ id: params.noteId, userId });
+  await deleteAnuncio({ id: params.anuncioId, userId });
 
-  return redirect("/anuncios");
+  return redirect("/anuncios/");
 };
 
 export default function AnunciosDetailsPage() {
@@ -36,13 +36,19 @@ export default function AnunciosDetailsPage() {
 
   return (
     <div>
-      <h3 className="text-2xl font-bold">{data.note.title}</h3>
-      <p className="py-6">{data.note.body}</p>
+      <h3 className="text-2xl font-bold">{data.anuncios.nomeAnuncio}</h3>
+      <p className="py-6">{data.anuncios.empresa}</p>
       <hr className="my-4" />
       <Form method="post">
+      <button
+          type="submit"
+          className="rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-600 focus:bg-orange-400"
+        >
+          Atualizar Anúncio
+        </button>
         <button
           type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
+          className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600 focus:bg-red-400"
         >
           Deletar Anúncio
         </button>
@@ -55,16 +61,16 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   if (error instanceof Error) {
-    return <div>An unexpected error occurred: {error.message}</div>;
+    return <div>Um erro inesperado ocorreu : {error.message}</div>;
   }
 
   if (!isRouteErrorResponse(error)) {
-    return <h1>Unknown Error</h1>;
+    return <h1>Erro desconhecido</h1>;
   }
 
   if (error.status === 404) {
-    return <div>Note not found</div>;
+    return <div>Anúncio não encontrado</div>;
   }
 
-  return <div>An unexpected error occurred: {error.statusText}</div>;
+  return <div>Um erro inesperado ocorreu : {error.statusText}</div>;
 }
