@@ -9,7 +9,7 @@ module.exports = {
     v2_routeConvention: true,
   },
   ignoredRouteFiles: ["**/.*", "**/*.test.{js,jsx,ts,tsx}"],
-  postcss: false,
+  postcss: true,
   serverModuleFormat: "cjs",
-  tailwind: false,
+  tailwind: true,
 };
