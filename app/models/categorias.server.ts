@@ -19,7 +19,7 @@ export function getCategorias({
 export function getCategoriasListItems({ userId }: { userId: User["id"] }) {
   return prisma.categoria.findMany({
     where: { userId },
-    select: { id: true },
+    select: { id: true, nomeCategoria: true, descricaoCategoria: true },
   });
 }
 

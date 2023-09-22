@@ -16,13 +16,13 @@ export const action = async ({ request }: ActionArgs) => {
 
   if (typeof nomeCategoria !== "string" || nomeCategoria.length === 0) {
     return json(
-      { errors: { nomeCategoria: "nome da categoria é obrigatório" } },
+      { errors: { nomeCategoria: "nome da categoria é obrigatório", descricaoCategoria: null } },
       { status: 400 },
     );
   }
   if (typeof descricaoCategoria !== "string" || descricaoCategoria.length === 0) {
     return json(
-      { errors: { descricaoCategoria: "Descrição da categoria é obrigatório" } },
+      { errors: { descricaoCategoria: "Descrição da categoria é obrigatório", nomeCategoria: null } },
       { status: 400 },
     );
   }
@@ -39,10 +39,10 @@ export default function CidadesIndexPage() {
   //const user = useUser();
 
   useEffect(() => {
-    if(actionData?.errors?.nomeCategoria){
+    if (actionData?.errors?.nomeCategoria) {
       nomeCategoriaRef.current?.focus();
     }
-    if(actionData?.errors?.descricaoCategoria){
+    if (actionData?.errors?.descricaoCategoria) {
       descricaoCategoriaRef.current?.focus();
     }
   }, [actionData])
@@ -210,29 +210,32 @@ export default function CidadesIndexPage() {
 
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
-                  <input
-                    ref={nomeCategoriaRef}
-                    type="text"
-                    id="nomeCategoria"
-                    name="nomeCategoria"
-                    className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Digite o nome da categoria que quer criar"
-                    required
-                  />
-                  <input
-                    ref={descricaoCategoriaRef}
-                    type="text"
-                    id="descricaoCategoria"
-                    name="descricaoCategoria"
-                    className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Digite a descricao da categoria que quer criar"
-                    required
-                  />
-                  <div className="mx-auto mt-10 flex max-w-none justify-center">
-                    <button className="bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
-                      Criar Categoria
-                    </button>
-                  </div>
+                  <form method="POST">
+                    <input
+                      ref={nomeCategoriaRef}
+                      type="text"
+                      id="nomeCategoria"
+                      name="nomeCategoria"
+                      className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Digite o nome da categoria que quer criar"
+                      required
+                    />
+                    <input
+                      ref={descricaoCategoriaRef}
+                      type="text"
+                      id="descricaoCategoria"
+                      name="descricaoCategoria"
+                      className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Digite a descricao da categoria que quer criar"
+                      required
+                    />
+                    <div className="mx-auto mt-10 flex max-w-none justify-center">
+                      <button className="bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
+                        Criar Categoria
+                      </button>
+                    </div>
+                  </form>
+
                 </div>
               </div>
             </div>

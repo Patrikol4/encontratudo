@@ -183,37 +183,35 @@ export default function CategoriasIndexPage() {
               </h1>
 
               <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8 mb-8">
+                <div className="grid grid-rows-4 grid-flow-col gap-4 mb-4">
+                  {data.categorias.length === 0 ? (
+                    <p>
+                      Nenhuma categoria encontrada. Vá até a aba Categoria na barra de navegação e{" "}
+                      <Link to="novacategoria" className="text-white underline">
+                        cadastre uma.
+                      </Link>
+                    </p>
+                  ) : (
+                    <div className="">
 
-                {data.categorias.length === 0 ? (
-                  <p>
-                    Nenhuma categoria encontrada. Vá até a aba Categoria na barra de navegação e{" "}
-                    <Link to="novacategoria" className="text-white underline">
-                      cadastre uma.
-                    </Link>
-                  </p>
-                ) : (
-                  <ol>
+                      {data.categorias.map((categorias: any) => (
+                        <div key={categorias.id} className="py-2 px-4 mb-4 bg-green-500 text-white justify-center font-semibold rounded-md shadown-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
 
-                    {data.categorias.map((categorias: any) => (
+                          <button>
+                            <NavLink
+                              to={categorias.id}
+                            >
+                              {categorias.nomeCategoria}
+                            </NavLink>
+                          </button>
+                        </div>
+                      ))}
 
-                      <li key={categorias.id}>
-                        <button>
-                          <NavLink
-                            className={({ isActive }) =>
-                              `rounded border-b p-2 text-xl ${isActive ? "bg-green-500" : "bg-green-700"}`
-                            }
-                            to={categorias.id}
-                          >
-                            {categorias.nomeCategoria}
-                          </NavLink>
-                        </button>
-                      </li>
-                    ))}
-                  </ol>
+                    </div>
 
-                )}
+                  )}
 
-                {/* <div className="grid grid-rows-4 grid-flow-col gap-4 mb-4">
+                  {/* <div className="grid grid-rows-4 grid-flow-col gap-4 mb-4">
                   <div className="">
                     <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
                       <p className="">Save changes</p>
@@ -221,7 +219,7 @@ export default function CategoriasIndexPage() {
                   </div>
                   </div> */}
 
-
+                </div>
               </div>
             </div>
           </div>
