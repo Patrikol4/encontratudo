@@ -19,7 +19,7 @@ export function getAnuncios({
 export function getAnunciosListItems({ userId }: { userId: User["id"] }) {
   return prisma.anuncio.findMany({
     where: { userId },
-    select: { id: true, nomeAnuncio: true },
+    select: { id: true, nomeAnuncio: true, empresa: true },
     orderBy: { updatedAt: "desc" },
   });
 }

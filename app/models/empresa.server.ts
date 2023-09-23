@@ -26,13 +26,21 @@ export function getEmpresaListItems({ userId }: { userId: User["id"] }) {
 
 export function createEmpresa({
   nomeEmpresa,
+  enderecoEmpresa,
+  cidadeEmpresa,
+  negocioEmpresa,
+  descricaoEmpresa,
   userId,
-}: Pick<Empresa, "nomeEmpresa"> & {
+}: Pick<Empresa, "nomeEmpresa" | "enderecoEmpresa" | "cidadeEmpresa" | "negocioEmpresa" | "descricaoEmpresa"> & {
   userId: User["id"];
 }) {
   return prisma.empresa.create({
     data: {
       nomeEmpresa,
+      enderecoEmpresa,
+      cidadeEmpresa,
+      negocioEmpresa,
+      descricaoEmpresa,
       user: {
         connect: {
           id: userId,
@@ -46,11 +54,11 @@ export function updateEmpresa({
   id,
   nomeEmpresa,
   enderecoEmpresa,
-  cidadeId,
-  negocioId,
+  cidadeEmpresa,
+  negocioEmpresa,
   descricaoEmpresa,
 
-}: Pick<Empresa, "id" | "nomeEmpresa" | "enderecoEmpresa" | "cidadeId" | "negocioId" | "descricaoEmpresa"> & {
+}: Pick<Empresa, "id" | "nomeEmpresa" | "enderecoEmpresa" | "cidadeEmpresa" | "negocioEmpresa" | "descricaoEmpresa"> & {
   userId: User["id"];
 }) {
   return prisma.empresa.update({
@@ -58,6 +66,8 @@ export function updateEmpresa({
     data: {
       nomeEmpresa,
       enderecoEmpresa,
+      cidadeEmpresa,
+      negocioEmpresa,
       descricaoEmpresa,
 
       user: {
@@ -65,7 +75,6 @@ export function updateEmpresa({
           id: id,
         },
       },
-      cidadeId: id,
     }
   })
 }

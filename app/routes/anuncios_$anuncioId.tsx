@@ -13,7 +13,7 @@ import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const userId = await requireUserId(request);
-  invariant(params.noteId, "anúncioId não foi encontrado");
+  invariant(params.anuncioId, "anúncioId não foi encontrado");
 
   const anuncios = await getAnuncios({ id: params.anuncioId, userId });
   if (!anuncios) {

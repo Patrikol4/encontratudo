@@ -75,12 +75,11 @@ model Categoria {
 }
 
 model Empresa {
-  id               String        @id @default(cuid()) @map("_id")
+  id               String @id @default(cuid()) @map("_id")
   nomeEmpresa      String
   enderecoEmpresa  String // depois será substituído por : lista de endereços da API dos correios
-  cidadeId         String       
-  tipoNegocio      String
-  negocioId        String
+  cidadeEmpresa    String
+  negocioEmpresa   String
   descricaoEmpresa String
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
