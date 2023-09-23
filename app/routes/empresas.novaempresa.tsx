@@ -13,52 +13,46 @@ export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
   const nomeEmpresa = formData.get("nomeEmpresa");
   const enderecoEmpresa = formData.get("enderecoEmpresa");
-  const descricaoEmpresa = formData.get("descricaoEmpresa");
   const cidadeEmpresa = formData.get("cidadeEmpresa");
-  const tipoNegocio = formData.get("categoriaEmpresa");
   const negocioEmpresa = formData.get("negocioEmpresa");
+  const descricaoEmpresa = formData.get("descricaoEmpresa");
 
 
   if (typeof nomeEmpresa !== "string" || nomeEmpresa.length === 0) {
     return json(
-      { errors: { nomeEmpresa: "nome da empresa é obrigatório", descricaoEmpresa: null } },
+      { errors: { nomeEmpresa: "nome da empresa é obrigatório"} },
       { status: 400 },
     );
   }
 
   if (typeof enderecoEmpresa !== "string" || enderecoEmpresa.length === 0) {
     return json(
-      { errors: { enderecoEmpresa: "nome da empresa é obrigatório", nomeEmpresa: null, descricaoEmpresa: null } },
+      { errors: { enderecoEmpresa: "endereco da empresa é obrigatório", nomeEmpresa: null } },
       { status: 400 },
     );
   }
   if (typeof descricaoEmpresa !== "string" || descricaoEmpresa.length === 0) {
     return json(
-      { errors: { descricaoEmpresa: "Descrição da empresa é obrigatório", nomeEmpresa: null } },
+      { errors: { descricaoEmpresa: "Descrição da empresa é obrigatório", nomeEmpresa: null, enderecoEmpresa: null, } },
       { status: 400 },
     );
   }
   if (typeof cidadeEmpresa !== "string" || cidadeEmpresa.length === 0) {
     return json(
-      { errors: { cidadeEmpresa: "Descrição da empresa é obrigatório", nomeEmpresa: null } },
+      { errors: { cidadeEmpresa: "cidade da empresa é obrigatório", nomeEmpresa: null } },
       { status: 400 },
     );
   }
-  if (typeof tipoNegocio !== "string" || tipoNegocio.length === 0) {
-    return json(
-      { errors: { tipoNegocio: "Descrição da empresa é obrigatório", nomeEmpresa: null } },
-      { status: 400 },
-    );
-  }
-
   if (typeof negocioEmpresa !== "string" || negocioEmpresa.length === 0) {
     return json(
-      { errors: { negocioEmpresa: "Descrição da empresa é obrigatório", nomeEmpresa: null } },
+      { errors: { negocioEmpresa: "negocio da empresa é obrigatório", nomeEmpresa: null } },
       { status: 400 },
     );
   }
 
-  const empresa = await createEmpresa({ nomeEmpresa, cidadeEmpresa, descricaoEmpresa, userId });
+
+
+  const empresa = await createEmpresa({ nomeEmpresa, enderecoEmpresa, descricaoEmpresa, cidadeEmpresa, negocioEmpresa, userId });
 
   return redirect(`/empresas/${empresa.id}`);
 };
@@ -66,17 +60,31 @@ export const action = async ({ request }: ActionArgs) => {
 export default function EmpresasNovaPage() {
   const actionData = useActionData<typeof action>();
   const nomeEmpresaRef = useRef<HTMLInputElement>(null);
-  const descricaoCategoriaRef = useRef<HTMLInputElement>(null);
+  const enderecoEmpresaRef = useRef<HTMLInputElement>(null);
+  const descricaoEmpresaRef = useRef<HTMLInputElement>(null);
   const cidadeEmpresaRef = useRef<HTMLInputElement>(null);
+  const negocioEmpresaRef = useRef<HTMLInputElement>(null);
+
   //const user = useUser();
 
   useEffect(() => {
     if (actionData?.errors?.nomeEmpresa) {
       nomeEmpresaRef.current?.focus();
     }
+    if (actionData?.errors?.enderecoEmpresa) {
+      enderecoEmpresaRef.current?.focus();
+    }
+    if (actionData?.errors?.descricaoEmpresa) {
+      descricaoEmpresaRef.current?.focus();
+    }
     if (actionData?.errors?.cidadeEmpresa) {
       cidadeEmpresaRef.current?.focus();
     }
+    if (actionData?.errors?.negocioEmpresaRef) {
+      negocioEmpresaRef.current?.focus();
+    }
+
+
   }, [actionData])
 
   return (
@@ -234,7 +242,7 @@ export default function EmpresasNovaPage() {
             <div className="relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32">
               <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
                 <span className="block uppercase text-black drop-shadow-md">
-                  Nova Categoria
+                  Nova Empresa
                 </span>
               </h1>
 
@@ -244,7 +252,7 @@ export default function EmpresasNovaPage() {
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
                   <form method="POST">
                     <input
-                      ref={nomeCategoriaRef}
+                      ref={nomeEmpresaRef}
                       type="text"
                       id="nomeCategoria"
                       name="nomeCategoria"
@@ -253,7 +261,16 @@ export default function EmpresasNovaPage() {
                       required
                     />
                     <input
-                      ref={descricaoCategoriaRef}
+                      ref={enderecoEmpresaRef}
+                      type="text"
+                      id="enderecoEmpresa"
+                      name="enderecoEmpresa"
+                      className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Digite a descricao da categoria que quer criar"
+                      required
+                    />
+                    <input
+                      ref={descricaoEmpresaRef}
                       type="text"
                       id="descricaoCategoria"
                       name="descricaoCategoria"
@@ -261,9 +278,28 @@ export default function EmpresasNovaPage() {
                       placeholder="Digite a descricao da categoria que quer criar"
                       required
                     />
+                    <input
+                      ref={cidadeEmpresaRef}
+                      type="text"
+                      id="descricaoCategoria"
+                      name="descricaoCategoria"
+                      className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Digite a descricao da categoria que quer criar"
+                      required
+                    />
+                    <input
+                      ref={negocioEmpresaRef}
+                      type="text"
+                      id="descricaoCategoria"
+                      name="descricaoCategoria"
+                      className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Digite a descricao da categoria que quer criar"
+                      required
+                    />
+
                     <div className="mx-auto mt-10 flex max-w-none justify-center">
                       <button className="bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
-                        Criar Categoria
+                        Criar Empresa
                       </button>
                     </div>
                   </form>

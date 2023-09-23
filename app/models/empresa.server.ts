@@ -7,20 +7,34 @@ export type { Empresa } from "@prisma/client";
 export function getEmpresa({
   id,
   userId,
-}: Pick<Empresa, "id"> & {
+}: Pick<Empresa, "id" | "nomeEmpresa" | "enderecoEmpresa" | "cidadeEmpresa" | "negocioEmpresa" | "descricaoEmpresa"> & {
   userId: User["id"];
 }) {
   return prisma.empresa.findFirst({
-    select: { id: true, nomeEmpresa: true, enderecoEmpresa: true, descricaoEmpresa: true },
-    where: { id, userId, },
+    select: {
+      id: true,
+      nomeEmpresa: true,
+      enderecoEmpresa: true,
+      cidadeEmpresa: true,
+      negocioEmpresa: true,
+      descricaoEmpresa: true,
+    },
+    where: { id, userId },
   });
 }
 
 export function getEmpresaListItems({ userId }: { userId: User["id"] }) {
   return prisma.empresa.findMany({
     where: { userId },
-    select: { id: true, nomeEmpresa: true, enderecoEmpresa: true, descricaoEmpresa: true },
-    orderBy: {nomeEmpresa: "asc"},
+    select: {
+      id: true,
+      nomeEmpresa: true,
+      enderecoEmpresa: true,
+      cidadeEmpresa: true,
+      negocioEmpresa: true,
+      descricaoEmpresa: true,
+    },
+    orderBy: { nomeEmpresa: "asc", enderecoEmpresa: "asc" },
   });
 }
 
@@ -31,7 +45,14 @@ export function createEmpresa({
   negocioEmpresa,
   descricaoEmpresa,
   userId,
-}: Pick<Empresa, "nomeEmpresa" | "enderecoEmpresa" | "cidadeEmpresa" | "negocioEmpresa" | "descricaoEmpresa"> & {
+}: Pick<
+  Empresa,
+  | "nomeEmpresa"
+  | "enderecoEmpresa"
+  | "cidadeEmpresa"
+  | "negocioEmpresa"
+  | "descricaoEmpresa"
+> & {
   userId: User["id"];
 }) {
   return prisma.empresa.create({
@@ -57,8 +78,15 @@ export function updateEmpresa({
   cidadeEmpresa,
   negocioEmpresa,
   descricaoEmpresa,
-
-}: Pick<Empresa, "id" | "nomeEmpresa" | "enderecoEmpresa" | "cidadeEmpresa" | "negocioEmpresa" | "descricaoEmpresa"> & {
+}: Pick<
+  Empresa,
+  | "id"
+  | "nomeEmpresa"
+  | "enderecoEmpresa"
+  | "cidadeEmpresa"
+  | "negocioEmpresa"
+  | "descricaoEmpresa"
+> & {
   userId: User["id"];
 }) {
   return prisma.empresa.update({
@@ -75,8 +103,8 @@ export function updateEmpresa({
           id: id,
         },
       },
-    }
-  })
+    },
+  });
 }
 
 export function deleteEmpresa({
