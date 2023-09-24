@@ -34,7 +34,7 @@ export function getEmpresaListItems({ userId }: { userId: User["id"] }) {
       negocioEmpresa: true,
       descricaoEmpresa: true,
     },
-    orderBy: { nomeEmpresa: "asc", enderecoEmpresa: "asc" },
+    orderBy: { nomeEmpresa: "asc" },
   });
 }
 

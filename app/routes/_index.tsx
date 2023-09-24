@@ -69,7 +69,7 @@ export default function Index() {
                   className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
                 >
                   Busca
-                  </Link>
+                </Link>
               </li>
 
               <li>
@@ -186,7 +186,7 @@ export default function Index() {
               </p>
 
               <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
-                <form>
+                <form method="get">
                   <br />
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
@@ -211,12 +211,13 @@ export default function Index() {
                       <option value="DE">Teresina - PI</option>
                     </select>
                   </div>
+                  <div className="mx-auto mt-10 flex max-w-none justify-center">
+                    <button className="bg-green-800 hover:bg-green-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
+                      Pesquisar
+                    </button>
+                  </div>
                 </form>
-                <div className="mx-auto mt-10 flex max-w-none justify-center">
-                  <button className="bg-green-800 hover:bg-green-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded">
-                    Pesquisar
-                  </button>
-                </div>
+
               </div>
             </div>
           </div>

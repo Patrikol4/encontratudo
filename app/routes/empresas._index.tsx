@@ -2,7 +2,7 @@ import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
-import { getCidadeListItems } from "~/models/cidades.server";
+import { getEmpresa, getEmpresaListItems } from "~/models/empresa.server";
 import { requireUserId } from "~/session.server";
 
 export const meta: V2_MetaFunction = () => [{ title: "EncontraTudo" }];
@@ -10,12 +10,12 @@ export const meta: V2_MetaFunction = () => [{ title: "EncontraTudo" }];
 
 export const loader = async ({ request }: LoaderArgs) => {
     const userId = await requireUserId(request);
-    const cidadeListItems = await getCidadeListItems({ userId }); // a cidadeListItems sempre requere o userId do usuario, posteriormente será removido isso.
-    return json({ cidadeListItems });
+    const empresas = await getEmpresaListItems({ userId }); // a cidadeListItems sempre requere o userId do usuario, posteriormente será removido isso.
+    return json({ empresas });
 };
 
 export default function EmpresasIndexPage() {
-    // const data = useLoaderData<typeof loader>();
+    const data = useLoaderData<typeof loader>();
     //const user = useUser();
 
     return (
@@ -125,7 +125,7 @@ export default function EmpresasIndexPage() {
                                     >
                                         <li>
                                             <a
-                                                href="#"
+                                                href="/"
                                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             >
                                                 Painel de Controle
@@ -133,7 +133,7 @@ export default function EmpresasIndexPage() {
                                         </li>
                                         <li>
                                             <a
-                                                href="#"
+                                                href="/"
                                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             >
                                                 Settings
@@ -141,7 +141,7 @@ export default function EmpresasIndexPage() {
                                         </li>
                                         <li>
                                             <a
-                                                href="#"
+                                                href="/"
                                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             >
                                                 Earnings
@@ -150,12 +150,12 @@ export default function EmpresasIndexPage() {
                                     </ul>
                                     <div className="py-1">
                                         <a
-                                            href="#"
+                                            href="/"
                                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
                                         >
                                             Sair
                                         </a>
-                                    </div>
+                                    </div>**
                                 </div>
                             </li>
                         </ul>
@@ -174,12 +174,45 @@ export default function EmpresasIndexPage() {
                             </h1>
 
                             <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
-                                <p>
-                                    Nenhum anúncio encontrado. Vá até a aba Anúncios na barra de navegação e{" "}
-                                    <Link to="novaempresa" className="text-white underline">
-                                        crie um novo.
-                                    </Link>
-                                </p>
+                                <div className="grid grid-rows-4 grid-flow-col gap-4 mb-4">
+                                    {data.empresas.length === 0 ? (
+                                        <p>
+                                            Nenhuma empresa encontrada. Vá até a aba Categoria na barra de navegação e{" "}
+                                            <Link to="novaempresa" className="text-white underline">
+                                                cadastre uma.
+                                            </Link>
+                                        </p>
+                                    ) : (
+                                        <div className="">
+
+                                            {data.empresas.map((empresa: any) => (
+                                                <div key={empresa.id} className="py-2 px-4 mb-4 bg-green-500 text-white justify-center font-semibold rounded-md shadown-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+
+                                                    <button>
+                                                        <NavLink
+                                                            to={empresa.id}
+                                                        >
+                                                            {empresa.nomeEmpresa}
+                                                        </NavLink>
+                                                        <p>{empresa.descricaoEmpresa}</p>
+                                                        <p>{empresa.enderecoEmpresa}</p>
+                                                    </button>
+                                                </div>
+                                            ))}
+
+                                        </div>
+
+                                    )}
+
+                                    {/* <div className="grid grid-rows-4 grid-flow-col gap-4 mb-4">
+                  <div className="">
+                    <div className="py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+                      <p className="">Save changes</p>
+                    </div>
+                  </div>
+                  </div> */}
+
+                                </div>
 
                             </div>
                         </div>
@@ -187,7 +220,7 @@ export default function EmpresasIndexPage() {
                 </div>
             </div>
 
-          
+
         </main>
     );
 }
