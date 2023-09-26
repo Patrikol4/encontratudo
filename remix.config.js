@@ -10,6 +10,13 @@ module.exports = {
   },
   ignoredRouteFiles: ["**/.*", "**/*.test.{js,jsx,ts,tsx}"],
   postcss: true,
-  serverModuleFormat: "cjs",
+  serverModuleFormat: "esm",
   tailwind: true,
+  publicPath: "/build/", // default value, can be removed
+  serverBuildPath: "functions/[[path]].js",
+  serverConditions: ["worker"],
+  serverDependenciesToBundle: "all",
+  serverMainFields: ["browser", "module", "main"],
+  serverMinify: true,
+  serverPlatform: "neutral",
 };
