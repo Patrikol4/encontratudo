@@ -7,6 +7,9 @@ import compression from "compression";
 import express from "express";
 import morgan from "morgan";
 import sourceMapSupport from "source-map-support";
+import {createPagesFunctionHandler} from "@remix-run/cloudflare-pages"
+import { build } from "esbuild";
+import { logDevReady } from "@remix-run/cloudflare";
 
 sourceMapSupport.install();
 installGlobals();
@@ -82,6 +85,16 @@ app.use(morgan("tiny"));
 
 const MODE = process.env.NODE_ENV;
 const BUILD_DIR = path.join(process.cwd(), "build");
+
+if(process.env.NODE_ENV === "development"){
+  logDevReady(build);
+}
+
+export const onRequest = createPagesFunctionHandler({
+  build,
+  getLoadContext: (context) => ({env: context.env}),
+  mode: build.mode,
+})
 
 app.all(
   "*",
