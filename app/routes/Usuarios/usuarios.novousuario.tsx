@@ -23,11 +23,11 @@ export const action = async ({ request }: ActionArgs) => {
 
   const cidade = await createCidade({ nomeCidade, userId });
 
-  return redirect(`/cidades/${cidade.id}`);
+  return redirect(`/usuarios/${cidade.id}`);
 };
 
 
-export default function CidadeNovaPage() {
+export default function UsuariosNovoUsuario() {
   const actionData = useActionData<typeof action>();
   const nomeCidadeRef = useRef<HTMLInputElement>(null);
 

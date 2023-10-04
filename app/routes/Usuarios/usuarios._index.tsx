@@ -15,7 +15,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 export default function UsuariosIndexPage() {
-    const data = useLoaderData<typeof loader>();
+    // const data = useLoaderData<typeof loader>();
     //const user = useUser();
 
     return (

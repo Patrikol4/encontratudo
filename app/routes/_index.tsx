@@ -1,6 +1,7 @@
 import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
+import { useState } from "react";
 //import { Link } from "@remix-run/react";
 
 import { getNoteListItems } from "~/models/note.server";
@@ -17,15 +18,16 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 export default function Index() {
+  const [text, setText] = useState('');
   //const user = useOptionalUser();
-  //const data = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
   //const userLoggedIn = useUser();
   return (
     <main className="h-screen bg-gray-600">
       {/* Header */}
       <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <a href="#" className="flex items-center">
+          <a href="/" className="flex items-center">
             <img
               src="https://flowbite.com/docs/images/logo.svg"
               className="h-8 mr-3"
@@ -134,7 +136,7 @@ export default function Index() {
                   >
                     <li>
                       <a
-                        href="#"
+                        href="/"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Painel de Controle
@@ -142,7 +144,7 @@ export default function Index() {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Settings
@@ -150,7 +152,7 @@ export default function Index() {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Earnings
@@ -159,7 +161,7 @@ export default function Index() {
                   </ul>
                   <div className="py-1">
                     <a
-                      href="#"
+                      href="/"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
                     >
                       Sair
@@ -186,13 +188,16 @@ export default function Index() {
               </p>
 
               <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
-                <form method="get">
+                <form method="get" action="/busca">
                   <br />
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
                     <input
-                      type="search"
-                      id="default-search"
+                      value={text}
+                      onChange={(event) => setText(event.target.value)}
+                      type="text"
+                      name="pesquisar"
+                      id="pesquisar"
                       className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Digite o que quer procurar"
                       required
