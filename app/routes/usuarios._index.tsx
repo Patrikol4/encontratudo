@@ -2,20 +2,20 @@ import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
-import { getCidadeListItems } from "~/models/cidades.server";
+import { getUsers } from "~/models/user.server";
 import { requireUserId } from "~/session.server";
 
 export const meta: V2_MetaFunction = () => [{ title: "EncontraTudo" }];
 
 
 export const loader = async ({ request }: LoaderArgs) => {
-    const userId = await requireUserId(request);
-    const cidadeListItems = await getCidadeListItems({ userId }); // a cidadeListItems sempre requere o userId do usuario, posteriormente será removido isso.
-    return json({ cidadeListItems });
+    const id = await requireUserId(request);
+    const users = await getUsers({ id }); // a cidadeListItems sempre requere o userId do usuario, posteriormente será removido isso.
+    return json({ users });
 };
 
 export default function UsuariosIndexPage() {
-    // const data = useLoaderData<typeof loader>();
+    const data = useLoaderData<typeof loader>();
     //const user = useUser();
 
     return (
@@ -125,7 +125,7 @@ export default function UsuariosIndexPage() {
                                     >
                                         <li>
                                             <a
-                                                href="#"
+                                                href="/"
                                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             >
                                                 Painel de Controle
@@ -133,7 +133,7 @@ export default function UsuariosIndexPage() {
                                         </li>
                                         <li>
                                             <a
-                                                href="#"
+                                                href="/"
                                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             >
                                                 Settings
@@ -141,7 +141,7 @@ export default function UsuariosIndexPage() {
                                         </li>
                                         <li>
                                             <a
-                                                href="#"
+                                                href="/"
                                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             >
                                                 Earnings
@@ -150,7 +150,7 @@ export default function UsuariosIndexPage() {
                                     </ul>
                                     <div className="py-1">
                                         <a
-                                            href="#"
+                                            href="/"
                                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
                                         >
                                             Sair
@@ -176,7 +176,7 @@ export default function UsuariosIndexPage() {
                             <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
                                 <p>
                                     Nenhum usuário encontrado. Vá até a aba Usuários na barra de navegação e{" "}
-                                    <Link to="novacidade" className="text-white underline">
+                                    <Link to="novousuario" className="text-white underline">
                                         cadastre um.
                                     </Link>
                                 </p>
@@ -187,7 +187,7 @@ export default function UsuariosIndexPage() {
                 </div>
             </div>
 
-          
+
         </main>
     );
 }

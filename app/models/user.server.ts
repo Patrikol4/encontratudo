@@ -9,6 +9,17 @@ export async function getUserById(id: User["id"]) {
   return prisma.user.findUnique({ where: { id } });
 }
 
+export async function getUsers({
+  id,
+}: {
+  id: User["id"];
+}) {
+  return prisma.user.findMany({
+    where: { id },
+    select: { id: true, email: true },
+  });
+}
+
 export async function getUserByEmail(email: User["email"]) {
   return prisma.user.findUnique({ where: { email } });
 }
