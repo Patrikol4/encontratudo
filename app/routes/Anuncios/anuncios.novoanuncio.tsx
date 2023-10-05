@@ -13,7 +13,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   return json({ cidadeListItems });
 };
 
-export default function CidadesIndexPage() {
+export default function NovoAnuncioPage() {
   // const data = useLoaderData<typeof loader>();
   //const user = useUser();
 

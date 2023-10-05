@@ -27163,8 +27163,8 @@ function ReadableStreamPipeTo(source, dest, preventClose, preventAbort, preventC
         }), preventCancel || actions.push(function() {
           return source._state === "readable" ? ReadableStreamCancel(source, error) : promiseResolvedWith(void 0);
         }), shutdownWithAction(function() {
-          return Promise.all(actions.map(function(action13) {
-            return action13();
+          return Promise.all(actions.map(function(action14) {
+            return action14();
           }));
         }, !0, error);
       }, signal.aborted) {
@@ -27221,18 +27221,18 @@ function ReadableStreamPipeTo(source, dest, preventClose, preventAbort, preventC
         return oldCurrentWrite !== currentWrite ? waitForWritesToFinish() : void 0;
       });
     }
-    function isOrBecomesErrored(stream, promise, action13) {
-      stream._state === "errored" ? action13(stream._storedError) : uponRejection(promise, action13);
+    function isOrBecomesErrored(stream, promise, action14) {
+      stream._state === "errored" ? action14(stream._storedError) : uponRejection(promise, action14);
     }
-    function isOrBecomesClosed(stream, promise, action13) {
-      stream._state === "closed" ? action13() : uponFulfillment(promise, action13);
+    function isOrBecomesClosed(stream, promise, action14) {
+      stream._state === "closed" ? action14() : uponFulfillment(promise, action14);
     }
-    function shutdownWithAction(action13, originalIsError, originalError) {
+    function shutdownWithAction(action14, originalIsError, originalError) {
       if (shuttingDown)
         return;
       shuttingDown = !0, dest._state === "writable" && !WritableStreamCloseQueuedOrInFlight(dest) ? uponFulfillment(waitForWritesToFinish(), doTheRest) : doTheRest();
       function doTheRest() {
-        uponPromise(action13(), function() {
+        uponPromise(action14(), function() {
           return finalize(originalIsError, originalError);
         }, function(newError) {
           return finalize(!0, newError);
@@ -32424,7 +32424,7 @@ function createMemoryHistory(options) {
     v5Compat = !1
   } = options, entries;
   entries = initialEntries.map((entry2, index2) => createMemoryLocation(entry2, typeof entry2 == "string" ? null : entry2.state, index2 === 0 ? "default" : void 0));
-  let index = clampIndex(initialIndex ?? entries.length - 1), action13 = Action.Pop, listener = null;
+  let index = clampIndex(initialIndex ?? entries.length - 1), action14 = Action.Pop, listener = null;
   function clampIndex(n13) {
     return Math.min(Math.max(n13, 0), entries.length - 1);
   }
@@ -32444,7 +32444,7 @@ function createMemoryHistory(options) {
       return index;
     },
     get action() {
-      return action13;
+      return action14;
     },
     get location() {
       return getCurrentLocation();
@@ -32462,28 +32462,28 @@ function createMemoryHistory(options) {
       };
     },
     push(to, state) {
-      action13 = Action.Push;
+      action14 = Action.Push;
       let nextLocation = createMemoryLocation(to, state);
       index += 1, entries.splice(index, entries.length, nextLocation), v5Compat && listener && listener({
-        action: action13,
+        action: action14,
         location: nextLocation,
         delta: 1
       });
     },
     replace(to, state) {
-      action13 = Action.Replace;
+      action14 = Action.Replace;
       let nextLocation = createMemoryLocation(to, state);
       entries[index] = nextLocation, v5Compat && listener && listener({
-        action: action13,
+        action: action14,
         location: nextLocation,
         delta: 0
       });
     },
     go(delta) {
-      action13 = Action.Pop;
+      action14 = Action.Pop;
       let nextIndex = clampIndex(index + delta), nextLocation = entries[nextIndex];
       index = nextIndex, listener && listener({
-        action: action13,
+        action: action14,
         location: nextLocation,
         delta
       });
@@ -32613,7 +32613,7 @@ function getUrlBasedHistory(getLocation, createHref, validateLocation, options) 
   let {
     window: window2 = document.defaultView,
     v5Compat = !1
-  } = options, globalHistory = window2.history, action13 = Action.Pop, listener = null, index = getIndex();
+  } = options, globalHistory = window2.history, action14 = Action.Pop, listener = null, index = getIndex();
   index == null && (index = 0, globalHistory.replaceState(_extends({}, globalHistory.state, {
     idx: index
   }), ""));
@@ -32623,16 +32623,16 @@ function getUrlBasedHistory(getLocation, createHref, validateLocation, options) 
     }).idx;
   }
   function handlePop() {
-    action13 = Action.Pop;
+    action14 = Action.Pop;
     let nextIndex = getIndex(), delta = nextIndex == null ? null : nextIndex - index;
     index = nextIndex, listener && listener({
-      action: action13,
+      action: action14,
       location: history.location,
       delta
     });
   }
   function push(to, state) {
-    action13 = Action.Push;
+    action14 = Action.Push;
     let location2 = createLocation(history.location, to, state);
     validateLocation && validateLocation(location2, to), index = getIndex() + 1;
     let historyState = getHistoryState(location2, index), url = history.createHref(location2);
@@ -32644,18 +32644,18 @@ function getUrlBasedHistory(getLocation, createHref, validateLocation, options) 
       window2.location.assign(url);
     }
     v5Compat && listener && listener({
-      action: action13,
+      action: action14,
       location: history.location,
       delta: 1
     });
   }
   function replace(to, state) {
-    action13 = Action.Replace;
+    action14 = Action.Replace;
     let location2 = createLocation(history.location, to, state);
     validateLocation && validateLocation(location2, to), index = getIndex();
     let historyState = getHistoryState(location2, index), url = history.createHref(location2);
     globalHistory.replaceState(historyState, "", url), v5Compat && listener && listener({
-      action: action13,
+      action: action14,
       location: history.location,
       delta: 0
     });
@@ -32666,7 +32666,7 @@ function getUrlBasedHistory(getLocation, createHref, validateLocation, options) 
   }
   let history = {
     get action() {
-      return action13;
+      return action14;
     },
     get location() {
       return getLocation(window2, globalHistory);
@@ -33285,13 +33285,13 @@ function createRouter(init4) {
         shortCircuited: !0
       };
     pendingNavigationController && pendingNavigationController.signal.removeEventListener("abort", abortPendingFetchRevalidations), revalidatingFetchers.forEach((rf) => fetchControllers.delete(rf.key));
-    let redirect17 = findRedirect(results);
-    if (redirect17) {
-      if (redirect17.idx >= matchesToLoad.length) {
-        let fetcherKey = revalidatingFetchers[redirect17.idx - matchesToLoad.length].key;
+    let redirect18 = findRedirect(results);
+    if (redirect18) {
+      if (redirect18.idx >= matchesToLoad.length) {
+        let fetcherKey = revalidatingFetchers[redirect18.idx - matchesToLoad.length].key;
         fetchRedirectIds.add(fetcherKey);
       }
-      return await startRedirectNavigation(state, redirect17.result, {
+      return await startRedirectNavigation(state, redirect18.result, {
         replace
       }), {
         shortCircuited: !0
@@ -33434,13 +33434,13 @@ function createRouter(init4) {
     if (abortController.signal.aborted)
       return;
     abortController.signal.removeEventListener("abort", abortPendingFetchRevalidations), fetchReloadIds.delete(key), fetchControllers.delete(key), revalidatingFetchers.forEach((r13) => fetchControllers.delete(r13.key));
-    let redirect17 = findRedirect(results);
-    if (redirect17) {
-      if (redirect17.idx >= matchesToLoad.length) {
-        let fetcherKey = revalidatingFetchers[redirect17.idx - matchesToLoad.length].key;
+    let redirect18 = findRedirect(results);
+    if (redirect18) {
+      if (redirect18.idx >= matchesToLoad.length) {
+        let fetcherKey = revalidatingFetchers[redirect18.idx - matchesToLoad.length].key;
         fetchRedirectIds.add(fetcherKey);
       }
-      return startRedirectNavigation(state, redirect17.result);
+      return startRedirectNavigation(state, redirect18.result);
     }
     let {
       loaderData,
@@ -33500,16 +33500,16 @@ function createRouter(init4) {
       fetchers: new Map(state.fetchers)
     });
   }
-  async function startRedirectNavigation(state2, redirect17, _temp) {
+  async function startRedirectNavigation(state2, redirect18, _temp) {
     let {
       submission,
       replace,
       isFetchActionRedirect
     } = _temp === void 0 ? {} : _temp;
-    redirect17.revalidate && (isRevalidationRequired = !0);
+    redirect18.revalidate && (isRevalidationRequired = !0);
     let redirectLocation = createLocation(
       state2.location,
-      redirect17.location,
+      redirect18.location,
       // TODO: This can be removed once we get rid of useTransition in Remix v2
       _extends({
         _isRedirect: !0
@@ -33517,19 +33517,19 @@ function createRouter(init4) {
         _isFetchActionRedirect: !0
       } : {})
     );
-    if (invariant(redirectLocation, "Expected a location on the redirect navigation"), ABSOLUTE_URL_REGEX.test(redirect17.location) && isBrowser2) {
-      let url = init4.history.createURL(redirect17.location), isDifferentBasename = stripBasename(url.pathname, basename2) == null;
+    if (invariant(redirectLocation, "Expected a location on the redirect navigation"), ABSOLUTE_URL_REGEX.test(redirect18.location) && isBrowser2) {
+      let url = init4.history.createURL(redirect18.location), isDifferentBasename = stripBasename(url.pathname, basename2) == null;
       if (routerWindow.location.origin !== url.origin || isDifferentBasename) {
-        replace ? routerWindow.location.replace(redirect17.location) : routerWindow.location.assign(redirect17.location);
+        replace ? routerWindow.location.replace(redirect18.location) : routerWindow.location.assign(redirect18.location);
         return;
       }
     }
     pendingNavigationController = null;
     let redirectHistoryAction = replace === !0 ? Action.Replace : Action.Push, activeSubmission = submission || getSubmissionFromNavigation(state2.navigation);
-    if (redirectPreserveMethodStatusCodes.has(redirect17.status) && activeSubmission && isMutationMethod(activeSubmission.formMethod))
+    if (redirectPreserveMethodStatusCodes.has(redirect18.status) && activeSubmission && isMutationMethod(activeSubmission.formMethod))
       await startNavigation(redirectHistoryAction, redirectLocation, {
         submission: _extends({}, activeSubmission, {
-          formAction: redirect17.location
+          formAction: redirect18.location
         }),
         // Preserve this flag across redirects
         preventScrollReset: pendingPreventScrollReset
@@ -34034,7 +34034,7 @@ function normalizeNavigateOptions(normalizeFormMethod, isFetcher, path4, opts) {
       if (!isMutationMethod(formMethod))
         return getInvalidBodyError();
       try {
-        let json31 = typeof opts.body == "string" ? JSON.parse(opts.body) : opts.body;
+        let json32 = typeof opts.body == "string" ? JSON.parse(opts.body) : opts.body;
         return {
           path: path4,
           submission: {
@@ -34042,7 +34042,7 @@ function normalizeNavigateOptions(normalizeFormMethod, isFetcher, path4, opts) {
             formAction,
             formEncType: opts.formEncType,
             formData: void 0,
-            json: json31,
+            json: json32,
             text: void 0
           }
         };
@@ -34520,7 +34520,7 @@ function getSubmissionFromNavigation(navigation) {
     formEncType,
     text,
     formData,
-    json: json31
+    json: json32
   } = navigation;
   if (!(!formMethod || !formAction || !formEncType)) {
     if (text != null)
@@ -34541,13 +34541,13 @@ function getSubmissionFromNavigation(navigation) {
         json: void 0,
         text: void 0
       };
-    if (json31 !== void 0)
+    if (json32 !== void 0)
       return {
         formMethod,
         formAction,
         formEncType,
         formData: void 0,
-        json: json31,
+        json: json32,
         text: void 0
       };
   }
@@ -35082,12 +35082,12 @@ var init_routeMatching = __esm({
 // node_modules/@remix-run/server-runtime/dist/esm/data.js
 async function callRouteActionRR({
   loadContext,
-  action: action13,
+  action: action14,
   params,
   request: request3,
   routeId
 }) {
-  let result = await action13({
+  let result = await action14({
     request: stripDataParam(stripIndexParam(request3)),
     context: loadContext,
     params
@@ -35098,12 +35098,12 @@ async function callRouteActionRR({
 }
 async function callRouteLoaderRR({
   loadContext,
-  loader: loader25,
+  loader: loader26,
   params,
   request: request3,
   routeId
 }) {
-  let result = await loader25({
+  let result = await loader26({
     request: stripDataParam(stripIndexParam(request3)),
     context: loadContext,
     params
@@ -38545,16 +38545,16 @@ function getFormEncType(encType) {
   return encType != null && !supportedFormEncTypes.has(encType) ? (warning(!1, '"' + encType + '" is not a valid `encType` for `<Form>`/`<fetcher.Form>` ' + ('and will default to "' + defaultEncType + '"')), null) : encType;
 }
 function getFormSubmissionInfo(target, basename2) {
-  let method, action13, encType, formData, body;
+  let method, action14, encType, formData, body;
   if (isFormElement(target)) {
     let attr = target.getAttribute("action");
-    action13 = attr ? stripBasename(attr, basename2) : null, method = target.getAttribute("method") || defaultMethod, encType = getFormEncType(target.getAttribute("enctype")) || defaultEncType, formData = new FormData(target);
+    action14 = attr ? stripBasename(attr, basename2) : null, method = target.getAttribute("method") || defaultMethod, encType = getFormEncType(target.getAttribute("enctype")) || defaultEncType, formData = new FormData(target);
   } else if (isButtonElement(target) || isInputElement(target) && (target.type === "submit" || target.type === "image")) {
     let form = target.form;
     if (form == null)
       throw new Error('Cannot submit a <button> or <input type="submit"> without a <form>');
     let attr = target.getAttribute("formaction") || form.getAttribute("action");
-    if (action13 = attr ? stripBasename(attr, basename2) : null, method = target.getAttribute("formmethod") || form.getAttribute("method") || defaultMethod, encType = getFormEncType(target.getAttribute("formenctype")) || getFormEncType(form.getAttribute("enctype")) || defaultEncType, formData = new FormData(form, target), !isFormDataSubmitterSupported()) {
+    if (action14 = attr ? stripBasename(attr, basename2) : null, method = target.getAttribute("formmethod") || form.getAttribute("method") || defaultMethod, encType = getFormEncType(target.getAttribute("formenctype")) || getFormEncType(form.getAttribute("enctype")) || defaultEncType, formData = new FormData(form, target), !isFormDataSubmitterSupported()) {
       let {
         name: name2,
         type: type2,
@@ -38569,10 +38569,10 @@ function getFormSubmissionInfo(target, basename2) {
   } else {
     if (isHtmlElement(target))
       throw new Error('Cannot submit element that is not <form>, <button>, or <input type="submit|image">');
-    method = defaultMethod, action13 = null, encType = defaultEncType, body = target;
+    method = defaultMethod, action14 = null, encType = defaultEncType, body = target;
   }
   return formData && encType === "text/plain" && (body = formData, formData = void 0), {
-    action: action13,
+    action: action14,
     method: method.toLowerCase(),
     encType,
     formData,
@@ -38785,13 +38785,13 @@ function useSubmit() {
   return React2.useCallback(function(target, options) {
     options === void 0 && (options = {}), validateClientSideSubmission();
     let {
-      action: action13,
+      action: action14,
       method,
       encType,
       formData,
       body
     } = getFormSubmissionInfo(target, basename2);
-    router.navigate(options.action || action13, {
+    router.navigate(options.action || action14, {
       preventScrollReset: options.preventScrollReset,
       formData,
       body,
@@ -38812,13 +38812,13 @@ function useSubmitFetcher(fetcherKey, fetcherRouteId) {
   return React2.useCallback(function(target, options) {
     options === void 0 && (options = {}), validateClientSideSubmission();
     let {
-      action: action13,
+      action: action14,
       method,
       encType,
       formData,
       body
     } = getFormSubmissionInfo(target, basename2);
-    fetcherRouteId == null && invariant(!1, "No routeId available for useFetcher()"), router.fetch(fetcherKey, fetcherRouteId, options.action || action13, {
+    fetcherRouteId == null && invariant(!1, "No routeId available for useFetcher()"), router.fetch(fetcherKey, fetcherRouteId, options.action || action14, {
       preventScrollReset: options.preventScrollReset,
       formData,
       body,
@@ -38827,21 +38827,21 @@ function useSubmitFetcher(fetcherKey, fetcherRouteId) {
     });
   }, [router, basename2, fetcherKey, fetcherRouteId]);
 }
-function useFormAction(action13, _temp2) {
+function useFormAction(action14, _temp2) {
   let {
     relative: relative2
   } = _temp2 === void 0 ? {} : _temp2, {
     basename: basename2
   } = React2.useContext(NavigationContext), routeContext = React2.useContext(RouteContext);
   routeContext || invariant(!1, "useFormAction must be used inside a RouteContext");
-  let [match] = routeContext.matches.slice(-1), path4 = _extends3({}, useResolvedPath(action13 || ".", {
+  let [match] = routeContext.matches.slice(-1), path4 = _extends3({}, useResolvedPath(action14 || ".", {
     relative: relative2
   })), location2 = useLocation();
-  if (action13 == null && (path4.search = location2.search, path4.hash = location2.hash, match.route.index)) {
+  if (action14 == null && (path4.search = location2.search, path4.hash = location2.hash, match.route.index)) {
     let params = new URLSearchParams(path4.search);
     params.delete("index"), path4.search = params.toString() ? "?" + params.toString() : "";
   }
-  return (!action13 || action13 === ".") && match.route.index && (path4.search = path4.search ? path4.search.replace(/^\?/, "?index&") : "?index"), basename2 !== "/" && (path4.pathname = path4.pathname === "/" ? basename2 : joinPaths([basename2, path4.pathname])), createPath(path4);
+  return (!action14 || action14 === ".") && match.route.index && (path4.search = path4.search ? path4.search.replace(/^\?/, "?index&") : "?index"), basename2 !== "/" && (path4.pathname = path4.pathname === "/" ? basename2 : joinPaths([basename2, path4.pathname])), createPath(path4);
 }
 function createFetcherForm(fetcherKey, routeId) {
   let FetcherForm = /* @__PURE__ */ React2.forwardRef((props, ref) => {
@@ -39073,12 +39073,12 @@ var React2, defaultMethod, defaultEncType, _formDataSupportsSubmitter, supported
         replace,
         state,
         method = defaultMethod,
-        action: action13,
+        action: action14,
         onSubmit,
         submit,
         relative: relative2,
         preventScrollReset
-      } = _ref6, props = _objectWithoutPropertiesLoose(_ref6, _excluded3), formMethod = method.toLowerCase() === "get" ? "get" : "post", formAction = useFormAction(action13, {
+      } = _ref6, props = _objectWithoutPropertiesLoose(_ref6, _excluded3), formMethod = method.toLowerCase() === "get" ? "get" : "post", formAction = useFormAction(action14, {
         relative: relative2
       });
       return /* @__PURE__ */ React2.createElement("form", _extends3({
@@ -39142,7 +39142,7 @@ var require_server = __commonJS({
       location: locationProp = "/"
     }) {
       typeof locationProp == "string" && (locationProp = reactRouterDom.parsePath(locationProp));
-      let action13 = router.Action.Pop, location2 = {
+      let action14 = router.Action.Pop, location2 = {
         pathname: locationProp.pathname || "/",
         search: locationProp.search || "",
         hash: locationProp.hash || "",
@@ -39153,7 +39153,7 @@ var require_server = __commonJS({
         basename: basename2,
         children,
         location: location2,
-        navigationType: action13,
+        navigationType: action14,
         navigator: staticNavigator,
         static: !0
       });
@@ -42003,8 +42003,8 @@ Incoming: %s`, currentHookNameInDev, "[" + nextDeps.join(", ") + "]", "[" + prev
       function useContext5(context) {
         return currentHookNameInDev = "useContext", resolveCurrentlyRenderingComponent(), readContext(context);
       }
-      function basicStateReducer(state, action13) {
-        return typeof action13 == "function" ? action13(state) : action13;
+      function basicStateReducer(state, action14) {
+        return typeof action14 == "function" ? action14(state) : action14;
       }
       function useState5(initialState) {
         return currentHookNameInDev = "useState", useReducer(
@@ -42022,8 +42022,8 @@ Incoming: %s`, currentHookNameInDev, "[" + nextDeps.join(", ") + "]", "[" + prev
               renderPhaseUpdates.delete(queue);
               var newState = workInProgressHook.memoizedState, update = firstRenderPhaseUpdate;
               do {
-                var action13 = update.action;
-                isInHookUserCodeInDev = !0, newState = reducer(newState, action13), isInHookUserCodeInDev = !1, update = update.next;
+                var action14 = update.action;
+                isInHookUserCodeInDev = !0, newState = reducer(newState, action14), isInHookUserCodeInDev = !1, update = update.next;
               } while (update !== null);
               return workInProgressHook.memoizedState = newState, [newState, dispatch];
             }
@@ -42069,13 +42069,13 @@ Incoming: %s`, currentHookNameInDev, "[" + nextDeps.join(", ") + "]", "[" + prev
       function useLayoutEffect3(create, inputs) {
         currentHookNameInDev = "useLayoutEffect", error("useLayoutEffect does nothing on the server, because its effect cannot be encoded into the server renderer's output format. This will lead to a mismatch between the initial, non-hydrated UI and the intended UI. To avoid this, useLayoutEffect should only be used in components that render exclusively on the client. See https://reactjs.org/link/uselayouteffect-ssr for common fixes.");
       }
-      function dispatchAction(componentIdentity, queue, action13) {
+      function dispatchAction(componentIdentity, queue, action14) {
         if (numberOfReRenders >= RE_RENDER_LIMIT)
           throw new Error("Too many re-renders. React limits the number of renders to prevent an infinite loop.");
         if (componentIdentity === currentlyRenderingComponent) {
           didScheduleRenderPhaseUpdate = !0;
           var update = {
-            action: action13,
+            action: action14,
             next: null
           };
           renderPhaseUpdates === null && (renderPhaseUpdates = /* @__PURE__ */ new Map());
@@ -45555,8 +45555,8 @@ Incoming: %s`, currentHookNameInDev, "[" + nextDeps.join(", ") + "]", "[" + prev
       function useContext5(context) {
         return currentHookNameInDev = "useContext", resolveCurrentlyRenderingComponent(), readContext(context);
       }
-      function basicStateReducer(state, action13) {
-        return typeof action13 == "function" ? action13(state) : action13;
+      function basicStateReducer(state, action14) {
+        return typeof action14 == "function" ? action14(state) : action14;
       }
       function useState5(initialState) {
         return currentHookNameInDev = "useState", useReducer(
@@ -45574,8 +45574,8 @@ Incoming: %s`, currentHookNameInDev, "[" + nextDeps.join(", ") + "]", "[" + prev
               renderPhaseUpdates.delete(queue);
               var newState = workInProgressHook.memoizedState, update = firstRenderPhaseUpdate;
               do {
-                var action13 = update.action;
-                isInHookUserCodeInDev = !0, newState = reducer(newState, action13), isInHookUserCodeInDev = !1, update = update.next;
+                var action14 = update.action;
+                isInHookUserCodeInDev = !0, newState = reducer(newState, action14), isInHookUserCodeInDev = !1, update = update.next;
               } while (update !== null);
               return workInProgressHook.memoizedState = newState, [newState, dispatch];
             }
@@ -45621,13 +45621,13 @@ Incoming: %s`, currentHookNameInDev, "[" + nextDeps.join(", ") + "]", "[" + prev
       function useLayoutEffect3(create, inputs) {
         currentHookNameInDev = "useLayoutEffect", error("useLayoutEffect does nothing on the server, because its effect cannot be encoded into the server renderer's output format. This will lead to a mismatch between the initial, non-hydrated UI and the intended UI. To avoid this, useLayoutEffect should only be used in components that render exclusively on the client. See https://reactjs.org/link/uselayouteffect-ssr for common fixes.");
       }
-      function dispatchAction(componentIdentity, queue, action13) {
+      function dispatchAction(componentIdentity, queue, action14) {
         if (numberOfReRenders >= RE_RENDER_LIMIT)
           throw new Error("Too many re-renders. React limits the number of renders to prevent an infinite loop.");
         if (componentIdentity === currentlyRenderingComponent) {
           didScheduleRenderPhaseUpdate = !0;
           var update = {
-            action: action13,
+            action: action14,
             next: null
           };
           renderPhaseUpdates === null && (renderPhaseUpdates = /* @__PURE__ */ new Map());
@@ -46925,7 +46925,7 @@ var require_react_jsx_dev_runtime_development = __commonJS({
           value: source
         }), Object.freeze && (Object.freeze(element.props), Object.freeze(element)), element;
       };
-      function jsxDEV30(type2, config, maybeKey, source, self2) {
+      function jsxDEV31(type2, config, maybeKey, source, self2) {
         {
           var propName, props = {}, key = null, ref = null;
           maybeKey !== void 0 && (checkKeyStringCoercion(maybeKey), key = "" + maybeKey), hasValidKey(config) && (checkKeyStringCoercion(config.key), key = "" + config.key), hasValidRef(config) && (ref = config.ref, warnIfStringRefCannotBeAutoConverted(config, self2));
@@ -47072,7 +47072,7 @@ Check the top-level render call using <` + parentName + ">.");
             var typeString;
             type2 === null ? typeString = "null" : isArray8(type2) ? typeString = "array" : type2 !== void 0 && type2.$$typeof === REACT_ELEMENT_TYPE ? (typeString = "<" + (getComponentNameFromType(type2.type) || "Unknown") + " />", info = " Did you accidentally export a JSX literal instead of a component?") : typeString = typeof type2, error("React.jsx: type is invalid -- expected a string (for built-in components) or a class/function (for composite components) but got: %s.%s", typeString, info);
           }
-          var element = jsxDEV30(type2, props, key, source, self2);
+          var element = jsxDEV31(type2, props, key, source, self2);
           if (element == null)
             return element;
           if (validType) {
@@ -49976,13 +49976,6 @@ var require_index_browser3 = __commonJS({
   "node_modules/@prisma/client/index-browser.js"(exports13, module) {
     var prisma2 = require_index_browser2();
     module.exports = prisma2;
-  }
-});
-
-// app/routes/sketch.tsx
-var require_sketch = __commonJS({
-  "app/routes/sketch.tsx"() {
-    "use strict";
   }
 });
 
@@ -54522,10 +54515,10 @@ Check this link for more details:
 https://remix.run/pages/gotchas#server-code-in-client-bundles`);
   let {
     default: Component2,
-    ErrorBoundary: ErrorBoundary5,
+    ErrorBoundary: ErrorBoundary6,
     CatchBoundary
   } = routeModules[id];
-  return !Component2 && (ErrorBoundary5 || !future2.v2_errorBoundary && CatchBoundary) && (Component2 = Outlet), invariant3(Component2, `Route "${id}" has no component! Please go add a \`default\` export in the route module file.
+  return !Component2 && (ErrorBoundary6 || !future2.v2_errorBoundary && CatchBoundary) && (Component2 = Outlet), invariant3(Component2, `Route "${id}" has no component! Please go add a \`default\` export in the route module file.
 If you were trying to navigate or submit to a resource route, use \`<a>\` instead of \`<Link>\` or \`<Form reloadDocument>\`.`), /* @__PURE__ */ React3.createElement(Component2, null);
 }
 function RemixRouteError({
@@ -54540,17 +54533,17 @@ Check this link for more details:
 https://remix.run/pages/gotchas#server-code-in-client-bundles`);
   let error = useRouteError(), {
     CatchBoundary,
-    ErrorBoundary: ErrorBoundary5
+    ErrorBoundary: ErrorBoundary6
   } = routeModules[id];
   if (future2.v2_errorBoundary) {
-    if (id === "root" && (ErrorBoundary5 || (ErrorBoundary5 = V2_RemixRootDefaultErrorBoundary)), ErrorBoundary5)
-      return /* @__PURE__ */ React3.createElement(ErrorBoundary5, null);
+    if (id === "root" && (ErrorBoundary6 || (ErrorBoundary6 = V2_RemixRootDefaultErrorBoundary)), ErrorBoundary6)
+      return /* @__PURE__ */ React3.createElement(ErrorBoundary6, null);
     throw error;
   }
-  if (id === "root" && (CatchBoundary || (CatchBoundary = RemixRootDefaultCatchBoundary), ErrorBoundary5 || (ErrorBoundary5 = RemixRootDefaultErrorBoundary)), isRouteErrorResponse(error)) {
+  if (id === "root" && (CatchBoundary || (CatchBoundary = RemixRootDefaultCatchBoundary), ErrorBoundary6 || (ErrorBoundary6 = RemixRootDefaultErrorBoundary)), isRouteErrorResponse(error)) {
     let tError = error;
-    if (tError != null && tError.error && tError.status !== 404 && ErrorBoundary5)
-      return /* @__PURE__ */ React3.createElement(ErrorBoundary5, {
+    if (tError != null && tError.error && tError.status !== 404 && ErrorBoundary6)
+      return /* @__PURE__ */ React3.createElement(ErrorBoundary6, {
         error: tError.error
       });
     if (CatchBoundary)
@@ -54559,8 +54552,8 @@ https://remix.run/pages/gotchas#server-code-in-client-bundles`);
         component: CatchBoundary
       });
   }
-  if (error instanceof Error && ErrorBoundary5)
-    return /* @__PURE__ */ React3.createElement(ErrorBoundary5, {
+  if (error instanceof Error && ErrorBoundary6)
+    return /* @__PURE__ */ React3.createElement(ErrorBoundary6, {
       error
     });
   throw error;
@@ -54824,12 +54817,12 @@ To reference the v1 meta function API, see https://remix.run/route/meta`);
         charSet: metaProps.charSet
       }) : null;
     if ("script:ld+json" in metaProps) {
-      let json31 = null;
+      let json32 = null;
       try {
-        json31 = JSON.stringify(metaProps["script:ld+json"]);
+        json32 = JSON.stringify(metaProps["script:ld+json"]);
       } catch {
       }
-      return json31 != null && /* @__PURE__ */ React3.createElement("script", {
+      return json32 != null && /* @__PURE__ */ React3.createElement("script", {
         key: "script:ld+json",
         type: "application/ld+json",
         dangerouslySetInnerHTML: {
@@ -55371,9 +55364,9 @@ function _classPrivateFieldSet(receiver, privateMap, value) {
   var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set");
   return _classApplyDescriptorSet(receiver, descriptor, value), value;
 }
-function _classExtractFieldDescriptor(receiver, privateMap, action13) {
+function _classExtractFieldDescriptor(receiver, privateMap, action14) {
   if (!privateMap.has(receiver))
-    throw new TypeError("attempted to " + action13 + " private field on non-instance");
+    throw new TypeError("attempted to " + action14 + " private field on non-instance");
   return privateMap.get(receiver);
 }
 function _classApplyDescriptorGet(receiver, descriptor) {
@@ -56052,7 +56045,7 @@ function App() {
   }, this);
 }
 
-// app/routes/categorias.novacategoria.tsx
+// app/routes/Categorias/categorias.novacategoria.tsx
 var categorias_novacategoria_exports = {};
 __export(categorias_novacategoria_exports, {
   action: () => action,
@@ -56104,7 +56097,7 @@ function deleteCategoria({
   });
 }
 
-// app/routes/categorias.novacategoria.tsx
+// app/routes/Categorias/categorias.novacategoria.tsx
 var import_jsx_dev_runtime3 = __toESM(require_jsx_dev_runtime()), meta = () => [{ title: "EncontraTudo" }], action = async ({ request: request3 }) => {
   let userId = await requireUserId(request3), formData = await request3.formData(), nomeCategoria = formData.get("nomeCategoria"), descricaoCategoria = formData.get("descricaoCategoria");
   if (typeof nomeCategoria != "string" || nomeCategoria.length === 0)
@@ -56138,19 +56131,19 @@ function CidadesIndexPage() {
           void 0,
           !1,
           {
-            fileName: "app/routes/categorias.novacategoria.tsx",
+            fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
             lineNumber: 55,
             columnNumber: 13
           },
           this
         ),
         /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
-          fileName: "app/routes/categorias.novacategoria.tsx",
+          fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
           lineNumber: 60,
           columnNumber: 13
         }, this)
       ] }, void 0, !0, {
-        fileName: "app/routes/categorias.novacategoria.tsx",
+        fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
         lineNumber: 54,
         columnNumber: 11
       }, this),
@@ -56164,7 +56157,7 @@ function CidadesIndexPage() {
           "aria-expanded": "false",
           children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
-              fileName: "app/routes/categorias.novacategoria.tsx",
+              fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
               lineNumber: 71,
               columnNumber: 13
             }, this),
@@ -56188,7 +56181,7 @@ function CidadesIndexPage() {
                   void 0,
                   !1,
                   {
-                    fileName: "app/routes/categorias.novacategoria.tsx",
+                    fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                     lineNumber: 79,
                     columnNumber: 15
                   },
@@ -56198,7 +56191,7 @@ function CidadesIndexPage() {
               void 0,
               !1,
               {
-                fileName: "app/routes/categorias.novacategoria.tsx",
+                fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                 lineNumber: 72,
                 columnNumber: 13
               },
@@ -56209,7 +56202,7 @@ function CidadesIndexPage() {
         void 0,
         !0,
         {
-          fileName: "app/routes/categorias.novacategoria.tsx",
+          fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
           lineNumber: 64,
           columnNumber: 11
         },
@@ -56231,13 +56224,13 @@ function CidadesIndexPage() {
               void 0,
               !1,
               {
-                fileName: "app/routes/categorias.novacategoria.tsx",
+                fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                 lineNumber: 94,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/categorias.novacategoria.tsx",
+              fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
               lineNumber: 93,
               columnNumber: 15
             }, this),
@@ -56251,13 +56244,13 @@ function CidadesIndexPage() {
               void 0,
               !1,
               {
-                fileName: "app/routes/categorias.novacategoria.tsx",
+                fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                 lineNumber: 103,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/categorias.novacategoria.tsx",
+              fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
               lineNumber: 102,
               columnNumber: 15
             }, this),
@@ -56271,13 +56264,13 @@ function CidadesIndexPage() {
               void 0,
               !1,
               {
-                fileName: "app/routes/categorias.novacategoria.tsx",
+                fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                 lineNumber: 111,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/categorias.novacategoria.tsx",
+              fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
               lineNumber: 110,
               columnNumber: 15
             }, this),
@@ -56291,13 +56284,13 @@ function CidadesIndexPage() {
               void 0,
               !1,
               {
-                fileName: "app/routes/categorias.novacategoria.tsx",
+                fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                 lineNumber: 119,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/categorias.novacategoria.tsx",
+              fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
               lineNumber: 118,
               columnNumber: 15
             }, this),
@@ -56331,7 +56324,7 @@ function CidadesIndexPage() {
                           void 0,
                           !1,
                           {
-                            fileName: "app/routes/categorias.novacategoria.tsx",
+                            fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                             lineNumber: 141,
                             columnNumber: 21
                           },
@@ -56341,7 +56334,7 @@ function CidadesIndexPage() {
                       void 0,
                       !1,
                       {
-                        fileName: "app/routes/categorias.novacategoria.tsx",
+                        fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                         lineNumber: 134,
                         columnNumber: 19
                       },
@@ -56352,7 +56345,7 @@ function CidadesIndexPage() {
                 void 0,
                 !0,
                 {
-                  fileName: "app/routes/categorias.novacategoria.tsx",
+                  fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                   lineNumber: 128,
                   columnNumber: 17
                 },
@@ -56380,13 +56373,13 @@ function CidadesIndexPage() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/categorias.novacategoria.tsx",
+                              fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                               lineNumber: 160,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/categorias.novacategoria.tsx",
+                            fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                             lineNumber: 159,
                             columnNumber: 21
                           }, this),
@@ -56400,13 +56393,13 @@ function CidadesIndexPage() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/categorias.novacategoria.tsx",
+                              fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                               lineNumber: 168,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/categorias.novacategoria.tsx",
+                            fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                             lineNumber: 167,
                             columnNumber: 21
                           }, this),
@@ -56420,13 +56413,13 @@ function CidadesIndexPage() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/categorias.novacategoria.tsx",
+                              fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                               lineNumber: 176,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/categorias.novacategoria.tsx",
+                            fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                             lineNumber: 175,
                             columnNumber: 21
                           }, this)
@@ -56435,7 +56428,7 @@ function CidadesIndexPage() {
                       void 0,
                       !0,
                       {
-                        fileName: "app/routes/categorias.novacategoria.tsx",
+                        fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                         lineNumber: 155,
                         columnNumber: 19
                       },
@@ -56451,13 +56444,13 @@ function CidadesIndexPage() {
                       void 0,
                       !1,
                       {
-                        fileName: "app/routes/categorias.novacategoria.tsx",
+                        fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                         lineNumber: 185,
                         columnNumber: 21
                       },
                       this
                     ) }, void 0, !1, {
-                      fileName: "app/routes/categorias.novacategoria.tsx",
+                      fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                       lineNumber: 184,
                       columnNumber: 19
                     }, this)
@@ -56466,19 +56459,19 @@ function CidadesIndexPage() {
                 void 0,
                 !0,
                 {
-                  fileName: "app/routes/categorias.novacategoria.tsx",
+                  fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
                   lineNumber: 151,
                   columnNumber: 17
                 },
                 this
               )
             ] }, void 0, !0, {
-              fileName: "app/routes/categorias.novacategoria.tsx",
+              fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
               lineNumber: 127,
               columnNumber: 15
             }, this)
           ] }, void 0, !0, {
-            fileName: "app/routes/categorias.novacategoria.tsx",
+            fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
             lineNumber: 92,
             columnNumber: 13
           }, this)
@@ -56486,34 +56479,34 @@ function CidadesIndexPage() {
         void 0,
         !1,
         {
-          fileName: "app/routes/categorias.novacategoria.tsx",
+          fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
           lineNumber: 88,
           columnNumber: 11
         },
         this
       )
     ] }, void 0, !0, {
-      fileName: "app/routes/categorias.novacategoria.tsx",
+      fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
       lineNumber: 53,
       columnNumber: 9
     }, this) }, void 0, !1, {
-      fileName: "app/routes/categorias.novacategoria.tsx",
+      fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
       lineNumber: 52,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Nova Categoria" }, void 0, !1, {
-        fileName: "app/routes/categorias.novacategoria.tsx",
+        fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
         lineNumber: 204,
         columnNumber: 17
       }, this) }, void 0, !1, {
-        fileName: "app/routes/categorias.novacategoria.tsx",
+        fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
         lineNumber: 203,
         columnNumber: 15
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("div", { className: "relative", children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("div", { className: "absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none" }, void 0, !1, {
-          fileName: "app/routes/categorias.novacategoria.tsx",
+          fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
           lineNumber: 212,
           columnNumber: 19
         }, this),
@@ -56532,7 +56525,7 @@ function CidadesIndexPage() {
             void 0,
             !1,
             {
-              fileName: "app/routes/categorias.novacategoria.tsx",
+              fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
               lineNumber: 214,
               columnNumber: 21
             },
@@ -56552,60 +56545,60 @@ function CidadesIndexPage() {
             void 0,
             !1,
             {
-              fileName: "app/routes/categorias.novacategoria.tsx",
+              fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
               lineNumber: 223,
               columnNumber: 21
             },
             this
           ),
           /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("div", { className: "mx-auto mt-10 flex max-w-none justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime3.jsxDEV)("button", { className: "bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded", children: "Criar Categoria" }, void 0, !1, {
-            fileName: "app/routes/categorias.novacategoria.tsx",
+            fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
             lineNumber: 233,
             columnNumber: 23
           }, this) }, void 0, !1, {
-            fileName: "app/routes/categorias.novacategoria.tsx",
+            fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
             lineNumber: 232,
             columnNumber: 21
           }, this)
         ] }, void 0, !0, {
-          fileName: "app/routes/categorias.novacategoria.tsx",
+          fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
           lineNumber: 213,
           columnNumber: 19
         }, this)
       ] }, void 0, !0, {
-        fileName: "app/routes/categorias.novacategoria.tsx",
+        fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
         lineNumber: 211,
         columnNumber: 17
       }, this) }, void 0, !1, {
-        fileName: "app/routes/categorias.novacategoria.tsx",
+        fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
         lineNumber: 209,
         columnNumber: 15
       }, this)
     ] }, void 0, !0, {
-      fileName: "app/routes/categorias.novacategoria.tsx",
+      fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
       lineNumber: 202,
       columnNumber: 13
     }, this) }, void 0, !1, {
-      fileName: "app/routes/categorias.novacategoria.tsx",
+      fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
       lineNumber: 201,
       columnNumber: 11
     }, this) }, void 0, !1, {
-      fileName: "app/routes/categorias.novacategoria.tsx",
+      fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
       lineNumber: 200,
       columnNumber: 9
     }, this) }, void 0, !1, {
-      fileName: "app/routes/categorias.novacategoria.tsx",
+      fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
       lineNumber: 199,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
-    fileName: "app/routes/categorias.novacategoria.tsx",
+    fileName: "app/routes/Categorias/categorias.novacategoria.tsx",
     lineNumber: 51,
     columnNumber: 5
   }, this);
 }
 
-// app/routes/categorias.$categoriaId.tsx
+// app/routes/Categorias/categorias.$categoriaId.tsx
 var categorias_categoriaId_exports = {};
 __export(categorias_categoriaId_exports, {
   ErrorBoundary: () => ErrorBoundary,
@@ -56629,17 +56622,17 @@ function CategoriaIdPage() {
   let data = useLoaderData2();
   return /* @__PURE__ */ (0, import_jsx_dev_runtime4.jsxDEV)("div", { children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime4.jsxDEV)("h3", { className: "text-2xl font-bold", children: data.categorias.nomeCategoria }, void 0, !1, {
-      fileName: "app/routes/categorias.$categoriaId.tsx",
+      fileName: "app/routes/Categorias/categorias.$categoriaId.tsx",
       lineNumber: 39,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime4.jsxDEV)("p", { children: data.categorias.descricaoCategoria }, void 0, !1, {
-      fileName: "app/routes/categorias.$categoriaId.tsx",
+      fileName: "app/routes/Categorias/categorias.$categoriaId.tsx",
       lineNumber: 40,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime4.jsxDEV)("hr", { className: "my-4" }, void 0, !1, {
-      fileName: "app/routes/categorias.$categoriaId.tsx",
+      fileName: "app/routes/Categorias/categorias.$categoriaId.tsx",
       lineNumber: 41,
       columnNumber: 7
     }, this),
@@ -56654,7 +56647,7 @@ function CategoriaIdPage() {
         void 0,
         !1,
         {
-          fileName: "app/routes/categorias.$categoriaId.tsx",
+          fileName: "app/routes/Categorias/categorias.$categoriaId.tsx",
           lineNumber: 43,
           columnNumber: 7
         },
@@ -56670,19 +56663,19 @@ function CategoriaIdPage() {
         void 0,
         !1,
         {
-          fileName: "app/routes/categorias.$categoriaId.tsx",
+          fileName: "app/routes/Categorias/categorias.$categoriaId.tsx",
           lineNumber: 49,
           columnNumber: 9
         },
         this
       )
     ] }, void 0, !0, {
-      fileName: "app/routes/categorias.$categoriaId.tsx",
+      fileName: "app/routes/Categorias/categorias.$categoriaId.tsx",
       lineNumber: 42,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
-    fileName: "app/routes/categorias.$categoriaId.tsx",
+    fileName: "app/routes/Categorias/categorias.$categoriaId.tsx",
     lineNumber: 38,
     columnNumber: 5
   }, this);
@@ -56693,28 +56686,28 @@ function ErrorBoundary() {
     "Um erro inesperado ocorreu: ",
     error.message
   ] }, void 0, !0, {
-    fileName: "app/routes/categorias.$categoriaId.tsx",
+    fileName: "app/routes/Categorias/categorias.$categoriaId.tsx",
     lineNumber: 64,
     columnNumber: 12
   }, this) : isRouteErrorResponse(error) ? error.status === 404 ? /* @__PURE__ */ (0, import_jsx_dev_runtime4.jsxDEV)("div", { children: "Categoria n\xE3o encontrada." }, void 0, !1, {
-    fileName: "app/routes/categorias.$categoriaId.tsx",
+    fileName: "app/routes/Categorias/categorias.$categoriaId.tsx",
     lineNumber: 72,
     columnNumber: 12
   }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime4.jsxDEV)("div", { children: [
     "Um erro inesperado aconteceu. C\xF3digo : ",
     error.statusText
   ] }, void 0, !0, {
-    fileName: "app/routes/categorias.$categoriaId.tsx",
+    fileName: "app/routes/Categorias/categorias.$categoriaId.tsx",
     lineNumber: 75,
     columnNumber: 10
   }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime4.jsxDEV)("h1", { children: "Erro desconhecido" }, void 0, !1, {
-    fileName: "app/routes/categorias.$categoriaId.tsx",
+    fileName: "app/routes/Categorias/categorias.$categoriaId.tsx",
     lineNumber: 68,
     columnNumber: 12
   }, this);
 }
 
-// app/routes/usuarios.editarUsuario.tsx
+// app/routes/Usuarios/usuarios.editarUsuario.tsx
 var usuarios_editarUsuario_exports = {};
 __export(usuarios_editarUsuario_exports, {
   default: () => EdiarUsuario,
@@ -56765,7 +56758,7 @@ function deleteCidade({
   });
 }
 
-// app/routes/usuarios.editarUsuario.tsx
+// app/routes/Usuarios/usuarios.editarUsuario.tsx
 var import_jsx_dev_runtime5 = __toESM(require_jsx_dev_runtime()), meta2 = () => [{ title: "EncontraTudo" }], loader3 = async ({ request: request3 }) => {
   let userId = await requireUserId(request3), cidadeListItems = await getCidadeListItems({ userId });
   return (0, import_node6.json)({ cidadeListItems });
@@ -56784,19 +56777,19 @@ function EdiarUsuario() {
           void 0,
           !1,
           {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 25,
             columnNumber: 13
           },
           this
         ),
         /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 30,
           columnNumber: 13
         }, this)
       ] }, void 0, !0, {
-        fileName: "app/routes/usuarios.editarUsuario.tsx",
+        fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
         lineNumber: 24,
         columnNumber: 11
       }, this),
@@ -56810,7 +56803,7 @@ function EdiarUsuario() {
           "aria-expanded": "false",
           children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
-              fileName: "app/routes/usuarios.editarUsuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
               lineNumber: 41,
               columnNumber: 13
             }, this),
@@ -56834,7 +56827,7 @@ function EdiarUsuario() {
                   void 0,
                   !1,
                   {
-                    fileName: "app/routes/usuarios.editarUsuario.tsx",
+                    fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                     lineNumber: 49,
                     columnNumber: 15
                   },
@@ -56844,7 +56837,7 @@ function EdiarUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.editarUsuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                 lineNumber: 42,
                 columnNumber: 13
               },
@@ -56855,7 +56848,7 @@ function EdiarUsuario() {
         void 0,
         !0,
         {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 34,
           columnNumber: 11
         },
@@ -56877,13 +56870,13 @@ function EdiarUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.editarUsuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                 lineNumber: 64,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/usuarios.editarUsuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
               lineNumber: 63,
               columnNumber: 15
             }, this),
@@ -56897,13 +56890,13 @@ function EdiarUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.editarUsuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                 lineNumber: 73,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/usuarios.editarUsuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
               lineNumber: 72,
               columnNumber: 15
             }, this),
@@ -56917,13 +56910,13 @@ function EdiarUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.editarUsuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                 lineNumber: 81,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/usuarios.editarUsuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
               lineNumber: 80,
               columnNumber: 15
             }, this),
@@ -56937,13 +56930,13 @@ function EdiarUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.editarUsuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                 lineNumber: 89,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/usuarios.editarUsuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
               lineNumber: 88,
               columnNumber: 15
             }, this),
@@ -56977,7 +56970,7 @@ function EdiarUsuario() {
                           void 0,
                           !1,
                           {
-                            fileName: "app/routes/usuarios.editarUsuario.tsx",
+                            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                             lineNumber: 111,
                             columnNumber: 21
                           },
@@ -56987,7 +56980,7 @@ function EdiarUsuario() {
                       void 0,
                       !1,
                       {
-                        fileName: "app/routes/usuarios.editarUsuario.tsx",
+                        fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                         lineNumber: 104,
                         columnNumber: 19
                       },
@@ -56998,7 +56991,7 @@ function EdiarUsuario() {
                 void 0,
                 !0,
                 {
-                  fileName: "app/routes/usuarios.editarUsuario.tsx",
+                  fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                   lineNumber: 98,
                   columnNumber: 17
                 },
@@ -57026,13 +57019,13 @@ function EdiarUsuario() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/usuarios.editarUsuario.tsx",
+                              fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                               lineNumber: 130,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/usuarios.editarUsuario.tsx",
+                            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                             lineNumber: 129,
                             columnNumber: 21
                           }, this),
@@ -57046,13 +57039,13 @@ function EdiarUsuario() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/usuarios.editarUsuario.tsx",
+                              fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                               lineNumber: 138,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/usuarios.editarUsuario.tsx",
+                            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                             lineNumber: 137,
                             columnNumber: 21
                           }, this),
@@ -57066,13 +57059,13 @@ function EdiarUsuario() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/usuarios.editarUsuario.tsx",
+                              fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                               lineNumber: 146,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/usuarios.editarUsuario.tsx",
+                            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                             lineNumber: 145,
                             columnNumber: 21
                           }, this)
@@ -57081,7 +57074,7 @@ function EdiarUsuario() {
                       void 0,
                       !0,
                       {
-                        fileName: "app/routes/usuarios.editarUsuario.tsx",
+                        fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                         lineNumber: 125,
                         columnNumber: 19
                       },
@@ -57097,13 +57090,13 @@ function EdiarUsuario() {
                       void 0,
                       !1,
                       {
-                        fileName: "app/routes/usuarios.editarUsuario.tsx",
+                        fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                         lineNumber: 155,
                         columnNumber: 21
                       },
                       this
                     ) }, void 0, !1, {
-                      fileName: "app/routes/usuarios.editarUsuario.tsx",
+                      fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                       lineNumber: 154,
                       columnNumber: 19
                     }, this)
@@ -57112,19 +57105,19 @@ function EdiarUsuario() {
                 void 0,
                 !0,
                 {
-                  fileName: "app/routes/usuarios.editarUsuario.tsx",
+                  fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
                   lineNumber: 121,
                   columnNumber: 17
                 },
                 this
               )
             ] }, void 0, !0, {
-              fileName: "app/routes/usuarios.editarUsuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
               lineNumber: 97,
               columnNumber: 15
             }, this)
           ] }, void 0, !0, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 62,
             columnNumber: 13
           }, this)
@@ -57132,39 +57125,39 @@ function EdiarUsuario() {
         void 0,
         !1,
         {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 58,
           columnNumber: 11
         },
         this
       )
     ] }, void 0, !0, {
-      fileName: "app/routes/usuarios.editarUsuario.tsx",
+      fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
       lineNumber: 23,
       columnNumber: 9
     }, this) }, void 0, !1, {
-      fileName: "app/routes/usuarios.editarUsuario.tsx",
+      fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
       lineNumber: 22,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Editar Usu\xE1rio" }, void 0, !1, {
-        fileName: "app/routes/usuarios.editarUsuario.tsx",
+        fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
         lineNumber: 174,
         columnNumber: 17
       }, this) }, void 0, !1, {
-        fileName: "app/routes/usuarios.editarUsuario.tsx",
+        fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
         lineNumber: 173,
         columnNumber: 15
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("div", { className: "relative", children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("div", { className: "absolute inset-y-0 left-0 flex items-center pl-3 p-4 pointer-events-none" }, void 0, !1, {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 181,
           columnNumber: 19
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("label", { htmlFor: "default-search", className: "block mb-2 text-sm font-medium text-gray-900 dark:text-white", children: "Nome da Empresa" }, void 0, !1, {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 182,
           columnNumber: 19
         }, this),
@@ -57180,161 +57173,739 @@ function EdiarUsuario() {
           void 0,
           !1,
           {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 184,
             columnNumber: 19
           },
           this
         ),
         /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("label", { htmlFor: "default", className: "block mb-2 text-sm font-medium text-gray-900 dark:text-white", children: "Empresa" }, void 0, !1, {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 192,
           columnNumber: 19
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("select", { id: "default", className: "bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", children: [
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { selected: !0, children: "Escolha a cidade na qual o seu neg\xF3cio opera" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 194,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { value: "US", children: "Itaituba - PA" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 195,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { value: "CA", children: "Oeiras - PI" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 196,
             columnNumber: 21
           }, this)
         ] }, void 0, !0, {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 193,
           columnNumber: 19
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("label", { htmlFor: "default-pacote", className: "block mb-2 text-sm font-medium text-gray-900 dark:text-white", children: "Pacote" }, void 0, !1, {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 200,
           columnNumber: 19
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("select", { id: "default-pacote", className: "bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", children: [
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { selected: !0, children: "Escolha o pacote de divulga\xE7\xE3o" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 202,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { value: "2", children: "5 $ (2 dias)" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 203,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { value: "5", children: "10 $ (5 dias)" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 204,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { value: "29", children: "29 $ (15 dias)" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 205,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { value: "49", children: "49,50 $ (30 dias)" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 206,
             columnNumber: 21
           }, this)
         ] }, void 0, !0, {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 201,
           columnNumber: 19
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("label", { htmlFor: "default-pagamento", className: "block mb-2 text-sm font-medium text-gray-900 dark:text-white", children: "Forma de Pagamento" }, void 0, !1, {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 210,
           columnNumber: 19
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("select", { id: "default-pacote", className: "bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", children: [
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { selected: !0, children: "Escolha a forma de pagamento" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 212,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { value: "2", children: "Pix" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 213,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { value: "5", children: "Boleto" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 214,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { value: "29", children: "Cr\xE9dito" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 215,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("option", { value: "49", children: "D\xE9bito" }, void 0, !1, {
-            fileName: "app/routes/usuarios.editarUsuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
             lineNumber: 216,
             columnNumber: 21
           }, this)
         ] }, void 0, !0, {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 211,
           columnNumber: 19
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("div", { className: "mx-auto mt-10 flex max-w-none justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime5.jsxDEV)("button", { className: "bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded", children: "Editar Usu\xE1rio" }, void 0, !1, {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 220,
           columnNumber: 21
         }, this) }, void 0, !1, {
-          fileName: "app/routes/usuarios.editarUsuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
           lineNumber: 219,
           columnNumber: 19
         }, this)
       ] }, void 0, !0, {
-        fileName: "app/routes/usuarios.editarUsuario.tsx",
+        fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
         lineNumber: 180,
         columnNumber: 17
       }, this) }, void 0, !1, {
-        fileName: "app/routes/usuarios.editarUsuario.tsx",
+        fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
         lineNumber: 179,
         columnNumber: 15
       }, this)
     ] }, void 0, !0, {
-      fileName: "app/routes/usuarios.editarUsuario.tsx",
+      fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
       lineNumber: 172,
       columnNumber: 13
     }, this) }, void 0, !1, {
-      fileName: "app/routes/usuarios.editarUsuario.tsx",
+      fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
       lineNumber: 171,
       columnNumber: 11
     }, this) }, void 0, !1, {
-      fileName: "app/routes/usuarios.editarUsuario.tsx",
+      fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
       lineNumber: 170,
       columnNumber: 9
     }, this) }, void 0, !1, {
-      fileName: "app/routes/usuarios.editarUsuario.tsx",
+      fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
       lineNumber: 169,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
-    fileName: "app/routes/usuarios.editarUsuario.tsx",
+    fileName: "app/routes/Usuarios/usuarios.editarUsuario.tsx",
     lineNumber: 21,
     columnNumber: 5
   }, this);
 }
 
-// app/routes/empresas.novaempresa.tsx
+// app/routes/Anuncios/anuncios.novoanuncio.tsx
+var anuncios_novoanuncio_exports = {};
+__export(anuncios_novoanuncio_exports, {
+  default: () => NovoAnuncioPage,
+  loader: () => loader4,
+  meta: () => meta3
+});
+var import_node7 = __toESM(require_dist());
+var import_jsx_dev_runtime6 = __toESM(require_jsx_dev_runtime()), meta3 = () => [{ title: "EncontraTudo" }], loader4 = async ({ request: request3 }) => {
+  let userId = await requireUserId(request3), cidadeListItems = await getCidadeListItems({ userId });
+  return (0, import_node7.json)({ cidadeListItems });
+};
+function NovoAnuncioPage() {
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+          "img",
+          {
+            src: "https://flowbite.com/docs/images/logo.svg",
+            className: "h-8 mr-3",
+            alt: "Flowbite Logo"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 25,
+            columnNumber: 13
+          },
+          this
+        ),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 30,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+        lineNumber: 24,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+        "button",
+        {
+          "data-collapse-toggle": "navbar-dropdown",
+          type: "button",
+          className: "inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600",
+          "aria-controls": "navbar-dropdown",
+          "aria-expanded": "false",
+          children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+              fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+              lineNumber: 41,
+              columnNumber: 13
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+              "svg",
+              {
+                className: "w-5 h-5",
+                "aria-hidden": "true",
+                xmlns: "http://www.w3.org/2000/svg",
+                fill: "none",
+                viewBox: "0 0 17 14",
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+                  "path",
+                  {
+                    stroke: "currentColor",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-width": "2",
+                    d: "M1 1h15M1 7h15M1 13h15"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                    lineNumber: 49,
+                    columnNumber: 15
+                  },
+                  this
+                )
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                lineNumber: 42,
+                columnNumber: 13
+              },
+              this
+            )
+          ]
+        },
+        void 0,
+        !0,
+        {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 34,
+          columnNumber: 11
+        },
+        this
+      ),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+        "div",
+        {
+          className: "hidden w-full md:block md:w-auto",
+          id: "navbar-dropdown",
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+              Link2,
+              {
+                to: "/cidades",
+                className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
+                children: "Cidades"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                lineNumber: 64,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+              lineNumber: 63,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+              Link2,
+              {
+                to: "/usuarios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Usu\xE1rios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                lineNumber: 73,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+              lineNumber: 72,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+              Link2,
+              {
+                to: "/negocios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Neg\xF3cios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                lineNumber: 81,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+              lineNumber: 80,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+              Link2,
+              {
+                to: "/anuncios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "An\xFAncios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                lineNumber: 89,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+              lineNumber: 88,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+                "button",
+                {
+                  id: "dropdownNavbarLink",
+                  "data-dropdown-toggle": "dropdownNavbar",
+                  className: "flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent",
+                  children: [
+                    "Meus Dados",
+                    " ",
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+                      "svg",
+                      {
+                        className: "w-2.5 h-2.5 ml-2.5",
+                        "aria-hidden": "true",
+                        xmlns: "http://www.w3.org/2000/svg",
+                        fill: "none",
+                        viewBox: "0 0 10 6",
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+                          "path",
+                          {
+                            stroke: "currentColor",
+                            strokeLinecap: "round",
+                            strokeLinejoin: "round",
+                            "stroke-width": "2",
+                            d: "m1 1 4 4 4-4"
+                          },
+                          void 0,
+                          !1,
+                          {
+                            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                            lineNumber: 111,
+                            columnNumber: 21
+                          },
+                          this
+                        )
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                        lineNumber: 104,
+                        columnNumber: 19
+                      },
+                      this
+                    )
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                  lineNumber: 98,
+                  columnNumber: 17
+                },
+                this
+              ),
+              /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+                "div",
+                {
+                  id: "dropdownNavbar",
+                  className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+                      "ul",
+                      {
+                        className: "py-2 text-sm text-gray-700 dark:text-gray-400",
+                        "aria-labelledby": "dropdownLargeButton",
+                        children: [
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+                            "a",
+                            {
+                              href: "/admin",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Painel de Controle"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                              lineNumber: 130,
+                              columnNumber: 23
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                            lineNumber: 129,
+                            columnNumber: 21
+                          }, this),
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+                            "a",
+                            {
+                              href: "/config",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Settings"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                              lineNumber: 138,
+                              columnNumber: 23
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                            lineNumber: 137,
+                            columnNumber: 21
+                          }, this),
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+                            "a",
+                            {
+                              href: "/saldo",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Earnings"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                              lineNumber: 146,
+                              columnNumber: 23
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                            lineNumber: 145,
+                            columnNumber: 21
+                          }, this)
+                        ]
+                      },
+                      void 0,
+                      !0,
+                      {
+                        fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                        lineNumber: 125,
+                        columnNumber: 19
+                      },
+                      this
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+                      "a",
+                      {
+                        href: "/logout",
+                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
+                        children: "Sair"
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                        lineNumber: 155,
+                        columnNumber: 21
+                      },
+                      this
+                    ) }, void 0, !1, {
+                      fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                      lineNumber: 154,
+                      columnNumber: 19
+                    }, this)
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+                  lineNumber: 121,
+                  columnNumber: 17
+                },
+                this
+              )
+            ] }, void 0, !0, {
+              fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+              lineNumber: 97,
+              columnNumber: 15
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 62,
+            columnNumber: 13
+          }, this)
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 58,
+          columnNumber: 11
+        },
+        this
+      )
+    ] }, void 0, !0, {
+      fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+      lineNumber: 23,
+      columnNumber: 9
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+      lineNumber: 22,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Novo An\xFAncio" }, void 0, !1, {
+        fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+        lineNumber: 174,
+        columnNumber: 17
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+        lineNumber: 173,
+        columnNumber: 15
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "relative", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "absolute inset-y-0 left-0 flex items-center pl-3 p-4 pointer-events-none" }, void 0, !1, {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 181,
+          columnNumber: 19
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("label", { htmlFor: "default-search", className: "block mb-2 text-sm font-medium text-gray-900 dark:text-white", children: "Nome do An\xFAncio" }, void 0, !1, {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 182,
+          columnNumber: 19
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
+          "input",
+          {
+            type: "search",
+            id: "default-search",
+            className: "block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+            placeholder: "Digite o nome do an\xFAncio que quer criar",
+            required: !0
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 184,
+            columnNumber: 19
+          },
+          this
+        ),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("label", { htmlFor: "default", className: "block mb-2 text-sm font-medium text-gray-900 dark:text-white", children: "Empresa" }, void 0, !1, {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 192,
+          columnNumber: 19
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("select", { id: "default", className: "bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { selected: !0, children: "Escolha a empresa" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 194,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { value: "US", children: "United States" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 195,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { value: "CA", children: "Canada" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 196,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { value: "FR", children: "France" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 197,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { value: "DE", children: "Germany" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 198,
+            columnNumber: 21
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 193,
+          columnNumber: 19
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("label", { htmlFor: "default-pacote", className: "block mb-2 text-sm font-medium text-gray-900 dark:text-white", children: "Pacote" }, void 0, !1, {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 201,
+          columnNumber: 19
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("select", { id: "default-pacote", className: "bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { selected: !0, children: "Escolha o pacote de divulga\xE7\xE3o" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 203,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { value: "2", children: "5 $ (2 dias)" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 204,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { value: "5", children: "10 $ (5 dias)" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 205,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { value: "29", children: "29 $ (15 dias)" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 206,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { value: "49", children: "49,50 $ (30 dias)" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 207,
+            columnNumber: 21
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 202,
+          columnNumber: 19
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("label", { htmlFor: "default-pagamento", className: "block mb-2 text-sm font-medium text-gray-900 dark:text-white", children: "Forma de Pagamento" }, void 0, !1, {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 211,
+          columnNumber: 19
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("select", { id: "default-pacote", className: "bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { selected: !0, children: "Escolha a forma de pagamento" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 213,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { value: "2", children: "Pix" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 214,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { value: "5", children: "Boleto" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 215,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { value: "29", children: "Cr\xE9dito" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 216,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("option", { value: "49", children: "D\xE9bito" }, void 0, !1, {
+            fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+            lineNumber: 217,
+            columnNumber: 21
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 212,
+          columnNumber: 19
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "mx-auto mt-10 flex max-w-none justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("button", { className: "bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded", children: "Criar An\xFAncio" }, void 0, !1, {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 221,
+          columnNumber: 21
+        }, this) }, void 0, !1, {
+          fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+          lineNumber: 220,
+          columnNumber: 19
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+        lineNumber: 180,
+        columnNumber: 17
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+        lineNumber: 179,
+        columnNumber: 15
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+      lineNumber: 172,
+      columnNumber: 13
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+      lineNumber: 171,
+      columnNumber: 11
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+      lineNumber: 170,
+      columnNumber: 9
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+      lineNumber: 169,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/routes/Anuncios/anuncios.novoanuncio.tsx",
+    lineNumber: 21,
+    columnNumber: 5
+  }, this);
+}
+
+// app/routes/Empresas/empresas.novaempresa.tsx
 var empresas_novaempresa_exports = {};
 __export(empresas_novaempresa_exports, {
   action: () => action3,
   default: () => EmpresasNovaPage,
-  meta: () => meta3
+  meta: () => meta4
 });
-var import_node7 = __toESM(require_dist());
-var import_react9 = __toESM(require_react());
+var import_node8 = __toESM(require_dist());
+var import_react10 = __toESM(require_react());
 
 // app/models/empresa.server.ts
 function getEmpresa({
@@ -57399,596 +57970,43 @@ function deleteEmpresa({
   });
 }
 
-// app/routes/empresas.novaempresa.tsx
-var import_jsx_dev_runtime6 = __toESM(require_jsx_dev_runtime()), meta3 = () => [{ title: "EncontraTudo" }], action3 = async ({ request: request3 }) => {
+// app/routes/Empresas/empresas.novaempresa.tsx
+var import_jsx_dev_runtime7 = __toESM(require_jsx_dev_runtime()), meta4 = () => [{ title: "EncontraTudo" }], action3 = async ({ request: request3 }) => {
   let userId = await requireUserId(request3), formData = await request3.formData(), nomeEmpresa = formData.get("nomeEmpresa"), enderecoEmpresa = formData.get("enderecoEmpresa"), cidadeEmpresa = formData.get("cidadeEmpresa"), negocioEmpresa = formData.get("negocioEmpresa"), descricaoEmpresa = formData.get("descricaoEmpresa");
   if (typeof nomeEmpresa != "string" || nomeEmpresa.length === 0)
-    return (0, import_node7.json)(
+    return (0, import_node8.json)(
       { errors: { nomeEmpresa: "nome da empresa \xE9 obrigat\xF3rio" } },
       { status: 400 }
     );
   if (typeof enderecoEmpresa != "string" || enderecoEmpresa.length === 0)
-    return (0, import_node7.json)(
+    return (0, import_node8.json)(
       { errors: { enderecoEmpresa: "endereco da empresa \xE9 obrigat\xF3rio", nomeEmpresa: null } },
       { status: 400 }
     );
   if (typeof descricaoEmpresa != "string" || descricaoEmpresa.length === 0)
-    return (0, import_node7.json)(
+    return (0, import_node8.json)(
       { errors: { descricaoEmpresa: "Descri\xE7\xE3o da empresa \xE9 obrigat\xF3rio", nomeEmpresa: null, enderecoEmpresa: null } },
       { status: 400 }
     );
   if (typeof cidadeEmpresa != "string" || cidadeEmpresa.length === 0)
-    return (0, import_node7.json)(
+    return (0, import_node8.json)(
       { errors: { cidadeEmpresa: "cidade da empresa \xE9 obrigat\xF3rio", nomeEmpresa: null } },
       { status: 400 }
     );
   if (typeof negocioEmpresa != "string" || negocioEmpresa.length === 0)
-    return (0, import_node7.json)(
+    return (0, import_node8.json)(
       { errors: { negocioEmpresa: "negocio da empresa \xE9 obrigat\xF3rio", nomeEmpresa: null } },
       { status: 400 }
     );
   let empresa = await createEmpresa({ nomeEmpresa, enderecoEmpresa, descricaoEmpresa, cidadeEmpresa, negocioEmpresa, userId });
-  return (0, import_node7.redirect)(`/empresas/${empresa.id}`);
+  return (0, import_node8.redirect)(`/empresas/${empresa.id}`);
 };
 function EmpresasNovaPage() {
-  let actionData = useActionData2(), nomeEmpresaRef = (0, import_react9.useRef)(null), enderecoEmpresaRef = (0, import_react9.useRef)(null), descricaoEmpresaRef = (0, import_react9.useRef)(null), cidadeEmpresaRef = (0, import_react9.useRef)(null), negocioEmpresaRef = (0, import_react9.useRef)(null);
-  return (0, import_react9.useEffect)(() => {
+  let actionData = useActionData2(), nomeEmpresaRef = (0, import_react10.useRef)(null), enderecoEmpresaRef = (0, import_react10.useRef)(null), descricaoEmpresaRef = (0, import_react10.useRef)(null), cidadeEmpresaRef = (0, import_react10.useRef)(null), negocioEmpresaRef = (0, import_react10.useRef)(null);
+  return (0, import_react10.useEffect)(() => {
     var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j;
     (_a2 = actionData == null ? void 0 : actionData.errors) != null && _a2.nomeEmpresa && ((_b = nomeEmpresaRef.current) == null || _b.focus()), (_c = actionData == null ? void 0 : actionData.errors) != null && _c.enderecoEmpresa && ((_d = enderecoEmpresaRef.current) == null || _d.focus()), (_e = actionData == null ? void 0 : actionData.errors) != null && _e.descricaoEmpresa && ((_f = descricaoEmpresaRef.current) == null || _f.focus()), (_g = actionData == null ? void 0 : actionData.errors) != null && _g.cidadeEmpresa && ((_h = cidadeEmpresaRef.current) == null || _h.focus()), (_i = actionData == null ? void 0 : actionData.errors) != null && _i.negocioEmpresaRef && ((_j = negocioEmpresaRef.current) == null || _j.focus());
-  }, [actionData]), /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-          "img",
-          {
-            src: "https://flowbite.com/docs/images/logo.svg",
-            className: "h-8 mr-3",
-            alt: "Flowbite Logo"
-          },
-          void 0,
-          !1,
-          {
-            fileName: "app/routes/empresas.novaempresa.tsx",
-            lineNumber: 95,
-            columnNumber: 13
-          },
-          this
-        ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
-          fileName: "app/routes/empresas.novaempresa.tsx",
-          lineNumber: 100,
-          columnNumber: 13
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/empresas.novaempresa.tsx",
-        lineNumber: 94,
-        columnNumber: 11
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-        "button",
-        {
-          "data-collapse-toggle": "navbar-dropdown",
-          type: "button",
-          className: "inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600",
-          "aria-controls": "navbar-dropdown",
-          "aria-expanded": "false",
-          children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
-              fileName: "app/routes/empresas.novaempresa.tsx",
-              lineNumber: 111,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-              "svg",
-              {
-                className: "w-5 h-5",
-                "aria-hidden": "true",
-                xmlns: "http://www.w3.org/2000/svg",
-                fill: "none",
-                viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-                  "path",
-                  {
-                    stroke: "currentColor",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": "2",
-                    d: "M1 1h15M1 7h15M1 13h15"
-                  },
-                  void 0,
-                  !1,
-                  {
-                    fileName: "app/routes/empresas.novaempresa.tsx",
-                    lineNumber: 119,
-                    columnNumber: 15
-                  },
-                  this
-                )
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/empresas.novaempresa.tsx",
-                lineNumber: 112,
-                columnNumber: 13
-              },
-              this
-            )
-          ]
-        },
-        void 0,
-        !0,
-        {
-          fileName: "app/routes/empresas.novaempresa.tsx",
-          lineNumber: 104,
-          columnNumber: 11
-        },
-        this
-      ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-        "div",
-        {
-          className: "hidden w-full md:block md:w-auto",
-          id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-              Link2,
-              {
-                to: "/cidades",
-                className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
-                children: "Cidades"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/empresas.novaempresa.tsx",
-                lineNumber: 134,
-                columnNumber: 17
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/empresas.novaempresa.tsx",
-              lineNumber: 133,
-              columnNumber: 15
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-              Link2,
-              {
-                to: "/usuarios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Usu\xE1rios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/empresas.novaempresa.tsx",
-                lineNumber: 143,
-                columnNumber: 17
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/empresas.novaempresa.tsx",
-              lineNumber: 142,
-              columnNumber: 15
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-              Link2,
-              {
-                to: "/negocios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Neg\xF3cios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/empresas.novaempresa.tsx",
-                lineNumber: 151,
-                columnNumber: 17
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/empresas.novaempresa.tsx",
-              lineNumber: 150,
-              columnNumber: 15
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-              Link2,
-              {
-                to: "/anuncios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "An\xFAncios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/empresas.novaempresa.tsx",
-                lineNumber: 159,
-                columnNumber: 17
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/empresas.novaempresa.tsx",
-              lineNumber: 158,
-              columnNumber: 15
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-                "button",
-                {
-                  id: "dropdownNavbarLink",
-                  "data-dropdown-toggle": "dropdownNavbar",
-                  className: "flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent",
-                  children: [
-                    "Meus Dados",
-                    " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-                      "svg",
-                      {
-                        className: "w-2.5 h-2.5 ml-2.5",
-                        "aria-hidden": "true",
-                        xmlns: "http://www.w3.org/2000/svg",
-                        fill: "none",
-                        viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-                          "path",
-                          {
-                            stroke: "currentColor",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round",
-                            "stroke-width": "2",
-                            d: "m1 1 4 4 4-4"
-                          },
-                          void 0,
-                          !1,
-                          {
-                            fileName: "app/routes/empresas.novaempresa.tsx",
-                            lineNumber: 181,
-                            columnNumber: 21
-                          },
-                          this
-                        )
-                      },
-                      void 0,
-                      !1,
-                      {
-                        fileName: "app/routes/empresas.novaempresa.tsx",
-                        lineNumber: 174,
-                        columnNumber: 19
-                      },
-                      this
-                    )
-                  ]
-                },
-                void 0,
-                !0,
-                {
-                  fileName: "app/routes/empresas.novaempresa.tsx",
-                  lineNumber: 168,
-                  columnNumber: 17
-                },
-                this
-              ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-                "div",
-                {
-                  id: "dropdownNavbar",
-                  className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-                      "ul",
-                      {
-                        className: "py-2 text-sm text-gray-700 dark:text-gray-400",
-                        "aria-labelledby": "dropdownLargeButton",
-                        children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-                            "a",
-                            {
-                              href: "/",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Painel de Controle"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/empresas.novaempresa.tsx",
-                              lineNumber: 200,
-                              columnNumber: 23
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/empresas.novaempresa.tsx",
-                            lineNumber: 199,
-                            columnNumber: 21
-                          }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-                            "a",
-                            {
-                              href: "/",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Settings"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/empresas.novaempresa.tsx",
-                              lineNumber: 208,
-                              columnNumber: 23
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/empresas.novaempresa.tsx",
-                            lineNumber: 207,
-                            columnNumber: 21
-                          }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-                            "a",
-                            {
-                              href: "/",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Earnings"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/empresas.novaempresa.tsx",
-                              lineNumber: 216,
-                              columnNumber: 23
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/empresas.novaempresa.tsx",
-                            lineNumber: 215,
-                            columnNumber: 21
-                          }, this)
-                        ]
-                      },
-                      void 0,
-                      !0,
-                      {
-                        fileName: "app/routes/empresas.novaempresa.tsx",
-                        lineNumber: 195,
-                        columnNumber: 19
-                      },
-                      this
-                    ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-                      "a",
-                      {
-                        href: "/",
-                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
-                        children: "Sair"
-                      },
-                      void 0,
-                      !1,
-                      {
-                        fileName: "app/routes/empresas.novaempresa.tsx",
-                        lineNumber: 225,
-                        columnNumber: 21
-                      },
-                      this
-                    ) }, void 0, !1, {
-                      fileName: "app/routes/empresas.novaempresa.tsx",
-                      lineNumber: 224,
-                      columnNumber: 19
-                    }, this)
-                  ]
-                },
-                void 0,
-                !0,
-                {
-                  fileName: "app/routes/empresas.novaempresa.tsx",
-                  lineNumber: 191,
-                  columnNumber: 17
-                },
-                this
-              )
-            ] }, void 0, !0, {
-              fileName: "app/routes/empresas.novaempresa.tsx",
-              lineNumber: 167,
-              columnNumber: 15
-            }, this)
-          ] }, void 0, !0, {
-            fileName: "app/routes/empresas.novaempresa.tsx",
-            lineNumber: 132,
-            columnNumber: 13
-          }, this)
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/routes/empresas.novaempresa.tsx",
-          lineNumber: 128,
-          columnNumber: 11
-        },
-        this
-      )
-    ] }, void 0, !0, {
-      fileName: "app/routes/empresas.novaempresa.tsx",
-      lineNumber: 93,
-      columnNumber: 9
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/empresas.novaempresa.tsx",
-      lineNumber: 92,
-      columnNumber: 7
-    }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Nova Empresa" }, void 0, !1, {
-        fileName: "app/routes/empresas.novaempresa.tsx",
-        lineNumber: 244,
-        columnNumber: 17
-      }, this) }, void 0, !1, {
-        fileName: "app/routes/empresas.novaempresa.tsx",
-        lineNumber: 243,
-        columnNumber: 15
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "relative", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none" }, void 0, !1, {
-          fileName: "app/routes/empresas.novaempresa.tsx",
-          lineNumber: 252,
-          columnNumber: 19
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("form", { method: "POST", children: [
-          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-            "input",
-            {
-              ref: nomeEmpresaRef,
-              type: "text",
-              id: "nomeCategoria",
-              name: "nomeCategoria",
-              className: "block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
-              placeholder: "Digite o nome da categoria que quer criar",
-              required: !0
-            },
-            void 0,
-            !1,
-            {
-              fileName: "app/routes/empresas.novaempresa.tsx",
-              lineNumber: 254,
-              columnNumber: 21
-            },
-            this
-          ),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-            "input",
-            {
-              ref: enderecoEmpresaRef,
-              type: "text",
-              id: "enderecoEmpresa",
-              name: "enderecoEmpresa",
-              className: "block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
-              placeholder: "Digite a descricao da categoria que quer criar",
-              required: !0
-            },
-            void 0,
-            !1,
-            {
-              fileName: "app/routes/empresas.novaempresa.tsx",
-              lineNumber: 263,
-              columnNumber: 21
-            },
-            this
-          ),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-            "input",
-            {
-              ref: descricaoEmpresaRef,
-              type: "text",
-              id: "descricaoCategoria",
-              name: "descricaoCategoria",
-              className: "block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
-              placeholder: "Digite a descricao da categoria que quer criar",
-              required: !0
-            },
-            void 0,
-            !1,
-            {
-              fileName: "app/routes/empresas.novaempresa.tsx",
-              lineNumber: 272,
-              columnNumber: 21
-            },
-            this
-          ),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-            "input",
-            {
-              ref: cidadeEmpresaRef,
-              type: "text",
-              id: "descricaoCategoria",
-              name: "descricaoCategoria",
-              className: "block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
-              placeholder: "Digite a descricao da categoria que quer criar",
-              required: !0
-            },
-            void 0,
-            !1,
-            {
-              fileName: "app/routes/empresas.novaempresa.tsx",
-              lineNumber: 281,
-              columnNumber: 21
-            },
-            this
-          ),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-            "input",
-            {
-              ref: negocioEmpresaRef,
-              type: "text",
-              id: "descricaoCategoria",
-              name: "descricaoCategoria",
-              className: "block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
-              placeholder: "Digite a descricao da categoria que quer criar",
-              required: !0
-            },
-            void 0,
-            !1,
-            {
-              fileName: "app/routes/empresas.novaempresa.tsx",
-              lineNumber: 290,
-              columnNumber: 21
-            },
-            this
-          ),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "mx-auto mt-10 flex max-w-none justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("button", { className: "bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded", children: "Criar Empresa" }, void 0, !1, {
-            fileName: "app/routes/empresas.novaempresa.tsx",
-            lineNumber: 301,
-            columnNumber: 23
-          }, this) }, void 0, !1, {
-            fileName: "app/routes/empresas.novaempresa.tsx",
-            lineNumber: 300,
-            columnNumber: 21
-          }, this)
-        ] }, void 0, !0, {
-          fileName: "app/routes/empresas.novaempresa.tsx",
-          lineNumber: 253,
-          columnNumber: 19
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/empresas.novaempresa.tsx",
-        lineNumber: 251,
-        columnNumber: 17
-      }, this) }, void 0, !1, {
-        fileName: "app/routes/empresas.novaempresa.tsx",
-        lineNumber: 249,
-        columnNumber: 15
-      }, this)
-    ] }, void 0, !0, {
-      fileName: "app/routes/empresas.novaempresa.tsx",
-      lineNumber: 242,
-      columnNumber: 13
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/empresas.novaempresa.tsx",
-      lineNumber: 241,
-      columnNumber: 11
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/empresas.novaempresa.tsx",
-      lineNumber: 240,
-      columnNumber: 9
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/empresas.novaempresa.tsx",
-      lineNumber: 239,
-      columnNumber: 7
-    }, this)
-  ] }, void 0, !0, {
-    fileName: "app/routes/empresas.novaempresa.tsx",
-    lineNumber: 91,
-    columnNumber: 5
-  }, this);
-}
-
-// app/routes/negocios.novonegocio.tsx
-var negocios_novonegocio_exports = {};
-__export(negocios_novonegocio_exports, {
-  default: () => NegociosNovoNegocio,
-  loader: () => loader4,
-  meta: () => meta4
-});
-var import_node8 = __toESM(require_dist());
-var import_jsx_dev_runtime7 = __toESM(require_jsx_dev_runtime()), meta4 = () => [{ title: "EncontraTudo" }], loader4 = async ({ request: request3 }) => {
-  let userId = await requireUserId(request3), cidadeListItems = await getCidadeListItems({ userId });
-  return (0, import_node8.json)({ cidadeListItems });
-};
-function NegociosNovoNegocio() {
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+  }, [actionData]), /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
@@ -58001,20 +58019,20 @@ function NegociosNovoNegocio() {
           void 0,
           !1,
           {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 25,
+            fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+            lineNumber: 95,
             columnNumber: 13
           },
           this
         ),
         /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 30,
+          fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+          lineNumber: 100,
           columnNumber: 13
         }, this)
       ] }, void 0, !0, {
-        fileName: "app/routes/negocios.novonegocio.tsx",
-        lineNumber: 24,
+        fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+        lineNumber: 94,
         columnNumber: 11
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
@@ -58027,8 +58045,8 @@ function NegociosNovoNegocio() {
           "aria-expanded": "false",
           children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
-              fileName: "app/routes/negocios.novonegocio.tsx",
-              lineNumber: 41,
+              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+              lineNumber: 111,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
@@ -58051,8 +58069,8 @@ function NegociosNovoNegocio() {
                   void 0,
                   !1,
                   {
-                    fileName: "app/routes/negocios.novonegocio.tsx",
-                    lineNumber: 49,
+                    fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                    lineNumber: 119,
                     columnNumber: 15
                   },
                   this
@@ -58061,8 +58079,8 @@ function NegociosNovoNegocio() {
               void 0,
               !1,
               {
-                fileName: "app/routes/negocios.novonegocio.tsx",
-                lineNumber: 42,
+                fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                lineNumber: 112,
                 columnNumber: 13
               },
               this
@@ -58072,8 +58090,8 @@ function NegociosNovoNegocio() {
         void 0,
         !0,
         {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 34,
+          fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+          lineNumber: 104,
           columnNumber: 11
         },
         this
@@ -58094,14 +58112,14 @@ function NegociosNovoNegocio() {
               void 0,
               !1,
               {
-                fileName: "app/routes/negocios.novonegocio.tsx",
-                lineNumber: 64,
+                fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                lineNumber: 134,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/negocios.novonegocio.tsx",
-              lineNumber: 63,
+              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+              lineNumber: 133,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
@@ -58114,14 +58132,14 @@ function NegociosNovoNegocio() {
               void 0,
               !1,
               {
-                fileName: "app/routes/negocios.novonegocio.tsx",
-                lineNumber: 73,
+                fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                lineNumber: 143,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/negocios.novonegocio.tsx",
-              lineNumber: 72,
+              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+              lineNumber: 142,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
@@ -58134,14 +58152,14 @@ function NegociosNovoNegocio() {
               void 0,
               !1,
               {
-                fileName: "app/routes/negocios.novonegocio.tsx",
-                lineNumber: 81,
+                fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                lineNumber: 151,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/negocios.novonegocio.tsx",
-              lineNumber: 80,
+              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+              lineNumber: 150,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
@@ -58154,14 +58172,14 @@ function NegociosNovoNegocio() {
               void 0,
               !1,
               {
-                fileName: "app/routes/negocios.novonegocio.tsx",
-                lineNumber: 89,
+                fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                lineNumber: 159,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/negocios.novonegocio.tsx",
-              lineNumber: 88,
+              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+              lineNumber: 158,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("li", { children: [
@@ -58186,16 +58204,16 @@ function NegociosNovoNegocio() {
                           "path",
                           {
                             stroke: "currentColor",
-                            strokeLinecap: "round",
-                            strokeLinejoin: "round",
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
                             "stroke-width": "2",
                             d: "m1 1 4 4 4-4"
                           },
                           void 0,
                           !1,
                           {
-                            fileName: "app/routes/negocios.novonegocio.tsx",
-                            lineNumber: 111,
+                            fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                            lineNumber: 181,
                             columnNumber: 21
                           },
                           this
@@ -58204,8 +58222,8 @@ function NegociosNovoNegocio() {
                       void 0,
                       !1,
                       {
-                        fileName: "app/routes/negocios.novonegocio.tsx",
-                        lineNumber: 104,
+                        fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                        lineNumber: 174,
                         columnNumber: 19
                       },
                       this
@@ -58215,8 +58233,8 @@ function NegociosNovoNegocio() {
                 void 0,
                 !0,
                 {
-                  fileName: "app/routes/negocios.novonegocio.tsx",
-                  lineNumber: 98,
+                  fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                  lineNumber: 168,
                   columnNumber: 17
                 },
                 this
@@ -58236,61 +58254,61 @@ function NegociosNovoNegocio() {
                           /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
                             "a",
                             {
-                              href: "/admin",
+                              href: "/",
                               className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
                               children: "Painel de Controle"
                             },
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/negocios.novonegocio.tsx",
-                              lineNumber: 130,
+                              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                              lineNumber: 200,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/negocios.novonegocio.tsx",
-                            lineNumber: 129,
+                            fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                            lineNumber: 199,
                             columnNumber: 21
                           }, this),
                           /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
                             "a",
                             {
-                              href: "/config",
+                              href: "/",
                               className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
                               children: "Settings"
                             },
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/negocios.novonegocio.tsx",
-                              lineNumber: 138,
+                              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                              lineNumber: 208,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/negocios.novonegocio.tsx",
-                            lineNumber: 137,
+                            fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                            lineNumber: 207,
                             columnNumber: 21
                           }, this),
                           /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
                             "a",
                             {
-                              href: "/saldo",
+                              href: "/",
                               className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
                               children: "Earnings"
                             },
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/negocios.novonegocio.tsx",
-                              lineNumber: 146,
+                              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                              lineNumber: 216,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/negocios.novonegocio.tsx",
-                            lineNumber: 145,
+                            fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                            lineNumber: 215,
                             columnNumber: 21
                           }, this)
                         ]
@@ -58298,8 +58316,8 @@ function NegociosNovoNegocio() {
                       void 0,
                       !0,
                       {
-                        fileName: "app/routes/negocios.novonegocio.tsx",
-                        lineNumber: 125,
+                        fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                        lineNumber: 195,
                         columnNumber: 19
                       },
                       this
@@ -58307,21 +58325,21 @@ function NegociosNovoNegocio() {
                     /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
                       "a",
                       {
-                        href: "/logout",
+                        href: "/",
                         className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
                         children: "Sair"
                       },
                       void 0,
                       !1,
                       {
-                        fileName: "app/routes/negocios.novonegocio.tsx",
-                        lineNumber: 155,
+                        fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                        lineNumber: 225,
                         columnNumber: 21
                       },
                       this
                     ) }, void 0, !1, {
-                      fileName: "app/routes/negocios.novonegocio.tsx",
-                      lineNumber: 154,
+                      fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                      lineNumber: 224,
                       columnNumber: 19
                     }, this)
                   ]
@@ -58329,221 +58347,206 @@ function NegociosNovoNegocio() {
                 void 0,
                 !0,
                 {
-                  fileName: "app/routes/negocios.novonegocio.tsx",
-                  lineNumber: 121,
+                  fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+                  lineNumber: 191,
                   columnNumber: 17
                 },
                 this
               )
             ] }, void 0, !0, {
-              fileName: "app/routes/negocios.novonegocio.tsx",
-              lineNumber: 97,
+              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+              lineNumber: 167,
               columnNumber: 15
             }, this)
           ] }, void 0, !0, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 62,
+            fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+            lineNumber: 132,
             columnNumber: 13
           }, this)
         },
         void 0,
         !1,
         {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 58,
+          fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+          lineNumber: 128,
           columnNumber: 11
         },
         this
       )
     ] }, void 0, !0, {
-      fileName: "app/routes/negocios.novonegocio.tsx",
-      lineNumber: 23,
+      fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+      lineNumber: 93,
       columnNumber: 9
     }, this) }, void 0, !1, {
-      fileName: "app/routes/negocios.novonegocio.tsx",
-      lineNumber: 22,
+      fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+      lineNumber: 92,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Novo Neg\xF3cio" }, void 0, !1, {
-        fileName: "app/routes/negocios.novonegocio.tsx",
-        lineNumber: 174,
+      /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Nova Empresa" }, void 0, !1, {
+        fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+        lineNumber: 244,
         columnNumber: 17
       }, this) }, void 0, !1, {
-        fileName: "app/routes/negocios.novonegocio.tsx",
-        lineNumber: 173,
+        fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+        lineNumber: 243,
         columnNumber: 15
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("div", { className: "relative", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("div", { className: "absolute inset-y-0 left-0 flex items-center pl-3 p-4 pointer-events-none" }, void 0, !1, {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 181,
+        /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("div", { className: "absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none" }, void 0, !1, {
+          fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+          lineNumber: 252,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("label", { htmlFor: "default-search", className: "block mb-2 text-sm font-medium text-gray-900 dark:text-white", children: "Nome da Empresa" }, void 0, !1, {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 182,
-          columnNumber: 19
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
-          "input",
-          {
-            type: "search",
-            id: "default-search",
-            className: "block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
-            placeholder: "Digite o nome do seu neg\xF3cio",
-            required: !0
-          },
-          void 0,
-          !1,
-          {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 184,
-            columnNumber: 19
-          },
-          this
-        ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("label", { htmlFor: "default", className: "block mb-2 text-sm font-medium text-gray-900 dark:text-white", children: "Empresa" }, void 0, !1, {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 192,
-          columnNumber: 19
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("select", { id: "default", className: "bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", children: [
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { selected: !0, children: "Escolha a cidade na qual o seu neg\xF3cio opera" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 194,
-            columnNumber: 21
-          }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { value: "US", children: "Itaituba - PA" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 195,
-            columnNumber: 21
-          }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { value: "CA", children: "Oeiras - PI" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 196,
+        /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("form", { method: "POST", children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
+            "input",
+            {
+              ref: nomeEmpresaRef,
+              type: "text",
+              id: "nomeCategoria",
+              name: "nomeCategoria",
+              className: "block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+              placeholder: "Digite o nome da categoria que quer criar",
+              required: !0
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+              lineNumber: 254,
+              columnNumber: 21
+            },
+            this
+          ),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
+            "input",
+            {
+              ref: enderecoEmpresaRef,
+              type: "text",
+              id: "enderecoEmpresa",
+              name: "enderecoEmpresa",
+              className: "block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+              placeholder: "Digite a descricao da categoria que quer criar",
+              required: !0
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+              lineNumber: 263,
+              columnNumber: 21
+            },
+            this
+          ),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
+            "input",
+            {
+              ref: descricaoEmpresaRef,
+              type: "text",
+              id: "descricaoCategoria",
+              name: "descricaoCategoria",
+              className: "block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+              placeholder: "Digite a descricao da categoria que quer criar",
+              required: !0
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+              lineNumber: 272,
+              columnNumber: 21
+            },
+            this
+          ),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
+            "input",
+            {
+              ref: cidadeEmpresaRef,
+              type: "text",
+              id: "descricaoCategoria",
+              name: "descricaoCategoria",
+              className: "block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+              placeholder: "Digite a descricao da categoria que quer criar",
+              required: !0
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+              lineNumber: 281,
+              columnNumber: 21
+            },
+            this
+          ),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)(
+            "input",
+            {
+              ref: negocioEmpresaRef,
+              type: "text",
+              id: "descricaoCategoria",
+              name: "descricaoCategoria",
+              className: "block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+              placeholder: "Digite a descricao da categoria que quer criar",
+              required: !0
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+              lineNumber: 290,
+              columnNumber: 21
+            },
+            this
+          ),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("div", { className: "mx-auto mt-10 flex max-w-none justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("button", { className: "bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded", children: "Criar Empresa" }, void 0, !1, {
+            fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+            lineNumber: 301,
+            columnNumber: 23
+          }, this) }, void 0, !1, {
+            fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+            lineNumber: 300,
             columnNumber: 21
           }, this)
         ] }, void 0, !0, {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 193,
-          columnNumber: 19
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("label", { htmlFor: "default-pacote", className: "block mb-2 text-sm font-medium text-gray-900 dark:text-white", children: "Pacote" }, void 0, !1, {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 200,
-          columnNumber: 19
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("select", { id: "default-pacote", className: "bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", children: [
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { selected: !0, children: "Escolha o pacote de divulga\xE7\xE3o" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 202,
-            columnNumber: 21
-          }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { value: "2", children: "5 $ (2 dias)" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 203,
-            columnNumber: 21
-          }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { value: "5", children: "10 $ (5 dias)" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 204,
-            columnNumber: 21
-          }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { value: "29", children: "29 $ (15 dias)" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 205,
-            columnNumber: 21
-          }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { value: "49", children: "49,50 $ (30 dias)" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 206,
-            columnNumber: 21
-          }, this)
-        ] }, void 0, !0, {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 201,
-          columnNumber: 19
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("label", { htmlFor: "default-pagamento", className: "block mb-2 text-sm font-medium text-gray-900 dark:text-white", children: "Forma de Pagamento" }, void 0, !1, {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 210,
-          columnNumber: 19
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("select", { id: "default-pacote", className: "bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", children: [
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { selected: !0, children: "Escolha a forma de pagamento" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 212,
-            columnNumber: 21
-          }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { value: "2", children: "Pix" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 213,
-            columnNumber: 21
-          }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { value: "5", children: "Boleto" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 214,
-            columnNumber: 21
-          }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { value: "29", children: "Cr\xE9dito" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 215,
-            columnNumber: 21
-          }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("option", { value: "49", children: "D\xE9bito" }, void 0, !1, {
-            fileName: "app/routes/negocios.novonegocio.tsx",
-            lineNumber: 216,
-            columnNumber: 21
-          }, this)
-        ] }, void 0, !0, {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 211,
-          columnNumber: 19
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("div", { className: "mx-auto mt-10 flex max-w-none justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime7.jsxDEV)("button", { className: "bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded", children: "Criar An\xFAncio" }, void 0, !1, {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 220,
-          columnNumber: 21
-        }, this) }, void 0, !1, {
-          fileName: "app/routes/negocios.novonegocio.tsx",
-          lineNumber: 219,
+          fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+          lineNumber: 253,
           columnNumber: 19
         }, this)
       ] }, void 0, !0, {
-        fileName: "app/routes/negocios.novonegocio.tsx",
-        lineNumber: 180,
+        fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+        lineNumber: 251,
         columnNumber: 17
       }, this) }, void 0, !1, {
-        fileName: "app/routes/negocios.novonegocio.tsx",
-        lineNumber: 179,
+        fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+        lineNumber: 249,
         columnNumber: 15
       }, this)
     ] }, void 0, !0, {
-      fileName: "app/routes/negocios.novonegocio.tsx",
-      lineNumber: 172,
+      fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+      lineNumber: 242,
       columnNumber: 13
     }, this) }, void 0, !1, {
-      fileName: "app/routes/negocios.novonegocio.tsx",
-      lineNumber: 171,
+      fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+      lineNumber: 241,
       columnNumber: 11
     }, this) }, void 0, !1, {
-      fileName: "app/routes/negocios.novonegocio.tsx",
-      lineNumber: 170,
+      fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+      lineNumber: 240,
       columnNumber: 9
     }, this) }, void 0, !1, {
-      fileName: "app/routes/negocios.novonegocio.tsx",
-      lineNumber: 169,
+      fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+      lineNumber: 239,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
-    fileName: "app/routes/negocios.novonegocio.tsx",
-    lineNumber: 21,
+    fileName: "app/routes/Empresas/empresas.novaempresa.tsx",
+    lineNumber: 91,
     columnNumber: 5
   }, this);
 }
 
-// app/routes/usuarios.novousuario.tsx
+// app/routes/Usuarios/usuarios.novousuario.tsx
 var usuarios_novousuario_exports = {};
 __export(usuarios_novousuario_exports, {
   action: () => action4,
@@ -58580,19 +58583,19 @@ function UsuariosNovoUsuario() {
           void 0,
           !1,
           {
-            fileName: "app/routes/usuarios.novousuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
             lineNumber: 45,
             columnNumber: 13
           },
           this
         ),
         /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
-          fileName: "app/routes/usuarios.novousuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
           lineNumber: 50,
           columnNumber: 13
         }, this)
       ] }, void 0, !0, {
-        fileName: "app/routes/usuarios.novousuario.tsx",
+        fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
         lineNumber: 44,
         columnNumber: 11
       }, this),
@@ -58606,7 +58609,7 @@ function UsuariosNovoUsuario() {
           "aria-expanded": "false",
           children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
-              fileName: "app/routes/usuarios.novousuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
               lineNumber: 61,
               columnNumber: 13
             }, this),
@@ -58630,7 +58633,7 @@ function UsuariosNovoUsuario() {
                   void 0,
                   !1,
                   {
-                    fileName: "app/routes/usuarios.novousuario.tsx",
+                    fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                     lineNumber: 69,
                     columnNumber: 15
                   },
@@ -58640,7 +58643,7 @@ function UsuariosNovoUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.novousuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                 lineNumber: 62,
                 columnNumber: 13
               },
@@ -58651,7 +58654,7 @@ function UsuariosNovoUsuario() {
         void 0,
         !0,
         {
-          fileName: "app/routes/usuarios.novousuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
           lineNumber: 54,
           columnNumber: 11
         },
@@ -58673,13 +58676,13 @@ function UsuariosNovoUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.novousuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                 lineNumber: 84,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/usuarios.novousuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
               lineNumber: 83,
               columnNumber: 15
             }, this),
@@ -58693,13 +58696,13 @@ function UsuariosNovoUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.novousuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                 lineNumber: 93,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/usuarios.novousuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
               lineNumber: 92,
               columnNumber: 15
             }, this),
@@ -58713,13 +58716,13 @@ function UsuariosNovoUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.novousuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                 lineNumber: 101,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/usuarios.novousuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
               lineNumber: 100,
               columnNumber: 15
             }, this),
@@ -58733,13 +58736,13 @@ function UsuariosNovoUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.novousuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                 lineNumber: 109,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/usuarios.novousuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
               lineNumber: 108,
               columnNumber: 15
             }, this),
@@ -58773,7 +58776,7 @@ function UsuariosNovoUsuario() {
                           void 0,
                           !1,
                           {
-                            fileName: "app/routes/usuarios.novousuario.tsx",
+                            fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                             lineNumber: 131,
                             columnNumber: 21
                           },
@@ -58783,7 +58786,7 @@ function UsuariosNovoUsuario() {
                       void 0,
                       !1,
                       {
-                        fileName: "app/routes/usuarios.novousuario.tsx",
+                        fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                         lineNumber: 124,
                         columnNumber: 19
                       },
@@ -58794,7 +58797,7 @@ function UsuariosNovoUsuario() {
                 void 0,
                 !0,
                 {
-                  fileName: "app/routes/usuarios.novousuario.tsx",
+                  fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                   lineNumber: 118,
                   columnNumber: 17
                 },
@@ -58822,13 +58825,13 @@ function UsuariosNovoUsuario() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/usuarios.novousuario.tsx",
+                              fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                               lineNumber: 150,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/usuarios.novousuario.tsx",
+                            fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                             lineNumber: 149,
                             columnNumber: 21
                           }, this),
@@ -58842,13 +58845,13 @@ function UsuariosNovoUsuario() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/usuarios.novousuario.tsx",
+                              fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                               lineNumber: 158,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/usuarios.novousuario.tsx",
+                            fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                             lineNumber: 157,
                             columnNumber: 21
                           }, this),
@@ -58862,13 +58865,13 @@ function UsuariosNovoUsuario() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/usuarios.novousuario.tsx",
+                              fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                               lineNumber: 166,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/usuarios.novousuario.tsx",
+                            fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                             lineNumber: 165,
                             columnNumber: 21
                           }, this)
@@ -58877,7 +58880,7 @@ function UsuariosNovoUsuario() {
                       void 0,
                       !0,
                       {
-                        fileName: "app/routes/usuarios.novousuario.tsx",
+                        fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                         lineNumber: 145,
                         columnNumber: 19
                       },
@@ -58893,13 +58896,13 @@ function UsuariosNovoUsuario() {
                       void 0,
                       !1,
                       {
-                        fileName: "app/routes/usuarios.novousuario.tsx",
+                        fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                         lineNumber: 175,
                         columnNumber: 21
                       },
                       this
                     ) }, void 0, !1, {
-                      fileName: "app/routes/usuarios.novousuario.tsx",
+                      fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                       lineNumber: 174,
                       columnNumber: 19
                     }, this)
@@ -58908,19 +58911,19 @@ function UsuariosNovoUsuario() {
                 void 0,
                 !0,
                 {
-                  fileName: "app/routes/usuarios.novousuario.tsx",
+                  fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                   lineNumber: 141,
                   columnNumber: 17
                 },
                 this
               )
             ] }, void 0, !0, {
-              fileName: "app/routes/usuarios.novousuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
               lineNumber: 117,
               columnNumber: 15
             }, this)
           ] }, void 0, !0, {
-            fileName: "app/routes/usuarios.novousuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
             lineNumber: 82,
             columnNumber: 13
           }, this)
@@ -58928,40 +58931,40 @@ function UsuariosNovoUsuario() {
         void 0,
         !1,
         {
-          fileName: "app/routes/usuarios.novousuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
           lineNumber: 78,
           columnNumber: 11
         },
         this
       )
     ] }, void 0, !0, {
-      fileName: "app/routes/usuarios.novousuario.tsx",
+      fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
       lineNumber: 43,
       columnNumber: 9
     }, this) }, void 0, !1, {
-      fileName: "app/routes/usuarios.novousuario.tsx",
+      fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
       lineNumber: 42,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Novo Usu\xE1rio" }, void 0, !1, {
-        fileName: "app/routes/usuarios.novousuario.tsx",
+        fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
         lineNumber: 194,
         columnNumber: 17
       }, this) }, void 0, !1, {
-        fileName: "app/routes/usuarios.novousuario.tsx",
+        fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
         lineNumber: 193,
         columnNumber: 15
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("p", { children: "Insira o nome do usu\xE1rio" }, void 0, !1, {
-          fileName: "app/routes/usuarios.novousuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
           lineNumber: 200,
           columnNumber: 17
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("div", { className: "relative", children: [
           /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("div", { className: "absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none" }, void 0, !1, {
-            fileName: "app/routes/usuarios.novousuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
             lineNumber: 202,
             columnNumber: 19
           }, this),
@@ -58980,7 +58983,7 @@ function UsuariosNovoUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.novousuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                 lineNumber: 204,
                 columnNumber: 21
               },
@@ -59000,7 +59003,7 @@ function UsuariosNovoUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.novousuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                 lineNumber: 213,
                 columnNumber: 22
               },
@@ -59020,95 +59023,116 @@ function UsuariosNovoUsuario() {
               void 0,
               !1,
               {
-                fileName: "app/routes/usuarios.novousuario.tsx",
+                fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
                 lineNumber: 222,
                 columnNumber: 22
               },
               this
             ),
             /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("div", { className: "mx-auto mt-10 flex max-w-none justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)("button", { className: "bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded", type: "submit", children: "Criar usu\xE1rio" }, void 0, !1, {
-              fileName: "app/routes/usuarios.novousuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
               lineNumber: 232,
               columnNumber: 23
             }, this) }, void 0, !1, {
-              fileName: "app/routes/usuarios.novousuario.tsx",
+              fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
               lineNumber: 231,
               columnNumber: 21
             }, this)
           ] }, void 0, !0, {
-            fileName: "app/routes/usuarios.novousuario.tsx",
+            fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
             lineNumber: 203,
             columnNumber: 19
           }, this)
         ] }, void 0, !0, {
-          fileName: "app/routes/usuarios.novousuario.tsx",
+          fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
           lineNumber: 201,
           columnNumber: 17
         }, this)
       ] }, void 0, !0, {
-        fileName: "app/routes/usuarios.novousuario.tsx",
+        fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
         lineNumber: 199,
         columnNumber: 15
       }, this)
     ] }, void 0, !0, {
-      fileName: "app/routes/usuarios.novousuario.tsx",
+      fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
       lineNumber: 192,
       columnNumber: 13
     }, this) }, void 0, !1, {
-      fileName: "app/routes/usuarios.novousuario.tsx",
+      fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
       lineNumber: 191,
       columnNumber: 11
     }, this) }, void 0, !1, {
-      fileName: "app/routes/usuarios.novousuario.tsx",
+      fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
       lineNumber: 190,
       columnNumber: 9
     }, this) }, void 0, !1, {
-      fileName: "app/routes/usuarios.novousuario.tsx",
+      fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
       lineNumber: 189,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
-    fileName: "app/routes/usuarios.novousuario.tsx",
+    fileName: "app/routes/Usuarios/usuarios.novousuario.tsx",
     lineNumber: 41,
     columnNumber: 5
   }, this);
 }
 
-// app/routes/empresas.$empresaId.tsx
-var empresas_empresaId_exports = {};
-__export(empresas_empresaId_exports, {
+// app/routes/Anuncios/anuncios_$anuncioId.tsx
+var anuncios_anuncioId_exports = {};
+__export(anuncios_anuncioId_exports, {
   ErrorBoundary: () => ErrorBoundary2,
   action: () => action5,
-  default: () => EmpresasIdPage,
+  default: () => AnunciosDetailsPage,
   loader: () => loader5
 });
 var import_node10 = __toESM(require_dist());
+
+// app/models/anuncios.server.ts
+function getAnuncios({
+  id,
+  userId
+}) {
+  return prisma.anuncio.findFirst({
+    select: { id: !0, nomeAnuncio: !0, empresa: !0 },
+    where: { id, userId }
+  });
+}
+function deleteAnuncio({
+  id,
+  userId
+}) {
+  return prisma.anuncio.deleteMany({
+    where: { id, userId }
+  });
+}
+
+// app/routes/Anuncios/anuncios_$anuncioId.tsx
 var import_jsx_dev_runtime9 = __toESM(require_jsx_dev_runtime()), loader5 = async ({ params, request: request3 }) => {
   let userId = await requireUserId(request3);
-  invariant4(params.empresaId, "Id da Empresa n\xE3o encontrado.");
-  let empresas = await getEmpresa({ id: params.empresaId, userId });
-  if (!empresas)
+  invariant4(params.anuncioId, "an\xFAncioId n\xE3o foi encontrado");
+  let anuncios = await getAnuncios({ id: params.anuncioId, userId });
+  if (!anuncios)
     throw new Response("N\xE3o encontrado", { status: 404 });
-  return (0, import_node10.json)({ empresas });
+  return (0, import_node10.json)({ anuncios });
 }, action5 = async ({ params, request: request3 }) => {
   let userId = await requireUserId(request3);
-  return invariant4(params.empresaId, "empresaId n\xE3o encontrada."), await deleteEmpresa({ id: params.empresaId, userId }), (0, import_node10.redirect)("/empresas/");
+  return invariant4(params.anuncioId, "anuncioId n\xE3o encontrado"), await deleteAnuncio({ id: params.anuncioId, userId }), (0, import_node10.redirect)("/anuncios/");
 };
-function EmpresasIdPage() {
+function AnunciosDetailsPage() {
   let data = useLoaderData2();
   return /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)("div", { children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)("h3", { className: "text-2xl font-bold", children: data.empresas.nomeEmpresa }, void 0, !1, {
-      fileName: "app/routes/empresas.$empresaId.tsx",
+    /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)("h3", { className: "text-2xl font-bold", children: data.anuncios.nomeAnuncio }, void 0, !1, {
+      fileName: "app/routes/Anuncios/anuncios_$anuncioId.tsx",
       lineNumber: 39,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)("p", { children: data.empresas.descricaoEmpresa }, void 0, !1, {
-      fileName: "app/routes/empresas.$empresaId.tsx",
+    /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)("p", { className: "py-6", children: data.anuncios.empresa }, void 0, !1, {
+      fileName: "app/routes/Anuncios/anuncios_$anuncioId.tsx",
       lineNumber: 40,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)("hr", { className: "my-4" }, void 0, !1, {
-      fileName: "app/routes/empresas.$empresaId.tsx",
+      fileName: "app/routes/Anuncios/anuncios_$anuncioId.tsx",
       lineNumber: 41,
       columnNumber: 7
     }, this),
@@ -59117,15 +59141,15 @@ function EmpresasIdPage() {
         "button",
         {
           type: "submit",
-          className: "rounded bg-red-500 px-4 py-2 text-black hover:bg-red-600 focus:bg-red-400",
-          children: "Deletar Empresa"
+          className: "rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-600 focus:bg-orange-400",
+          children: "Atualizar An\xFAncio"
         },
         void 0,
         !1,
         {
-          fileName: "app/routes/empresas.$empresaId.tsx",
+          fileName: "app/routes/Anuncios/anuncios_$anuncioId.tsx",
           lineNumber: 43,
-          columnNumber: 9
+          columnNumber: 7
         },
         this
       ),
@@ -59133,25 +59157,25 @@ function EmpresasIdPage() {
         "button",
         {
           type: "submit",
-          className: "rounded bg-orange-500 px-4 py-2 text-black hover:bg-orange-600 focus:bg-orange-400",
-          children: "Editar Empresa"
+          className: "rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600 focus:bg-red-400",
+          children: "Deletar An\xFAncio"
         },
         void 0,
         !1,
         {
-          fileName: "app/routes/empresas.$empresaId.tsx",
+          fileName: "app/routes/Anuncios/anuncios_$anuncioId.tsx",
           lineNumber: 49,
           columnNumber: 9
         },
         this
       )
     ] }, void 0, !0, {
-      fileName: "app/routes/empresas.$empresaId.tsx",
+      fileName: "app/routes/Anuncios/anuncios_$anuncioId.tsx",
       lineNumber: 42,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
-    fileName: "app/routes/empresas.$empresaId.tsx",
+    fileName: "app/routes/Anuncios/anuncios_$anuncioId.tsx",
     lineNumber: 38,
     columnNumber: 5
   }, this);
@@ -59159,55 +59183,45 @@ function EmpresasIdPage() {
 function ErrorBoundary2() {
   let error = useRouteError();
   return error instanceof Error ? /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)("div", { children: [
-    "Um erro inesperado ocorreu: ",
+    "Um erro inesperado ocorreu : ",
     error.message
   ] }, void 0, !0, {
-    fileName: "app/routes/empresas.$empresaId.tsx",
+    fileName: "app/routes/Anuncios/anuncios_$anuncioId.tsx",
     lineNumber: 64,
     columnNumber: 12
-  }, this) : isRouteErrorResponse(error) ? error.status === 404 ? /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)("div", { children: "Empresa n\xE3o encontrada." }, void 0, !1, {
-    fileName: "app/routes/empresas.$empresaId.tsx",
+  }, this) : isRouteErrorResponse(error) ? error.status === 404 ? /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)("div", { children: "An\xFAncio n\xE3o encontrado" }, void 0, !1, {
+    fileName: "app/routes/Anuncios/anuncios_$anuncioId.tsx",
     lineNumber: 72,
     columnNumber: 12
   }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)("div", { children: [
-    "Um erro inesperado aconteceu. C\xF3digo : ",
+    "Um erro inesperado ocorreu : ",
     error.statusText
   ] }, void 0, !0, {
-    fileName: "app/routes/empresas.$empresaId.tsx",
+    fileName: "app/routes/Anuncios/anuncios_$anuncioId.tsx",
     lineNumber: 75,
     columnNumber: 10
   }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)("h1", { children: "Erro desconhecido" }, void 0, !1, {
-    fileName: "app/routes/empresas.$empresaId.tsx",
+    fileName: "app/routes/Anuncios/anuncios_$anuncioId.tsx",
     lineNumber: 68,
     columnNumber: 12
   }, this);
 }
 
-// app/routes/cidades.novacidade.tsx
-var cidades_novacidade_exports = {};
-__export(cidades_novacidade_exports, {
-  action: () => action6,
-  default: () => CidadeNovaPage,
+// app/routes/Categorias/categorias._index.tsx
+var categorias_index_exports = {};
+__export(categorias_index_exports, {
+  default: () => CategoriasIndexPage,
+  loader: () => loader6,
   meta: () => meta6
 });
 var import_node11 = __toESM(require_dist());
-var import_react15 = __toESM(require_react());
-var import_jsx_dev_runtime10 = __toESM(require_jsx_dev_runtime()), meta6 = () => [{ title: "EncontraTudo" }], action6 = async ({ request: request3 }) => {
-  let userId = await requireUserId(request3), nomeCidade = (await request3.formData()).get("nomeCidade");
-  if (typeof nomeCidade != "string" || nomeCidade.length === 0)
-    return (0, import_node11.json)(
-      { errors: { nomeCidade: "nome da cidade \xE9 obrigat\xF3rio" } },
-      { status: 400 }
-    );
-  let cidade = await createCidade({ nomeCidade, userId });
-  return (0, import_node11.redirect)(`/cidades/${cidade.id}`);
+var import_jsx_dev_runtime10 = __toESM(require_jsx_dev_runtime()), meta6 = () => [{ title: "EncontraTudo" }], loader6 = async ({ request: request3 }) => {
+  let userId = await requireUserId(request3), categorias = await getCategoriasListItems({ userId });
+  return (0, import_node11.json)({ categorias });
 };
-function CidadeNovaPage() {
-  let actionData = useActionData2(), nomeCidadeRef = (0, import_react15.useRef)(null);
-  return (0, import_react15.useEffect)(() => {
-    var _a2, _b;
-    (_a2 = actionData == null ? void 0 : actionData.errors) != null && _a2.nomeCidade && ((_b = nomeCidadeRef.current) == null || _b.focus());
-  }, [actionData]), /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+function CategoriasIndexPage() {
+  let data = useLoaderData2();
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
@@ -59220,20 +59234,20 @@ function CidadeNovaPage() {
           void 0,
           !1,
           {
-            fileName: "app/routes/cidades.novacidade.tsx",
-            lineNumber: 45,
+            fileName: "app/routes/Categorias/categorias._index.tsx",
+            lineNumber: 29,
             columnNumber: 13
           },
           this
         ),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
-          fileName: "app/routes/cidades.novacidade.tsx",
-          lineNumber: 50,
+          fileName: "app/routes/Categorias/categorias._index.tsx",
+          lineNumber: 34,
           columnNumber: 13
         }, this)
       ] }, void 0, !0, {
-        fileName: "app/routes/cidades.novacidade.tsx",
-        lineNumber: 44,
+        fileName: "app/routes/Categorias/categorias._index.tsx",
+        lineNumber: 28,
         columnNumber: 11
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
@@ -59246,8 +59260,8 @@ function CidadeNovaPage() {
           "aria-expanded": "false",
           children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
-              fileName: "app/routes/cidades.novacidade.tsx",
-              lineNumber: 61,
+              fileName: "app/routes/Categorias/categorias._index.tsx",
+              lineNumber: 45,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
@@ -59270,8 +59284,8 @@ function CidadeNovaPage() {
                   void 0,
                   !1,
                   {
-                    fileName: "app/routes/cidades.novacidade.tsx",
-                    lineNumber: 69,
+                    fileName: "app/routes/Categorias/categorias._index.tsx",
+                    lineNumber: 53,
                     columnNumber: 15
                   },
                   this
@@ -59280,8 +59294,8 @@ function CidadeNovaPage() {
               void 0,
               !1,
               {
-                fileName: "app/routes/cidades.novacidade.tsx",
-                lineNumber: 62,
+                fileName: "app/routes/Categorias/categorias._index.tsx",
+                lineNumber: 46,
                 columnNumber: 13
               },
               this
@@ -59291,8 +59305,8 @@ function CidadeNovaPage() {
         void 0,
         !0,
         {
-          fileName: "app/routes/cidades.novacidade.tsx",
-          lineNumber: 54,
+          fileName: "app/routes/Categorias/categorias._index.tsx",
+          lineNumber: 38,
           columnNumber: 11
         },
         this
@@ -59306,81 +59320,101 @@ function CidadeNovaPage() {
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
               Link2,
               {
-                to: "/cidades",
+                to: "/busca",
                 className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
-                children: "Cidades"
+                children: "Busca"
               },
               void 0,
               !1,
               {
-                fileName: "app/routes/cidades.novacidade.tsx",
-                lineNumber: 84,
+                fileName: "app/routes/Categorias/categorias._index.tsx",
+                lineNumber: 68,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/cidades.novacidade.tsx",
-              lineNumber: 83,
+              fileName: "app/routes/Categorias/categorias._index.tsx",
+              lineNumber: 67,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
               Link2,
               {
-                to: "/usuarios",
+                to: "/categorias",
                 className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Usu\xE1rios"
+                children: "Categoria"
               },
               void 0,
               !1,
               {
-                fileName: "app/routes/cidades.novacidade.tsx",
-                lineNumber: 93,
+                fileName: "app/routes/Categorias/categorias._index.tsx",
+                lineNumber: 76,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/cidades.novacidade.tsx",
-              lineNumber: 92,
+              fileName: "app/routes/Categorias/categorias._index.tsx",
+              lineNumber: 75,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
               Link2,
               {
-                to: "/negocios",
+                to: "/sobre",
                 className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Neg\xF3cios"
+                children: "Sobre"
               },
               void 0,
               !1,
               {
-                fileName: "app/routes/cidades.novacidade.tsx",
-                lineNumber: 101,
+                fileName: "app/routes/Categorias/categorias._index.tsx",
+                lineNumber: 83,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/cidades.novacidade.tsx",
-              lineNumber: 100,
+              fileName: "app/routes/Categorias/categorias._index.tsx",
+              lineNumber: 82,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
               Link2,
               {
-                to: "/anuncios",
+                to: "/contato",
                 className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "An\xFAncios"
+                children: "Contato"
               },
               void 0,
               !1,
               {
-                fileName: "app/routes/cidades.novacidade.tsx",
-                lineNumber: 109,
+                fileName: "app/routes/Categorias/categorias._index.tsx",
+                lineNumber: 90,
                 columnNumber: 17
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/cidades.novacidade.tsx",
-              lineNumber: 108,
+              fileName: "app/routes/Categorias/categorias._index.tsx",
+              lineNumber: 89,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
+              Link2,
+              {
+                to: "/franquias",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Franquias"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Categorias/categorias._index.tsx",
+                lineNumber: 97,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Categorias/categorias._index.tsx",
+              lineNumber: 96,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("li", { children: [
@@ -59413,8 +59447,8 @@ function CidadeNovaPage() {
                           void 0,
                           !1,
                           {
-                            fileName: "app/routes/cidades.novacidade.tsx",
-                            lineNumber: 131,
+                            fileName: "app/routes/Categorias/categorias._index.tsx",
+                            lineNumber: 117,
                             columnNumber: 21
                           },
                           this
@@ -59423,8 +59457,8 @@ function CidadeNovaPage() {
                       void 0,
                       !1,
                       {
-                        fileName: "app/routes/cidades.novacidade.tsx",
-                        lineNumber: 124,
+                        fileName: "app/routes/Categorias/categorias._index.tsx",
+                        lineNumber: 110,
                         columnNumber: 19
                       },
                       this
@@ -59434,8 +59468,8 @@ function CidadeNovaPage() {
                 void 0,
                 !0,
                 {
-                  fileName: "app/routes/cidades.novacidade.tsx",
-                  lineNumber: 118,
+                  fileName: "app/routes/Categorias/categorias._index.tsx",
+                  lineNumber: 104,
                   columnNumber: 17
                 },
                 this
@@ -59455,41 +59489,41 @@ function CidadeNovaPage() {
                           /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
                             "a",
                             {
-                              href: "/dash",
+                              href: "/",
                               className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
                               children: "Painel de Controle"
                             },
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/cidades.novacidade.tsx",
-                              lineNumber: 150,
+                              fileName: "app/routes/Categorias/categorias._index.tsx",
+                              lineNumber: 136,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/cidades.novacidade.tsx",
-                            lineNumber: 149,
+                            fileName: "app/routes/Categorias/categorias._index.tsx",
+                            lineNumber: 135,
                             columnNumber: 21
                           }, this),
                           /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
                             "a",
                             {
-                              href: "/setting",
+                              href: "/",
                               className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
                               children: "Settings"
                             },
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/cidades.novacidade.tsx",
-                              lineNumber: 158,
+                              fileName: "app/routes/Categorias/categorias._index.tsx",
+                              lineNumber: 144,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/cidades.novacidade.tsx",
-                            lineNumber: 157,
+                            fileName: "app/routes/Categorias/categorias._index.tsx",
+                            lineNumber: 143,
                             columnNumber: 21
                           }, this),
                           /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
@@ -59502,13 +59536,603 @@ function CidadeNovaPage() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/cidades.novacidade.tsx",
+                              fileName: "app/routes/Categorias/categorias._index.tsx",
+                              lineNumber: 152,
+                              columnNumber: 23
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Categorias/categorias._index.tsx",
+                            lineNumber: 151,
+                            columnNumber: 21
+                          }, this)
+                        ]
+                      },
+                      void 0,
+                      !0,
+                      {
+                        fileName: "app/routes/Categorias/categorias._index.tsx",
+                        lineNumber: 131,
+                        columnNumber: 19
+                      },
+                      this
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
+                      "a",
+                      {
+                        href: "/",
+                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
+                        children: "Sair"
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/Categorias/categorias._index.tsx",
+                        lineNumber: 161,
+                        columnNumber: 21
+                      },
+                      this
+                    ) }, void 0, !1, {
+                      fileName: "app/routes/Categorias/categorias._index.tsx",
+                      lineNumber: 160,
+                      columnNumber: 19
+                    }, this)
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/Categorias/categorias._index.tsx",
+                  lineNumber: 127,
+                  columnNumber: 17
+                },
+                this
+              )
+            ] }, void 0, !0, {
+              fileName: "app/routes/Categorias/categorias._index.tsx",
+              lineNumber: 103,
+              columnNumber: 15
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/routes/Categorias/categorias._index.tsx",
+            lineNumber: 66,
+            columnNumber: 13
+          }, this)
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/routes/Categorias/categorias._index.tsx",
+          lineNumber: 62,
+          columnNumber: 11
+        },
+        this
+      )
+    ] }, void 0, !0, {
+      fileName: "app/routes/Categorias/categorias._index.tsx",
+      lineNumber: 27,
+      columnNumber: 9
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Categorias/categorias._index.tsx",
+      lineNumber: 26,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Categorias" }, void 0, !1, {
+        fileName: "app/routes/Categorias/categorias._index.tsx",
+        lineNumber: 180,
+        columnNumber: 17
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/Categorias/categorias._index.tsx",
+        lineNumber: 179,
+        columnNumber: 15
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8 mb-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "grid grid-rows-4 grid-flow-col gap-4 mb-4", children: data.categorias.length === 0 ? /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("p", { children: [
+        "Nenhuma categoria encontrada. V\xE1 at\xE9 a aba Categoria na barra de navega\xE7\xE3o e",
+        " ",
+        /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(Link2, { to: "novacategoria", className: "text-white underline", children: "cadastre uma." }, void 0, !1, {
+          fileName: "app/routes/Categorias/categorias._index.tsx",
+          lineNumber: 190,
+          columnNumber: 23
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/Categorias/categorias._index.tsx",
+        lineNumber: 188,
+        columnNumber: 21
+      }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "", children: data.categorias.map((categorias) => /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "py-2 px-4 mb-4 bg-green-500 text-white justify-center font-semibold rounded-md shadown-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("button", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
+        NavLink2,
+        {
+          to: categorias.id,
+          children: categorias.nomeCategoria
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/routes/Categorias/categorias._index.tsx",
+          lineNumber: 201,
+          columnNumber: 29
+        },
+        this
+      ) }, void 0, !1, {
+        fileName: "app/routes/Categorias/categorias._index.tsx",
+        lineNumber: 200,
+        columnNumber: 27
+      }, this) }, categorias.id, !1, {
+        fileName: "app/routes/Categorias/categorias._index.tsx",
+        lineNumber: 198,
+        columnNumber: 25
+      }, this)) }, void 0, !1, {
+        fileName: "app/routes/Categorias/categorias._index.tsx",
+        lineNumber: 195,
+        columnNumber: 21
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/Categorias/categorias._index.tsx",
+        lineNumber: 186,
+        columnNumber: 17
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/Categorias/categorias._index.tsx",
+        lineNumber: 185,
+        columnNumber: 15
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/routes/Categorias/categorias._index.tsx",
+      lineNumber: 178,
+      columnNumber: 13
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Categorias/categorias._index.tsx",
+      lineNumber: 177,
+      columnNumber: 11
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Categorias/categorias._index.tsx",
+      lineNumber: 176,
+      columnNumber: 9
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Categorias/categorias._index.tsx",
+      lineNumber: 175,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/routes/Categorias/categorias._index.tsx",
+    lineNumber: 24,
+    columnNumber: 5
+  }, this);
+}
+
+// app/routes/Empresas/empresas.$empresaId.tsx
+var empresas_empresaId_exports = {};
+__export(empresas_empresaId_exports, {
+  ErrorBoundary: () => ErrorBoundary3,
+  action: () => action6,
+  default: () => EmpresasIdPage,
+  loader: () => loader7
+});
+var import_node12 = __toESM(require_dist());
+var import_jsx_dev_runtime11 = __toESM(require_jsx_dev_runtime()), loader7 = async ({ params, request: request3 }) => {
+  let userId = await requireUserId(request3);
+  invariant4(params.empresaId, "Id da Empresa n\xE3o encontrado.");
+  let empresas = await getEmpresa({ id: params.empresaId, userId });
+  if (!empresas)
+    throw new Response("N\xE3o encontrado", { status: 404 });
+  return (0, import_node12.json)({ empresas });
+}, action6 = async ({ params, request: request3 }) => {
+  let userId = await requireUserId(request3);
+  return invariant4(params.empresaId, "empresaId n\xE3o encontrada."), await deleteEmpresa({ id: params.empresaId, userId }), (0, import_node12.redirect)("/empresas/");
+};
+function EmpresasIdPage() {
+  let data = useLoaderData2();
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { className: "text-2xl font-bold", children: data.empresas.nomeEmpresa }, void 0, !1, {
+      fileName: "app/routes/Empresas/empresas.$empresaId.tsx",
+      lineNumber: 39,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("p", { children: data.empresas.descricaoEmpresa }, void 0, !1, {
+      fileName: "app/routes/Empresas/empresas.$empresaId.tsx",
+      lineNumber: 40,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("hr", { className: "my-4" }, void 0, !1, {
+      fileName: "app/routes/Empresas/empresas.$empresaId.tsx",
+      lineNumber: 41,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(Form, { method: "post", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+        "button",
+        {
+          type: "submit",
+          className: "rounded bg-red-500 px-4 py-2 text-black hover:bg-red-600 focus:bg-red-400",
+          children: "Deletar Empresa"
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/routes/Empresas/empresas.$empresaId.tsx",
+          lineNumber: 43,
+          columnNumber: 9
+        },
+        this
+      ),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+        "button",
+        {
+          type: "submit",
+          className: "rounded bg-orange-500 px-4 py-2 text-black hover:bg-orange-600 focus:bg-orange-400",
+          children: "Editar Empresa"
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/routes/Empresas/empresas.$empresaId.tsx",
+          lineNumber: 49,
+          columnNumber: 9
+        },
+        this
+      )
+    ] }, void 0, !0, {
+      fileName: "app/routes/Empresas/empresas.$empresaId.tsx",
+      lineNumber: 42,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/routes/Empresas/empresas.$empresaId.tsx",
+    lineNumber: 38,
+    columnNumber: 5
+  }, this);
+}
+function ErrorBoundary3() {
+  let error = useRouteError();
+  return error instanceof Error ? /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
+    "Um erro inesperado ocorreu: ",
+    error.message
+  ] }, void 0, !0, {
+    fileName: "app/routes/Empresas/empresas.$empresaId.tsx",
+    lineNumber: 64,
+    columnNumber: 12
+  }, this) : isRouteErrorResponse(error) ? error.status === 404 ? /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: "Empresa n\xE3o encontrada." }, void 0, !1, {
+    fileName: "app/routes/Empresas/empresas.$empresaId.tsx",
+    lineNumber: 72,
+    columnNumber: 12
+  }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
+    "Um erro inesperado aconteceu. C\xF3digo : ",
+    error.statusText
+  ] }, void 0, !0, {
+    fileName: "app/routes/Empresas/empresas.$empresaId.tsx",
+    lineNumber: 75,
+    columnNumber: 10
+  }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h1", { children: "Erro desconhecido" }, void 0, !1, {
+    fileName: "app/routes/Empresas/empresas.$empresaId.tsx",
+    lineNumber: 68,
+    columnNumber: 12
+  }, this);
+}
+
+// app/routes/Cidades/cidades.novacidade.tsx
+var cidades_novacidade_exports = {};
+__export(cidades_novacidade_exports, {
+  action: () => action7,
+  default: () => CidadeNovaPage,
+  meta: () => meta7
+});
+var import_node13 = __toESM(require_dist());
+var import_react17 = __toESM(require_react());
+var import_jsx_dev_runtime12 = __toESM(require_jsx_dev_runtime()), meta7 = () => [{ title: "EncontraTudo" }], action7 = async ({ request: request3 }) => {
+  let userId = await requireUserId(request3), nomeCidade = (await request3.formData()).get("nomeCidade");
+  if (typeof nomeCidade != "string" || nomeCidade.length === 0)
+    return (0, import_node13.json)(
+      { errors: { nomeCidade: "nome da cidade \xE9 obrigat\xF3rio" } },
+      { status: 400 }
+    );
+  let cidade = await createCidade({ nomeCidade, userId });
+  return (0, import_node13.redirect)(`/cidades/${cidade.id}`);
+};
+function CidadeNovaPage() {
+  let actionData = useActionData2(), nomeCidadeRef = (0, import_react17.useRef)(null);
+  return (0, import_react17.useEffect)(() => {
+    var _a2, _b;
+    (_a2 = actionData == null ? void 0 : actionData.errors) != null && _a2.nomeCidade && ((_b = nomeCidadeRef.current) == null || _b.focus());
+  }, [actionData]), /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+          "img",
+          {
+            src: "https://flowbite.com/docs/images/logo.svg",
+            className: "h-8 mr-3",
+            alt: "Flowbite Logo"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+            lineNumber: 45,
+            columnNumber: 13
+          },
+          this
+        ),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+          fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+          lineNumber: 50,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+        lineNumber: 44,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+        "button",
+        {
+          "data-collapse-toggle": "navbar-dropdown",
+          type: "button",
+          className: "inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600",
+          "aria-controls": "navbar-dropdown",
+          "aria-expanded": "false",
+          children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+              fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+              lineNumber: 61,
+              columnNumber: 13
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+              "svg",
+              {
+                className: "w-5 h-5",
+                "aria-hidden": "true",
+                xmlns: "http://www.w3.org/2000/svg",
+                fill: "none",
+                viewBox: "0 0 17 14",
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+                  "path",
+                  {
+                    stroke: "currentColor",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-width": "2",
+                    d: "M1 1h15M1 7h15M1 13h15"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                    lineNumber: 69,
+                    columnNumber: 15
+                  },
+                  this
+                )
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                lineNumber: 62,
+                columnNumber: 13
+              },
+              this
+            )
+          ]
+        },
+        void 0,
+        !0,
+        {
+          fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+          lineNumber: 54,
+          columnNumber: 11
+        },
+        this
+      ),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+        "div",
+        {
+          className: "hidden w-full md:block md:w-auto",
+          id: "navbar-dropdown",
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+              Link2,
+              {
+                to: "/cidades",
+                className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
+                children: "Cidades"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                lineNumber: 84,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+              lineNumber: 83,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+              Link2,
+              {
+                to: "/usuarios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Usu\xE1rios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                lineNumber: 93,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+              lineNumber: 92,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+              Link2,
+              {
+                to: "/negocios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Neg\xF3cios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                lineNumber: 101,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+              lineNumber: 100,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+              Link2,
+              {
+                to: "/anuncios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "An\xFAncios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                lineNumber: 109,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+              lineNumber: 108,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+                "button",
+                {
+                  id: "dropdownNavbarLink",
+                  "data-dropdown-toggle": "dropdownNavbar",
+                  className: "flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent",
+                  children: [
+                    "Meus Dados",
+                    " ",
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+                      "svg",
+                      {
+                        className: "w-2.5 h-2.5 ml-2.5",
+                        "aria-hidden": "true",
+                        xmlns: "http://www.w3.org/2000/svg",
+                        fill: "none",
+                        viewBox: "0 0 10 6",
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+                          "path",
+                          {
+                            stroke: "currentColor",
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
+                            "stroke-width": "2",
+                            d: "m1 1 4 4 4-4"
+                          },
+                          void 0,
+                          !1,
+                          {
+                            fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                            lineNumber: 131,
+                            columnNumber: 21
+                          },
+                          this
+                        )
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                        lineNumber: 124,
+                        columnNumber: 19
+                      },
+                      this
+                    )
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                  lineNumber: 118,
+                  columnNumber: 17
+                },
+                this
+              ),
+              /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+                "div",
+                {
+                  id: "dropdownNavbar",
+                  className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+                      "ul",
+                      {
+                        className: "py-2 text-sm text-gray-700 dark:text-gray-400",
+                        "aria-labelledby": "dropdownLargeButton",
+                        children: [
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+                            "a",
+                            {
+                              href: "/dash",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Painel de Controle"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                              lineNumber: 150,
+                              columnNumber: 23
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                            lineNumber: 149,
+                            columnNumber: 21
+                          }, this),
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+                            "a",
+                            {
+                              href: "/setting",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Settings"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                              lineNumber: 158,
+                              columnNumber: 23
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Cidades/cidades.novacidade.tsx",
+                            lineNumber: 157,
+                            columnNumber: 21
+                          }, this),
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
+                            "a",
+                            {
+                              href: "/",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Earnings"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Cidades/cidades.novacidade.tsx",
                               lineNumber: 166,
                               columnNumber: 23
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/cidades.novacidade.tsx",
+                            fileName: "app/routes/Cidades/cidades.novacidade.tsx",
                             lineNumber: 165,
                             columnNumber: 21
                           }, this)
@@ -59517,13 +60141,13 @@ function CidadeNovaPage() {
                       void 0,
                       !0,
                       {
-                        fileName: "app/routes/cidades.novacidade.tsx",
+                        fileName: "app/routes/Cidades/cidades.novacidade.tsx",
                         lineNumber: 145,
                         columnNumber: 19
                       },
                       this
                     ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
                       "a",
                       {
                         href: "/logout",
@@ -59533,13 +60157,13 @@ function CidadeNovaPage() {
                       void 0,
                       !1,
                       {
-                        fileName: "app/routes/cidades.novacidade.tsx",
+                        fileName: "app/routes/Cidades/cidades.novacidade.tsx",
                         lineNumber: 175,
                         columnNumber: 21
                       },
                       this
                     ) }, void 0, !1, {
-                      fileName: "app/routes/cidades.novacidade.tsx",
+                      fileName: "app/routes/Cidades/cidades.novacidade.tsx",
                       lineNumber: 174,
                       columnNumber: 19
                     }, this)
@@ -59548,19 +60172,19 @@ function CidadeNovaPage() {
                 void 0,
                 !0,
                 {
-                  fileName: "app/routes/cidades.novacidade.tsx",
+                  fileName: "app/routes/Cidades/cidades.novacidade.tsx",
                   lineNumber: 141,
                   columnNumber: 17
                 },
                 this
               )
             ] }, void 0, !0, {
-              fileName: "app/routes/cidades.novacidade.tsx",
+              fileName: "app/routes/Cidades/cidades.novacidade.tsx",
               lineNumber: 117,
               columnNumber: 15
             }, this)
           ] }, void 0, !0, {
-            fileName: "app/routes/cidades.novacidade.tsx",
+            fileName: "app/routes/Cidades/cidades.novacidade.tsx",
             lineNumber: 82,
             columnNumber: 13
           }, this)
@@ -59568,45 +60192,45 @@ function CidadeNovaPage() {
         void 0,
         !1,
         {
-          fileName: "app/routes/cidades.novacidade.tsx",
+          fileName: "app/routes/Cidades/cidades.novacidade.tsx",
           lineNumber: 78,
           columnNumber: 11
         },
         this
       )
     ] }, void 0, !0, {
-      fileName: "app/routes/cidades.novacidade.tsx",
+      fileName: "app/routes/Cidades/cidades.novacidade.tsx",
       lineNumber: 43,
       columnNumber: 9
     }, this) }, void 0, !1, {
-      fileName: "app/routes/cidades.novacidade.tsx",
+      fileName: "app/routes/Cidades/cidades.novacidade.tsx",
       lineNumber: 42,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Nova Cidade" }, void 0, !1, {
-        fileName: "app/routes/cidades.novacidade.tsx",
+    /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Nova Cidade" }, void 0, !1, {
+        fileName: "app/routes/Cidades/cidades.novacidade.tsx",
         lineNumber: 194,
         columnNumber: 17
       }, this) }, void 0, !1, {
-        fileName: "app/routes/cidades.novacidade.tsx",
+        fileName: "app/routes/Cidades/cidades.novacidade.tsx",
         lineNumber: 193,
         columnNumber: 15
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("p", { children: "Insira o nome da cidade" }, void 0, !1, {
-          fileName: "app/routes/cidades.novacidade.tsx",
+      /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("p", { children: "Insira o nome da cidade" }, void 0, !1, {
+          fileName: "app/routes/Cidades/cidades.novacidade.tsx",
           lineNumber: 200,
           columnNumber: 17
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "relative", children: [
-          /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none" }, void 0, !1, {
-            fileName: "app/routes/cidades.novacidade.tsx",
+        /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { className: "relative", children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { className: "absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none" }, void 0, !1, {
+            fileName: "app/routes/Cidades/cidades.novacidade.tsx",
             lineNumber: 202,
             columnNumber: 19
           }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("form", { method: "POST", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
+          /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("form", { method: "POST", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
               "input",
               {
                 ref: nomeCidadeRef,
@@ -59620,78 +60244,163 @@ function CidadeNovaPage() {
               void 0,
               !1,
               {
-                fileName: "app/routes/cidades.novacidade.tsx",
+                fileName: "app/routes/Cidades/cidades.novacidade.tsx",
                 lineNumber: 204,
                 columnNumber: 21
               },
               this
             ),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { className: "mx-auto mt-10 flex max-w-none justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("button", { className: "bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded", type: "submit", children: "Criar cidade" }, void 0, !1, {
-              fileName: "app/routes/cidades.novacidade.tsx",
+            /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { className: "mx-auto mt-10 flex max-w-none justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("button", { className: "bg-green-800 hover:bg-blue-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded", type: "submit", children: "Criar cidade" }, void 0, !1, {
+              fileName: "app/routes/Cidades/cidades.novacidade.tsx",
               lineNumber: 214,
               columnNumber: 23
             }, this) }, void 0, !1, {
-              fileName: "app/routes/cidades.novacidade.tsx",
+              fileName: "app/routes/Cidades/cidades.novacidade.tsx",
               lineNumber: 213,
               columnNumber: 21
             }, this)
           ] }, void 0, !0, {
-            fileName: "app/routes/cidades.novacidade.tsx",
+            fileName: "app/routes/Cidades/cidades.novacidade.tsx",
             lineNumber: 203,
             columnNumber: 19
           }, this)
         ] }, void 0, !0, {
-          fileName: "app/routes/cidades.novacidade.tsx",
+          fileName: "app/routes/Cidades/cidades.novacidade.tsx",
           lineNumber: 201,
           columnNumber: 17
         }, this)
       ] }, void 0, !0, {
-        fileName: "app/routes/cidades.novacidade.tsx",
+        fileName: "app/routes/Cidades/cidades.novacidade.tsx",
         lineNumber: 199,
         columnNumber: 15
       }, this)
     ] }, void 0, !0, {
-      fileName: "app/routes/cidades.novacidade.tsx",
+      fileName: "app/routes/Cidades/cidades.novacidade.tsx",
       lineNumber: 192,
       columnNumber: 13
     }, this) }, void 0, !1, {
-      fileName: "app/routes/cidades.novacidade.tsx",
+      fileName: "app/routes/Cidades/cidades.novacidade.tsx",
       lineNumber: 191,
       columnNumber: 11
     }, this) }, void 0, !1, {
-      fileName: "app/routes/cidades.novacidade.tsx",
+      fileName: "app/routes/Cidades/cidades.novacidade.tsx",
       lineNumber: 190,
       columnNumber: 9
     }, this) }, void 0, !1, {
-      fileName: "app/routes/cidades.novacidade.tsx",
+      fileName: "app/routes/Cidades/cidades.novacidade.tsx",
       lineNumber: 189,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
-    fileName: "app/routes/cidades.novacidade.tsx",
+    fileName: "app/routes/Cidades/cidades.novacidade.tsx",
     lineNumber: 41,
     columnNumber: 5
   }, this);
 }
 
-// app/routes/categorias._index.tsx
-var categorias_index_exports = {};
-__export(categorias_index_exports, {
-  default: () => CategoriasIndexPage,
-  loader: () => loader6,
-  meta: () => meta7
+// app/routes/Cidades/cidades.$cidadeId.tsx
+var cidades_cidadeId_exports = {};
+__export(cidades_cidadeId_exports, {
+  ErrorBoundary: () => ErrorBoundary4,
+  action: () => action8,
+  default: () => CidadesIdPage,
+  loader: () => loader8
 });
-var import_node12 = __toESM(require_dist());
-var import_jsx_dev_runtime11 = __toESM(require_jsx_dev_runtime()), meta7 = () => [{ title: "EncontraTudo" }], loader6 = async ({ request: request3 }) => {
-  let userId = await requireUserId(request3), categorias = await getCategoriasListItems({ userId });
-  return (0, import_node12.json)({ categorias });
+var import_node14 = __toESM(require_dist());
+var import_jsx_dev_runtime13 = __toESM(require_jsx_dev_runtime()), loader8 = async ({ params, request: request3 }) => {
+  let userId = await requireUserId(request3);
+  invariant4(params.cidadeId, "Id da Cidade n\xE3o encontrado.");
+  let cidades = await getCidade({ id: params.cidadeId, userId });
+  if (!cidades)
+    throw new Response("N\xE3o encontrado", { status: 404 });
+  return (0, import_node14.json)({ cidades });
+}, action8 = async ({ params, request: request3 }) => {
+  let userId = await requireUserId(request3);
+  return invariant4(params.cidadeId, "cidadeId n\xE3o encontrado."), await deleteCidade({ id: params.cidadeId, userId }), (0, import_node14.redirect)("/cidades/");
 };
-function CategoriasIndexPage() {
+function CidadesIdPage() {
   let data = useLoaderData2();
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("h3", { className: "text-2xl font-bold", children: data.cidades.nomeCidade }, void 0, !1, {
+      fileName: "app/routes/Cidades/cidades.$cidadeId.tsx",
+      lineNumber: 39,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("hr", { className: "my-4" }, void 0, !1, {
+      fileName: "app/routes/Cidades/cidades.$cidadeId.tsx",
+      lineNumber: 40,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(Form, { method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+      "button",
+      {
+        type: "submit",
+        className: "rounded bg-red-500 px-4 py-2 text-black hover:bg-red-600 focus:bg-red-400",
+        children: "Deletar Cidade"
+      },
+      void 0,
+      !1,
+      {
+        fileName: "app/routes/Cidades/cidades.$cidadeId.tsx",
+        lineNumber: 42,
+        columnNumber: 9
+      },
+      this
+    ) }, void 0, !1, {
+      fileName: "app/routes/Cidades/cidades.$cidadeId.tsx",
+      lineNumber: 41,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/routes/Cidades/cidades.$cidadeId.tsx",
+    lineNumber: 38,
+    columnNumber: 5
+  }, this);
+}
+function ErrorBoundary4() {
+  let error = useRouteError();
+  return error instanceof Error ? /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { children: [
+    "Um erro inesperado ocorreu: ",
+    error.message
+  ] }, void 0, !0, {
+    fileName: "app/routes/Cidades/cidades.$cidadeId.tsx",
+    lineNumber: 57,
+    columnNumber: 12
+  }, this) : isRouteErrorResponse(error) ? error.status === 404 ? /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { children: "Cidade n\xE3o encontrada." }, void 0, !1, {
+    fileName: "app/routes/Cidades/cidades.$cidadeId.tsx",
+    lineNumber: 65,
+    columnNumber: 12
+  }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { children: [
+    "Um erro inesperado aconteceu. C\xF3digo : ",
+    error.statusText
+  ] }, void 0, !0, {
+    fileName: "app/routes/Cidades/cidades.$cidadeId.tsx",
+    lineNumber: 68,
+    columnNumber: 10
+  }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("h1", { children: "Erro desconhecido" }, void 0, !1, {
+    fileName: "app/routes/Cidades/cidades.$cidadeId.tsx",
+    lineNumber: 61,
+    columnNumber: 12
+  }, this);
+}
+
+// app/routes/Anuncios/anuncios._index.tsx
+var anuncios_index_exports = {};
+__export(anuncios_index_exports, {
+  default: () => AnunciosIndexPage,
+  loader: () => loader9,
+  meta: () => meta8
+});
+var import_node15 = __toESM(require_dist());
+var import_jsx_dev_runtime14 = __toESM(require_jsx_dev_runtime()), meta8 = () => [{ title: "EncontraTudo" }], loader9 = async ({ request: request3 }) => {
+  let userId = await requireUserId(request3), cidadeListItems = await getCidadeListItems({ userId });
+  return (0, import_node15.json)({ cidadeListItems });
+};
+function AnunciosIndexPage() {
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
           "img",
           {
             src: "https://flowbite.com/docs/images/logo.svg",
@@ -59701,23 +60410,23 @@ function CategoriasIndexPage() {
           void 0,
           !1,
           {
-            fileName: "app/routes/categorias._index.tsx",
-            lineNumber: 29,
-            columnNumber: 13
+            fileName: "app/routes/Anuncios/anuncios._index.tsx",
+            lineNumber: 26,
+            columnNumber: 25
           },
           this
         ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
-          fileName: "app/routes/categorias._index.tsx",
-          lineNumber: 34,
-          columnNumber: 13
+        /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+          fileName: "app/routes/Anuncios/anuncios._index.tsx",
+          lineNumber: 31,
+          columnNumber: 25
         }, this)
       ] }, void 0, !0, {
-        fileName: "app/routes/categorias._index.tsx",
-        lineNumber: 28,
-        columnNumber: 11
+        fileName: "app/routes/Anuncios/anuncios._index.tsx",
+        lineNumber: 25,
+        columnNumber: 21
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
         "button",
         {
           "data-collapse-toggle": "navbar-dropdown",
@@ -59726,12 +60435,12 @@ function CategoriasIndexPage() {
           "aria-controls": "navbar-dropdown",
           "aria-expanded": "false",
           children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
-              fileName: "app/routes/categorias._index.tsx",
-              lineNumber: 45,
-              columnNumber: 13
+            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+              fileName: "app/routes/Anuncios/anuncios._index.tsx",
+              lineNumber: 42,
+              columnNumber: 25
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
               "svg",
               {
                 className: "w-5 h-5",
@@ -59739,7 +60448,7 @@ function CategoriasIndexPage() {
                 xmlns: "http://www.w3.org/2000/svg",
                 fill: "none",
                 viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
                   "path",
                   {
                     stroke: "currentColor",
@@ -59751,9 +60460,9 @@ function CategoriasIndexPage() {
                   void 0,
                   !1,
                   {
-                    fileName: "app/routes/categorias._index.tsx",
-                    lineNumber: 53,
-                    columnNumber: 15
+                    fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                    lineNumber: 50,
+                    columnNumber: 29
                   },
                   this
                 )
@@ -59761,9 +60470,9 @@ function CategoriasIndexPage() {
               void 0,
               !1,
               {
-                fileName: "app/routes/categorias._index.tsx",
-                lineNumber: 46,
-                columnNumber: 13
+                fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                lineNumber: 43,
+                columnNumber: 25
               },
               this
             )
@@ -59772,120 +60481,100 @@ function CategoriasIndexPage() {
         void 0,
         !0,
         {
-          fileName: "app/routes/categorias._index.tsx",
-          lineNumber: 38,
-          columnNumber: 11
+          fileName: "app/routes/Anuncios/anuncios._index.tsx",
+          lineNumber: 35,
+          columnNumber: 21
         },
         this
       ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
         "div",
         {
           className: "hidden w-full md:block md:w-auto",
           id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
               Link2,
               {
-                to: "/busca",
+                to: "/cidades",
                 className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
-                children: "Busca"
+                children: "Cidades"
               },
               void 0,
               !1,
               {
-                fileName: "app/routes/categorias._index.tsx",
-                lineNumber: 68,
-                columnNumber: 17
+                fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                lineNumber: 65,
+                columnNumber: 33
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/categorias._index.tsx",
-              lineNumber: 67,
-              columnNumber: 15
+              fileName: "app/routes/Anuncios/anuncios._index.tsx",
+              lineNumber: 64,
+              columnNumber: 29
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
               Link2,
               {
-                to: "/categorias",
+                to: "/usuarios",
                 className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Categoria"
+                children: "Usu\xE1rios"
               },
               void 0,
               !1,
               {
-                fileName: "app/routes/categorias._index.tsx",
-                lineNumber: 76,
-                columnNumber: 17
+                fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                lineNumber: 73,
+                columnNumber: 33
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/categorias._index.tsx",
-              lineNumber: 75,
-              columnNumber: 15
+              fileName: "app/routes/Anuncios/anuncios._index.tsx",
+              lineNumber: 72,
+              columnNumber: 29
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
               Link2,
               {
-                to: "/sobre",
+                to: "/negocios",
                 className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Sobre"
+                children: "Neg\xF3cios"
               },
               void 0,
               !1,
               {
-                fileName: "app/routes/categorias._index.tsx",
-                lineNumber: 83,
-                columnNumber: 17
+                fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                lineNumber: 80,
+                columnNumber: 33
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/categorias._index.tsx",
-              lineNumber: 82,
-              columnNumber: 15
+              fileName: "app/routes/Anuncios/anuncios._index.tsx",
+              lineNumber: 79,
+              columnNumber: 29
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
               Link2,
               {
-                to: "/contato",
+                to: "/anuncios",
                 className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Contato"
+                children: "An\xFAncios"
               },
               void 0,
               !1,
               {
-                fileName: "app/routes/categorias._index.tsx",
-                lineNumber: 90,
-                columnNumber: 17
+                fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                lineNumber: 87,
+                columnNumber: 33
               },
               this
             ) }, void 0, !1, {
-              fileName: "app/routes/categorias._index.tsx",
-              lineNumber: 89,
-              columnNumber: 15
+              fileName: "app/routes/Anuncios/anuncios._index.tsx",
+              lineNumber: 86,
+              columnNumber: 29
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
-              Link2,
-              {
-                to: "/franquias",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Franquias"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/categorias._index.tsx",
-                lineNumber: 97,
-                columnNumber: 17
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/categorias._index.tsx",
-              lineNumber: 96,
-              columnNumber: 15
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
                 "button",
                 {
                   id: "dropdownNavbarLink",
@@ -59894,7 +60583,7 @@ function CategoriasIndexPage() {
                   children: [
                     "Meus Dados",
                     " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
                       "svg",
                       {
                         className: "w-2.5 h-2.5 ml-2.5",
@@ -59902,7 +60591,7 @@ function CategoriasIndexPage() {
                         xmlns: "http://www.w3.org/2000/svg",
                         fill: "none",
                         viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
                           "path",
                           {
                             stroke: "currentColor",
@@ -59914,9 +60603,9 @@ function CategoriasIndexPage() {
                           void 0,
                           !1,
                           {
-                            fileName: "app/routes/categorias._index.tsx",
-                            lineNumber: 117,
-                            columnNumber: 21
+                            fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                            lineNumber: 108,
+                            columnNumber: 41
                           },
                           this
                         )
@@ -59924,9 +60613,9 @@ function CategoriasIndexPage() {
                       void 0,
                       !1,
                       {
-                        fileName: "app/routes/categorias._index.tsx",
-                        lineNumber: 110,
-                        columnNumber: 19
+                        fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                        lineNumber: 101,
+                        columnNumber: 37
                       },
                       this
                     )
@@ -59935,25 +60624,466 @@ function CategoriasIndexPage() {
                 void 0,
                 !0,
                 {
-                  fileName: "app/routes/categorias._index.tsx",
-                  lineNumber: 104,
-                  columnNumber: 17
+                  fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                  lineNumber: 95,
+                  columnNumber: 33
                 },
                 this
               ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+              /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
                 "div",
                 {
                   id: "dropdownNavbar",
                   className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
                       "ul",
                       {
                         className: "py-2 text-sm text-gray-700 dark:text-gray-400",
                         "aria-labelledby": "dropdownLargeButton",
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
+                            "a",
+                            {
+                              href: "#",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Painel de Controle"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                              lineNumber: 127,
+                              columnNumber: 45
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                            lineNumber: 126,
+                            columnNumber: 41
+                          }, this),
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
+                            "a",
+                            {
+                              href: "#",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Settings"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                              lineNumber: 135,
+                              columnNumber: 45
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                            lineNumber: 134,
+                            columnNumber: 41
+                          }, this),
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
+                            "a",
+                            {
+                              href: "#",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Earnings"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                              lineNumber: 143,
+                              columnNumber: 45
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                            lineNumber: 142,
+                            columnNumber: 41
+                          }, this)
+                        ]
+                      },
+                      void 0,
+                      !0,
+                      {
+                        fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                        lineNumber: 122,
+                        columnNumber: 37
+                      },
+                      this
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
+                      "a",
+                      {
+                        href: "#",
+                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
+                        children: "Sair"
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                        lineNumber: 152,
+                        columnNumber: 41
+                      },
+                      this
+                    ) }, void 0, !1, {
+                      fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                      lineNumber: 151,
+                      columnNumber: 37
+                    }, this)
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/Anuncios/anuncios._index.tsx",
+                  lineNumber: 118,
+                  columnNumber: 33
+                },
+                this
+              )
+            ] }, void 0, !0, {
+              fileName: "app/routes/Anuncios/anuncios._index.tsx",
+              lineNumber: 94,
+              columnNumber: 29
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/routes/Anuncios/anuncios._index.tsx",
+            lineNumber: 63,
+            columnNumber: 25
+          }, this)
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/routes/Anuncios/anuncios._index.tsx",
+          lineNumber: 59,
+          columnNumber: 21
+        },
+        this
+      )
+    ] }, void 0, !0, {
+      fileName: "app/routes/Anuncios/anuncios._index.tsx",
+      lineNumber: 24,
+      columnNumber: 17
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Anuncios/anuncios._index.tsx",
+      lineNumber: 23,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "An\xFAncios" }, void 0, !1, {
+        fileName: "app/routes/Anuncios/anuncios._index.tsx",
+        lineNumber: 171,
+        columnNumber: 33
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/Anuncios/anuncios._index.tsx",
+        lineNumber: 170,
+        columnNumber: 29
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("p", { children: [
+        "Nenhum an\xFAncio encontrado. V\xE1 at\xE9 a aba An\xFAncios na barra de navega\xE7\xE3o e",
+        " ",
+        /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(Link2, { to: "novoanuncio", className: "text-white underline", children: "crie um novo." }, void 0, !1, {
+          fileName: "app/routes/Anuncios/anuncios._index.tsx",
+          lineNumber: 179,
+          columnNumber: 37
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/Anuncios/anuncios._index.tsx",
+        lineNumber: 177,
+        columnNumber: 33
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/Anuncios/anuncios._index.tsx",
+        lineNumber: 176,
+        columnNumber: 29
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/routes/Anuncios/anuncios._index.tsx",
+      lineNumber: 169,
+      columnNumber: 25
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Anuncios/anuncios._index.tsx",
+      lineNumber: 168,
+      columnNumber: 21
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Anuncios/anuncios._index.tsx",
+      lineNumber: 167,
+      columnNumber: 17
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Anuncios/anuncios._index.tsx",
+      lineNumber: 166,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/routes/Anuncios/anuncios._index.tsx",
+    lineNumber: 22,
+    columnNumber: 9
+  }, this);
+}
+
+// app/routes/Empresas/empresas._index.tsx
+var empresas_index_exports = {};
+__export(empresas_index_exports, {
+  default: () => EmpresasIndexPage,
+  loader: () => loader10,
+  meta: () => meta9
+});
+var import_node16 = __toESM(require_dist());
+var import_jsx_dev_runtime15 = __toESM(require_jsx_dev_runtime()), meta9 = () => [{ title: "EncontraTudo" }], loader10 = async ({ request: request3 }) => {
+  let userId = await requireUserId(request3), empresas = await getEmpresaListItems({ userId });
+  return (0, import_node16.json)({ empresas });
+};
+function EmpresasIndexPage() {
+  let data = useLoaderData2();
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+          "img",
+          {
+            src: "https://flowbite.com/docs/images/logo.svg",
+            className: "h-8 mr-3",
+            alt: "Flowbite Logo"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/Empresas/empresas._index.tsx",
+            lineNumber: 26,
+            columnNumber: 25
+          },
+          this
+        ),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+          fileName: "app/routes/Empresas/empresas._index.tsx",
+          lineNumber: 31,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/Empresas/empresas._index.tsx",
+        lineNumber: 25,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+        "button",
+        {
+          "data-collapse-toggle": "navbar-dropdown",
+          type: "button",
+          className: "inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600",
+          "aria-controls": "navbar-dropdown",
+          "aria-expanded": "false",
+          children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+              fileName: "app/routes/Empresas/empresas._index.tsx",
+              lineNumber: 42,
+              columnNumber: 25
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+              "svg",
+              {
+                className: "w-5 h-5",
+                "aria-hidden": "true",
+                xmlns: "http://www.w3.org/2000/svg",
+                fill: "none",
+                viewBox: "0 0 17 14",
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+                  "path",
+                  {
+                    stroke: "currentColor",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-width": "2",
+                    d: "M1 1h15M1 7h15M1 13h15"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/routes/Empresas/empresas._index.tsx",
+                    lineNumber: 50,
+                    columnNumber: 29
+                  },
+                  this
+                )
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Empresas/empresas._index.tsx",
+                lineNumber: 43,
+                columnNumber: 25
+              },
+              this
+            )
+          ]
+        },
+        void 0,
+        !0,
+        {
+          fileName: "app/routes/Empresas/empresas._index.tsx",
+          lineNumber: 35,
+          columnNumber: 21
+        },
+        this
+      ),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+        "div",
+        {
+          className: "hidden w-full md:block md:w-auto",
+          id: "navbar-dropdown",
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+              Link2,
+              {
+                to: "/cidades",
+                className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
+                children: "Cidades"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Empresas/empresas._index.tsx",
+                lineNumber: 65,
+                columnNumber: 33
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Empresas/empresas._index.tsx",
+              lineNumber: 64,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+              Link2,
+              {
+                to: "/usuarios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Usu\xE1rios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Empresas/empresas._index.tsx",
+                lineNumber: 73,
+                columnNumber: 33
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Empresas/empresas._index.tsx",
+              lineNumber: 72,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+              Link2,
+              {
+                to: "/negocios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Neg\xF3cios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Empresas/empresas._index.tsx",
+                lineNumber: 80,
+                columnNumber: 33
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Empresas/empresas._index.tsx",
+              lineNumber: 79,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+              Link2,
+              {
+                to: "/anuncios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "An\xFAncios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Empresas/empresas._index.tsx",
+                lineNumber: 87,
+                columnNumber: 33
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Empresas/empresas._index.tsx",
+              lineNumber: 86,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+                "button",
+                {
+                  id: "dropdownNavbarLink",
+                  "data-dropdown-toggle": "dropdownNavbar",
+                  className: "flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent",
+                  children: [
+                    "Meus Dados",
+                    " ",
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+                      "svg",
+                      {
+                        className: "w-2.5 h-2.5 ml-2.5",
+                        "aria-hidden": "true",
+                        xmlns: "http://www.w3.org/2000/svg",
+                        fill: "none",
+                        viewBox: "0 0 10 6",
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+                          "path",
+                          {
+                            stroke: "currentColor",
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
+                            "stroke-width": "2",
+                            d: "m1 1 4 4 4-4"
+                          },
+                          void 0,
+                          !1,
+                          {
+                            fileName: "app/routes/Empresas/empresas._index.tsx",
+                            lineNumber: 108,
+                            columnNumber: 41
+                          },
+                          this
+                        )
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/Empresas/empresas._index.tsx",
+                        lineNumber: 101,
+                        columnNumber: 37
+                      },
+                      this
+                    )
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/Empresas/empresas._index.tsx",
+                  lineNumber: 95,
+                  columnNumber: 33
+                },
+                this
+              ),
+              /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+                "div",
+                {
+                  id: "dropdownNavbar",
+                  className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+                      "ul",
+                      {
+                        className: "py-2 text-sm text-gray-700 dark:text-gray-400",
+                        "aria-labelledby": "dropdownLargeButton",
+                        children: [
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
                             "a",
                             {
                               href: "/",
@@ -59963,17 +61093,17 @@ function CategoriasIndexPage() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/categorias._index.tsx",
-                              lineNumber: 136,
-                              columnNumber: 23
+                              fileName: "app/routes/Empresas/empresas._index.tsx",
+                              lineNumber: 127,
+                              columnNumber: 45
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/categorias._index.tsx",
-                            lineNumber: 135,
-                            columnNumber: 21
+                            fileName: "app/routes/Empresas/empresas._index.tsx",
+                            lineNumber: 126,
+                            columnNumber: 41
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
                             "a",
                             {
                               href: "/",
@@ -59983,17 +61113,17 @@ function CategoriasIndexPage() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/categorias._index.tsx",
-                              lineNumber: 144,
-                              columnNumber: 23
+                              fileName: "app/routes/Empresas/empresas._index.tsx",
+                              lineNumber: 135,
+                              columnNumber: 45
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/categorias._index.tsx",
-                            lineNumber: 143,
-                            columnNumber: 21
+                            fileName: "app/routes/Empresas/empresas._index.tsx",
+                            lineNumber: 134,
+                            columnNumber: 41
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
                             "a",
                             {
                               href: "/",
@@ -60003,28 +61133,28 @@ function CategoriasIndexPage() {
                             void 0,
                             !1,
                             {
-                              fileName: "app/routes/categorias._index.tsx",
-                              lineNumber: 152,
-                              columnNumber: 23
+                              fileName: "app/routes/Empresas/empresas._index.tsx",
+                              lineNumber: 143,
+                              columnNumber: 45
                             },
                             this
                           ) }, void 0, !1, {
-                            fileName: "app/routes/categorias._index.tsx",
-                            lineNumber: 151,
-                            columnNumber: 21
+                            fileName: "app/routes/Empresas/empresas._index.tsx",
+                            lineNumber: 142,
+                            columnNumber: 41
                           }, this)
                         ]
                       },
                       void 0,
                       !0,
                       {
-                        fileName: "app/routes/categorias._index.tsx",
-                        lineNumber: 131,
-                        columnNumber: 19
+                        fileName: "app/routes/Empresas/empresas._index.tsx",
+                        lineNumber: 122,
+                        columnNumber: 37
                       },
                       this
                     ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
                       "a",
                       {
                         href: "/",
@@ -60034,220 +61164,1055 @@ function CategoriasIndexPage() {
                       void 0,
                       !1,
                       {
-                        fileName: "app/routes/categorias._index.tsx",
-                        lineNumber: 161,
-                        columnNumber: 21
+                        fileName: "app/routes/Empresas/empresas._index.tsx",
+                        lineNumber: 152,
+                        columnNumber: 41
                       },
                       this
                     ) }, void 0, !1, {
-                      fileName: "app/routes/categorias._index.tsx",
-                      lineNumber: 160,
-                      columnNumber: 19
+                      fileName: "app/routes/Empresas/empresas._index.tsx",
+                      lineNumber: 151,
+                      columnNumber: 37
+                    }, this),
+                    "**"
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/Empresas/empresas._index.tsx",
+                  lineNumber: 118,
+                  columnNumber: 33
+                },
+                this
+              )
+            ] }, void 0, !0, {
+              fileName: "app/routes/Empresas/empresas._index.tsx",
+              lineNumber: 94,
+              columnNumber: 29
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/routes/Empresas/empresas._index.tsx",
+            lineNumber: 63,
+            columnNumber: 25
+          }, this)
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/routes/Empresas/empresas._index.tsx",
+          lineNumber: 59,
+          columnNumber: 21
+        },
+        this
+      )
+    ] }, void 0, !0, {
+      fileName: "app/routes/Empresas/empresas._index.tsx",
+      lineNumber: 24,
+      columnNumber: 17
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Empresas/empresas._index.tsx",
+      lineNumber: 23,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Empresas" }, void 0, !1, {
+        fileName: "app/routes/Empresas/empresas._index.tsx",
+        lineNumber: 171,
+        columnNumber: 33
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/Empresas/empresas._index.tsx",
+        lineNumber: 170,
+        columnNumber: 29
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "grid grid-rows-4 grid-flow-col gap-4 mb-4", children: data.empresas.length === 0 ? /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("p", { children: [
+        "Nenhuma empresa encontrada. V\xE1 at\xE9 a aba Categoria na barra de navega\xE7\xE3o e",
+        " ",
+        /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(Link2, { to: "novaempresa", className: "text-white underline", children: "cadastre uma." }, void 0, !1, {
+          fileName: "app/routes/Empresas/empresas._index.tsx",
+          lineNumber: 181,
+          columnNumber: 45
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/Empresas/empresas._index.tsx",
+        lineNumber: 179,
+        columnNumber: 41
+      }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "", children: data.empresas.map((empresa) => /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "py-2 px-4 mb-4 bg-green-500 text-white justify-center font-semibold rounded-md shadown-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("button", { children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
+          NavLink2,
+          {
+            to: empresa.id,
+            children: empresa.nomeEmpresa
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/Empresas/empresas._index.tsx",
+            lineNumber: 192,
+            columnNumber: 57
+          },
+          this
+        ),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("p", { children: empresa.descricaoEmpresa }, void 0, !1, {
+          fileName: "app/routes/Empresas/empresas._index.tsx",
+          lineNumber: 197,
+          columnNumber: 57
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("p", { children: empresa.enderecoEmpresa }, void 0, !1, {
+          fileName: "app/routes/Empresas/empresas._index.tsx",
+          lineNumber: 198,
+          columnNumber: 57
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/Empresas/empresas._index.tsx",
+        lineNumber: 191,
+        columnNumber: 53
+      }, this) }, empresa.id, !1, {
+        fileName: "app/routes/Empresas/empresas._index.tsx",
+        lineNumber: 189,
+        columnNumber: 49
+      }, this)) }, void 0, !1, {
+        fileName: "app/routes/Empresas/empresas._index.tsx",
+        lineNumber: 186,
+        columnNumber: 41
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/Empresas/empresas._index.tsx",
+        lineNumber: 177,
+        columnNumber: 33
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/Empresas/empresas._index.tsx",
+        lineNumber: 176,
+        columnNumber: 29
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/routes/Empresas/empresas._index.tsx",
+      lineNumber: 169,
+      columnNumber: 25
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Empresas/empresas._index.tsx",
+      lineNumber: 168,
+      columnNumber: 21
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Empresas/empresas._index.tsx",
+      lineNumber: 167,
+      columnNumber: 17
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Empresas/empresas._index.tsx",
+      lineNumber: 166,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/routes/Empresas/empresas._index.tsx",
+    lineNumber: 22,
+    columnNumber: 9
+  }, this);
+}
+
+// app/routes/Usuarios/usuarios._index.tsx
+var usuarios_index_exports = {};
+__export(usuarios_index_exports, {
+  default: () => UsuariosIndexPage,
+  loader: () => loader11,
+  meta: () => meta10
+});
+var import_node17 = __toESM(require_dist());
+var import_jsx_dev_runtime16 = __toESM(require_jsx_dev_runtime()), meta10 = () => [{ title: "EncontraTudo" }], loader11 = async ({ request: request3 }) => {
+  let id = await requireUserId(request3), users = await getUsers({ id });
+  return (0, import_node17.json)({ users });
+};
+function UsuariosIndexPage() {
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+          "img",
+          {
+            src: "https://flowbite.com/docs/images/logo.svg",
+            className: "h-8 mr-3",
+            alt: "Flowbite Logo"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/Usuarios/usuarios._index.tsx",
+            lineNumber: 26,
+            columnNumber: 25
+          },
+          this
+        ),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+          fileName: "app/routes/Usuarios/usuarios._index.tsx",
+          lineNumber: 31,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/Usuarios/usuarios._index.tsx",
+        lineNumber: 25,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+        "button",
+        {
+          "data-collapse-toggle": "navbar-dropdown",
+          type: "button",
+          className: "inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600",
+          "aria-controls": "navbar-dropdown",
+          "aria-expanded": "false",
+          children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+              fileName: "app/routes/Usuarios/usuarios._index.tsx",
+              lineNumber: 42,
+              columnNumber: 25
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+              "svg",
+              {
+                className: "w-5 h-5",
+                "aria-hidden": "true",
+                xmlns: "http://www.w3.org/2000/svg",
+                fill: "none",
+                viewBox: "0 0 17 14",
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+                  "path",
+                  {
+                    stroke: "currentColor",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-width": "2",
+                    d: "M1 1h15M1 7h15M1 13h15"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                    lineNumber: 50,
+                    columnNumber: 29
+                  },
+                  this
+                )
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                lineNumber: 43,
+                columnNumber: 25
+              },
+              this
+            )
+          ]
+        },
+        void 0,
+        !0,
+        {
+          fileName: "app/routes/Usuarios/usuarios._index.tsx",
+          lineNumber: 35,
+          columnNumber: 21
+        },
+        this
+      ),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+        "div",
+        {
+          className: "hidden w-full md:block md:w-auto",
+          id: "navbar-dropdown",
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+              Link2,
+              {
+                to: "/cidades",
+                className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
+                children: "Cidades"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                lineNumber: 65,
+                columnNumber: 33
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Usuarios/usuarios._index.tsx",
+              lineNumber: 64,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+              Link2,
+              {
+                to: "/usuarios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Usu\xE1rios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                lineNumber: 73,
+                columnNumber: 33
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Usuarios/usuarios._index.tsx",
+              lineNumber: 72,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+              Link2,
+              {
+                to: "/negocios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Neg\xF3cios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                lineNumber: 80,
+                columnNumber: 33
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Usuarios/usuarios._index.tsx",
+              lineNumber: 79,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+              Link2,
+              {
+                to: "/anuncios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "An\xFAncios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                lineNumber: 87,
+                columnNumber: 33
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Usuarios/usuarios._index.tsx",
+              lineNumber: 86,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+                "button",
+                {
+                  id: "dropdownNavbarLink",
+                  "data-dropdown-toggle": "dropdownNavbar",
+                  className: "flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent",
+                  children: [
+                    "Meus Dados",
+                    " ",
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+                      "svg",
+                      {
+                        className: "w-2.5 h-2.5 ml-2.5",
+                        "aria-hidden": "true",
+                        xmlns: "http://www.w3.org/2000/svg",
+                        fill: "none",
+                        viewBox: "0 0 10 6",
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+                          "path",
+                          {
+                            stroke: "currentColor",
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
+                            "stroke-width": "2",
+                            d: "m1 1 4 4 4-4"
+                          },
+                          void 0,
+                          !1,
+                          {
+                            fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                            lineNumber: 108,
+                            columnNumber: 41
+                          },
+                          this
+                        )
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                        lineNumber: 101,
+                        columnNumber: 37
+                      },
+                      this
+                    )
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                  lineNumber: 95,
+                  columnNumber: 33
+                },
+                this
+              ),
+              /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+                "div",
+                {
+                  id: "dropdownNavbar",
+                  className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+                      "ul",
+                      {
+                        className: "py-2 text-sm text-gray-700 dark:text-gray-400",
+                        "aria-labelledby": "dropdownLargeButton",
+                        children: [
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+                            "a",
+                            {
+                              href: "/",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Painel de Controle"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                              lineNumber: 127,
+                              columnNumber: 45
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                            lineNumber: 126,
+                            columnNumber: 41
+                          }, this),
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+                            "a",
+                            {
+                              href: "/",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Settings"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                              lineNumber: 135,
+                              columnNumber: 45
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                            lineNumber: 134,
+                            columnNumber: 41
+                          }, this),
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+                            "a",
+                            {
+                              href: "/",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Earnings"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                              lineNumber: 143,
+                              columnNumber: 45
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                            lineNumber: 142,
+                            columnNumber: 41
+                          }, this)
+                        ]
+                      },
+                      void 0,
+                      !0,
+                      {
+                        fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                        lineNumber: 122,
+                        columnNumber: 37
+                      },
+                      this
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
+                      "a",
+                      {
+                        href: "/",
+                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
+                        children: "Sair"
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                        lineNumber: 152,
+                        columnNumber: 41
+                      },
+                      this
+                    ) }, void 0, !1, {
+                      fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                      lineNumber: 151,
+                      columnNumber: 37
                     }, this)
                   ]
                 },
                 void 0,
                 !0,
                 {
-                  fileName: "app/routes/categorias._index.tsx",
-                  lineNumber: 127,
-                  columnNumber: 17
+                  fileName: "app/routes/Usuarios/usuarios._index.tsx",
+                  lineNumber: 118,
+                  columnNumber: 33
                 },
                 this
               )
             ] }, void 0, !0, {
-              fileName: "app/routes/categorias._index.tsx",
-              lineNumber: 103,
-              columnNumber: 15
+              fileName: "app/routes/Usuarios/usuarios._index.tsx",
+              lineNumber: 94,
+              columnNumber: 29
             }, this)
           ] }, void 0, !0, {
-            fileName: "app/routes/categorias._index.tsx",
-            lineNumber: 66,
-            columnNumber: 13
+            fileName: "app/routes/Usuarios/usuarios._index.tsx",
+            lineNumber: 63,
+            columnNumber: 25
           }, this)
         },
         void 0,
         !1,
         {
-          fileName: "app/routes/categorias._index.tsx",
-          lineNumber: 62,
-          columnNumber: 11
+          fileName: "app/routes/Usuarios/usuarios._index.tsx",
+          lineNumber: 59,
+          columnNumber: 21
         },
         this
       )
     ] }, void 0, !0, {
-      fileName: "app/routes/categorias._index.tsx",
-      lineNumber: 27,
-      columnNumber: 9
+      fileName: "app/routes/Usuarios/usuarios._index.tsx",
+      lineNumber: 24,
+      columnNumber: 17
     }, this) }, void 0, !1, {
-      fileName: "app/routes/categorias._index.tsx",
-      lineNumber: 26,
-      columnNumber: 7
+      fileName: "app/routes/Usuarios/usuarios._index.tsx",
+      lineNumber: 23,
+      columnNumber: 13
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Categorias" }, void 0, !1, {
-        fileName: "app/routes/categorias._index.tsx",
-        lineNumber: 180,
-        columnNumber: 17
+    /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Usu\xE1rios" }, void 0, !1, {
+        fileName: "app/routes/Usuarios/usuarios._index.tsx",
+        lineNumber: 171,
+        columnNumber: 33
       }, this) }, void 0, !1, {
-        fileName: "app/routes/categorias._index.tsx",
-        lineNumber: 179,
-        columnNumber: 15
+        fileName: "app/routes/Usuarios/usuarios._index.tsx",
+        lineNumber: 170,
+        columnNumber: 29
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8 mb-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { className: "grid grid-rows-4 grid-flow-col gap-4 mb-4", children: data.categorias.length === 0 ? /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("p", { children: [
-        "Nenhuma categoria encontrada. V\xE1 at\xE9 a aba Categoria na barra de navega\xE7\xE3o e",
+      /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("p", { children: [
+        "Nenhum usu\xE1rio encontrado. V\xE1 at\xE9 a aba Usu\xE1rios na barra de navega\xE7\xE3o e",
         " ",
-        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(Link2, { to: "novacategoria", className: "text-white underline", children: "cadastre uma." }, void 0, !1, {
-          fileName: "app/routes/categorias._index.tsx",
-          lineNumber: 190,
-          columnNumber: 23
+        /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(Link2, { to: "novousuario", className: "text-white underline", children: "cadastre um." }, void 0, !1, {
+          fileName: "app/routes/Usuarios/usuarios._index.tsx",
+          lineNumber: 179,
+          columnNumber: 37
         }, this)
       ] }, void 0, !0, {
-        fileName: "app/routes/categorias._index.tsx",
-        lineNumber: 188,
+        fileName: "app/routes/Usuarios/usuarios._index.tsx",
+        lineNumber: 177,
+        columnNumber: 33
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/Usuarios/usuarios._index.tsx",
+        lineNumber: 176,
+        columnNumber: 29
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/routes/Usuarios/usuarios._index.tsx",
+      lineNumber: 169,
+      columnNumber: 25
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Usuarios/usuarios._index.tsx",
+      lineNumber: 168,
+      columnNumber: 21
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Usuarios/usuarios._index.tsx",
+      lineNumber: 167,
+      columnNumber: 17
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Usuarios/usuarios._index.tsx",
+      lineNumber: 166,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/routes/Usuarios/usuarios._index.tsx",
+    lineNumber: 22,
+    columnNumber: 9
+  }, this);
+}
+
+// app/routes/Cidades/cidades._index.tsx
+var cidades_index_exports = {};
+__export(cidades_index_exports, {
+  default: () => CidadesIndexPage2,
+  loader: () => loader12,
+  meta: () => meta11
+});
+var import_node18 = __toESM(require_dist());
+var import_jsx_dev_runtime17 = __toESM(require_jsx_dev_runtime()), meta11 = () => [{ title: "EncontraTudo" }], loader12 = async ({ request: request3 }) => {
+  let userId = await requireUserId(request3), cidadeListItems = await getCidadeListItems({ userId });
+  return (0, import_node18.json)({ cidadeListItems });
+};
+function CidadesIndexPage2() {
+  let data = useLoaderData2();
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+          "img",
+          {
+            src: "https://flowbite.com/docs/images/logo.svg",
+            className: "h-8 mr-3",
+            alt: "Flowbite Logo"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/Cidades/cidades._index.tsx",
+            lineNumber: 27,
+            columnNumber: 25
+          },
+          this
+        ),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+          fileName: "app/routes/Cidades/cidades._index.tsx",
+          lineNumber: 32,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/Cidades/cidades._index.tsx",
+        lineNumber: 26,
         columnNumber: 21
-      }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { className: "", children: data.categorias.map((categorias) => /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { className: "py-2 px-4 mb-4 bg-green-500 text-white justify-center font-semibold rounded-md shadown-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("button", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
-        NavLink2,
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+        "button",
         {
-          to: categorias.id,
-          children: categorias.nomeCategoria
+          "data-collapse-toggle": "navbar-dropdown",
+          type: "button",
+          className: "inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600",
+          "aria-controls": "navbar-dropdown",
+          "aria-expanded": "false",
+          children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+              fileName: "app/routes/Cidades/cidades._index.tsx",
+              lineNumber: 43,
+              columnNumber: 25
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+              "svg",
+              {
+                className: "w-5 h-5",
+                "aria-hidden": "true",
+                xmlns: "http://www.w3.org/2000/svg",
+                fill: "none",
+                viewBox: "0 0 17 14",
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+                  "path",
+                  {
+                    stroke: "currentColor",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-width": "2",
+                    d: "M1 1h15M1 7h15M1 13h15"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/routes/Cidades/cidades._index.tsx",
+                    lineNumber: 51,
+                    columnNumber: 29
+                  },
+                  this
+                )
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Cidades/cidades._index.tsx",
+                lineNumber: 44,
+                columnNumber: 25
+              },
+              this
+            )
+          ]
+        },
+        void 0,
+        !0,
+        {
+          fileName: "app/routes/Cidades/cidades._index.tsx",
+          lineNumber: 36,
+          columnNumber: 21
+        },
+        this
+      ),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+        "div",
+        {
+          className: "hidden w-full md:block md:w-auto",
+          id: "navbar-dropdown",
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+              Link2,
+              {
+                to: "/cidades",
+                className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
+                children: "Cidades"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Cidades/cidades._index.tsx",
+                lineNumber: 66,
+                columnNumber: 33
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Cidades/cidades._index.tsx",
+              lineNumber: 65,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+              Link2,
+              {
+                to: "/usuarios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Usu\xE1rios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Cidades/cidades._index.tsx",
+                lineNumber: 74,
+                columnNumber: 33
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Cidades/cidades._index.tsx",
+              lineNumber: 73,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+              Link2,
+              {
+                to: "/negocios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Neg\xF3cios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Cidades/cidades._index.tsx",
+                lineNumber: 81,
+                columnNumber: 33
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Cidades/cidades._index.tsx",
+              lineNumber: 80,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+              Link2,
+              {
+                to: "/anuncios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "An\xFAncios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Cidades/cidades._index.tsx",
+                lineNumber: 88,
+                columnNumber: 33
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Cidades/cidades._index.tsx",
+              lineNumber: 87,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+                "button",
+                {
+                  id: "dropdownNavbarLink",
+                  "data-dropdown-toggle": "dropdownNavbar",
+                  className: "flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent",
+                  children: [
+                    "Meus Dados",
+                    " ",
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+                      "svg",
+                      {
+                        className: "w-2.5 h-2.5 ml-2.5",
+                        "aria-hidden": "true",
+                        xmlns: "http://www.w3.org/2000/svg",
+                        fill: "none",
+                        viewBox: "0 0 10 6",
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+                          "path",
+                          {
+                            stroke: "currentColor",
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
+                            "stroke-width": "2",
+                            d: "m1 1 4 4 4-4"
+                          },
+                          void 0,
+                          !1,
+                          {
+                            fileName: "app/routes/Cidades/cidades._index.tsx",
+                            lineNumber: 109,
+                            columnNumber: 41
+                          },
+                          this
+                        )
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/Cidades/cidades._index.tsx",
+                        lineNumber: 102,
+                        columnNumber: 37
+                      },
+                      this
+                    )
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/Cidades/cidades._index.tsx",
+                  lineNumber: 96,
+                  columnNumber: 33
+                },
+                this
+              ),
+              /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+                "div",
+                {
+                  id: "dropdownNavbar",
+                  className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+                      "ul",
+                      {
+                        className: "py-2 text-sm text-gray-700 dark:text-gray-400",
+                        "aria-labelledby": "dropdownLargeButton",
+                        children: [
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+                            "a",
+                            {
+                              href: "/",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Painel de Controle"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Cidades/cidades._index.tsx",
+                              lineNumber: 128,
+                              columnNumber: 45
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Cidades/cidades._index.tsx",
+                            lineNumber: 127,
+                            columnNumber: 41
+                          }, this),
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+                            "a",
+                            {
+                              href: "/",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Settings"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Cidades/cidades._index.tsx",
+                              lineNumber: 136,
+                              columnNumber: 45
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Cidades/cidades._index.tsx",
+                            lineNumber: 135,
+                            columnNumber: 41
+                          }, this),
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+                            "a",
+                            {
+                              href: "/",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Earnings"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Cidades/cidades._index.tsx",
+                              lineNumber: 144,
+                              columnNumber: 45
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Cidades/cidades._index.tsx",
+                            lineNumber: 143,
+                            columnNumber: 41
+                          }, this)
+                        ]
+                      },
+                      void 0,
+                      !0,
+                      {
+                        fileName: "app/routes/Cidades/cidades._index.tsx",
+                        lineNumber: 123,
+                        columnNumber: 37
+                      },
+                      this
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+                      "a",
+                      {
+                        href: "/",
+                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
+                        children: "Sair"
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/Cidades/cidades._index.tsx",
+                        lineNumber: 153,
+                        columnNumber: 41
+                      },
+                      this
+                    ) }, void 0, !1, {
+                      fileName: "app/routes/Cidades/cidades._index.tsx",
+                      lineNumber: 152,
+                      columnNumber: 37
+                    }, this)
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/Cidades/cidades._index.tsx",
+                  lineNumber: 119,
+                  columnNumber: 33
+                },
+                this
+              )
+            ] }, void 0, !0, {
+              fileName: "app/routes/Cidades/cidades._index.tsx",
+              lineNumber: 95,
+              columnNumber: 29
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/routes/Cidades/cidades._index.tsx",
+            lineNumber: 64,
+            columnNumber: 25
+          }, this)
         },
         void 0,
         !1,
         {
-          fileName: "app/routes/categorias._index.tsx",
-          lineNumber: 201,
-          columnNumber: 29
+          fileName: "app/routes/Cidades/cidades._index.tsx",
+          lineNumber: 60,
+          columnNumber: 21
+        },
+        this
+      )
+    ] }, void 0, !0, {
+      fileName: "app/routes/Cidades/cidades._index.tsx",
+      lineNumber: 25,
+      columnNumber: 17
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Cidades/cidades._index.tsx",
+      lineNumber: 24,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Cidades" }, void 0, !1, {
+        fileName: "app/routes/Cidades/cidades._index.tsx",
+        lineNumber: 172,
+        columnNumber: 33
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/Cidades/cidades._index.tsx",
+        lineNumber: 171,
+        columnNumber: 29
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: data.cidadeListItems.length === 0 ? /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("p", { children: [
+        "Nenhuma cidade encontrada. V\xE1 at\xE9 a aba Cidade na barra de navega\xE7\xE3o e",
+        " ",
+        /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(Link2, { to: "novacidade", className: "text-white underline", children: "cadastre uma." }, void 0, !1, {
+          fileName: "app/routes/Cidades/cidades._index.tsx",
+          lineNumber: 181,
+          columnNumber: 41
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/Cidades/cidades._index.tsx",
+        lineNumber: 179,
+        columnNumber: 37
+      }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("ol", { children: data.cidadeListItems.map((cidades) => /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("button", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
+        NavLink2,
+        {
+          className: ({ isActive }) => `rounded border-b p-2 text-xl ${isActive ? "bg-green-500" : "bg-green-700"}`,
+          to: cidades.id,
+          children: cidades.nomeCidade
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/routes/Cidades/cidades._index.tsx",
+          lineNumber: 192,
+          columnNumber: 53
         },
         this
       ) }, void 0, !1, {
-        fileName: "app/routes/categorias._index.tsx",
-        lineNumber: 200,
-        columnNumber: 27
-      }, this) }, categorias.id, !1, {
-        fileName: "app/routes/categorias._index.tsx",
-        lineNumber: 198,
-        columnNumber: 25
+        fileName: "app/routes/Cidades/cidades._index.tsx",
+        lineNumber: 191,
+        columnNumber: 49
+      }, this) }, cidades.id, !1, {
+        fileName: "app/routes/Cidades/cidades._index.tsx",
+        lineNumber: 190,
+        columnNumber: 45
       }, this)) }, void 0, !1, {
-        fileName: "app/routes/categorias._index.tsx",
-        lineNumber: 195,
-        columnNumber: 21
-      }, this) }, void 0, !1, {
-        fileName: "app/routes/categorias._index.tsx",
+        fileName: "app/routes/Cidades/cidades._index.tsx",
         lineNumber: 186,
-        columnNumber: 17
+        columnNumber: 37
       }, this) }, void 0, !1, {
-        fileName: "app/routes/categorias._index.tsx",
-        lineNumber: 185,
-        columnNumber: 15
+        fileName: "app/routes/Cidades/cidades._index.tsx",
+        lineNumber: 177,
+        columnNumber: 29
       }, this)
     ] }, void 0, !0, {
-      fileName: "app/routes/categorias._index.tsx",
-      lineNumber: 178,
+      fileName: "app/routes/Cidades/cidades._index.tsx",
+      lineNumber: 170,
+      columnNumber: 25
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Cidades/cidades._index.tsx",
+      lineNumber: 169,
+      columnNumber: 21
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Cidades/cidades._index.tsx",
+      lineNumber: 168,
+      columnNumber: 17
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Cidades/cidades._index.tsx",
+      lineNumber: 167,
       columnNumber: 13
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/categorias._index.tsx",
-      lineNumber: 177,
-      columnNumber: 11
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/categorias._index.tsx",
-      lineNumber: 176,
-      columnNumber: 9
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/categorias._index.tsx",
-      lineNumber: 175,
-      columnNumber: 7
     }, this)
   ] }, void 0, !0, {
-    fileName: "app/routes/categorias._index.tsx",
-    lineNumber: 24,
-    columnNumber: 5
-  }, this);
-}
-
-// app/routes/cidades.$cidadeId.tsx
-var cidades_cidadeId_exports = {};
-__export(cidades_cidadeId_exports, {
-  ErrorBoundary: () => ErrorBoundary3,
-  action: () => action7,
-  default: () => CidadesIdPage,
-  loader: () => loader7
-});
-var import_node13 = __toESM(require_dist());
-var import_jsx_dev_runtime12 = __toESM(require_jsx_dev_runtime()), loader7 = async ({ params, request: request3 }) => {
-  let userId = await requireUserId(request3);
-  invariant4(params.cidadeId, "Id da Cidade n\xE3o encontrado.");
-  let cidades = await getCidade({ id: params.cidadeId, userId });
-  if (!cidades)
-    throw new Response("N\xE3o encontrado", { status: 404 });
-  return (0, import_node13.json)({ cidades });
-}, action7 = async ({ params, request: request3 }) => {
-  let userId = await requireUserId(request3);
-  return invariant4(params.cidadeId, "cidadeId n\xE3o encontrado."), await deleteCidade({ id: params.cidadeId, userId }), (0, import_node13.redirect)("/cidades/");
-};
-function CidadesIdPage() {
-  let data = useLoaderData2();
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("h3", { className: "text-2xl font-bold", children: data.cidades.nomeCidade }, void 0, !1, {
-      fileName: "app/routes/cidades.$cidadeId.tsx",
-      lineNumber: 39,
-      columnNumber: 7
-    }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("hr", { className: "my-4" }, void 0, !1, {
-      fileName: "app/routes/cidades.$cidadeId.tsx",
-      lineNumber: 40,
-      columnNumber: 7
-    }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(Form, { method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
-      "button",
-      {
-        type: "submit",
-        className: "rounded bg-red-500 px-4 py-2 text-black hover:bg-red-600 focus:bg-red-400",
-        children: "Deletar Cidade"
-      },
-      void 0,
-      !1,
-      {
-        fileName: "app/routes/cidades.$cidadeId.tsx",
-        lineNumber: 42,
-        columnNumber: 9
-      },
-      this
-    ) }, void 0, !1, {
-      fileName: "app/routes/cidades.$cidadeId.tsx",
-      lineNumber: 41,
-      columnNumber: 7
-    }, this)
-  ] }, void 0, !0, {
-    fileName: "app/routes/cidades.$cidadeId.tsx",
-    lineNumber: 38,
-    columnNumber: 5
-  }, this);
-}
-function ErrorBoundary3() {
-  let error = useRouteError();
-  return error instanceof Error ? /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { children: [
-    "Um erro inesperado ocorreu: ",
-    error.message
-  ] }, void 0, !0, {
-    fileName: "app/routes/cidades.$cidadeId.tsx",
-    lineNumber: 57,
-    columnNumber: 12
-  }, this) : isRouteErrorResponse(error) ? error.status === 404 ? /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { children: "Cidade n\xE3o encontrada." }, void 0, !1, {
-    fileName: "app/routes/cidades.$cidadeId.tsx",
-    lineNumber: 65,
-    columnNumber: 12
-  }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("div", { children: [
-    "Um erro inesperado aconteceu. C\xF3digo : ",
-    error.statusText
-  ] }, void 0, !0, {
-    fileName: "app/routes/cidades.$cidadeId.tsx",
-    lineNumber: 68,
-    columnNumber: 10
-  }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("h1", { children: "Erro desconhecido" }, void 0, !1, {
-    fileName: "app/routes/cidades.$cidadeId.tsx",
-    lineNumber: 61,
-    columnNumber: 12
+    fileName: "app/routes/Cidades/cidades._index.tsx",
+    lineNumber: 23,
+    columnNumber: 9
   }, this);
 }
 
@@ -60255,10 +62220,10 @@ function ErrorBoundary3() {
 var resultadoPesquisa_exports = {};
 __export(resultadoPesquisa_exports, {
   default: () => ResultadoPesquisa,
-  loader: () => loader8,
-  meta: () => meta8
+  loader: () => loader13,
+  meta: () => meta12
 });
-var import_node14 = __toESM(require_dist());
+var import_node19 = __toESM(require_dist());
 
 // app/models/note.server.ts
 function getNote({
@@ -60304,15 +62269,15 @@ function deleteNote({
 }
 
 // app/routes/resultadoPesquisa.tsx
-var import_jsx_dev_runtime13 = __toESM(require_jsx_dev_runtime()), meta8 = () => [{ title: "EncontraTudo" }], loader8 = async ({ request: request3 }) => {
+var import_jsx_dev_runtime18 = __toESM(require_jsx_dev_runtime()), meta12 = () => [{ title: "EncontraTudo" }], loader13 = async ({ request: request3 }) => {
   let userId = await requireUserId(request3), noteListItems = await getNoteListItems({ userId });
-  return (0, import_node14.json)({ noteListItems });
+  return (0, import_node19.json)({ noteListItems });
 };
 function ResultadoPesquisa() {
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
           "img",
           {
             src: "https://flowbite.com/docs/images/logo.svg",
@@ -60328,7 +62293,7 @@ function ResultadoPesquisa() {
           },
           this
         ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
           fileName: "app/routes/resultadoPesquisa.tsx",
           lineNumber: 34,
           columnNumber: 13
@@ -60338,7 +62303,7 @@ function ResultadoPesquisa() {
         lineNumber: 28,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
         "button",
         {
           "data-collapse-toggle": "navbar-dropdown",
@@ -60347,12 +62312,12 @@ function ResultadoPesquisa() {
           "aria-controls": "navbar-dropdown",
           "aria-expanded": "false",
           children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+            /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
               fileName: "app/routes/resultadoPesquisa.tsx",
               lineNumber: 45,
               columnNumber: 13
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
               "svg",
               {
                 className: "w-5 h-5",
@@ -60360,7 +62325,7 @@ function ResultadoPesquisa() {
                 xmlns: "http://www.w3.org/2000/svg",
                 fill: "none",
                 viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
                   "path",
                   {
                     stroke: "currentColor",
@@ -60399,13 +62364,13 @@ function ResultadoPesquisa() {
         },
         this
       ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
         "div",
         {
           className: "hidden w-full md:block md:w-auto",
           id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
               Link2,
               {
                 to: "/busca",
@@ -60425,7 +62390,7 @@ function ResultadoPesquisa() {
               lineNumber: 67,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
               Link2,
               {
                 to: "/categorias",
@@ -60445,7 +62410,7 @@ function ResultadoPesquisa() {
               lineNumber: 75,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
               Link2,
               {
                 to: "/sobre",
@@ -60465,7 +62430,7 @@ function ResultadoPesquisa() {
               lineNumber: 82,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
               Link2,
               {
                 to: "/contato",
@@ -60485,7 +62450,7 @@ function ResultadoPesquisa() {
               lineNumber: 89,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
               Link2,
               {
                 to: "/franquias",
@@ -60505,8 +62470,8 @@ function ResultadoPesquisa() {
               lineNumber: 96,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
                 "button",
                 {
                   id: "dropdownNavbarLink",
@@ -60515,7 +62480,7 @@ function ResultadoPesquisa() {
                   children: [
                     "Meus Dados",
                     " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
                       "svg",
                       {
                         className: "w-2.5 h-2.5 ml-2.5",
@@ -60523,7 +62488,7 @@ function ResultadoPesquisa() {
                         xmlns: "http://www.w3.org/2000/svg",
                         fill: "none",
                         viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
                           "path",
                           {
                             stroke: "currentColor",
@@ -60562,19 +62527,19 @@ function ResultadoPesquisa() {
                 },
                 this
               ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+              /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
                 "div",
                 {
                   id: "dropdownNavbar",
                   className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
                       "ul",
                       {
                         className: "py-2 text-sm text-gray-700 dark:text-gray-400",
                         "aria-labelledby": "dropdownLargeButton",
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -60594,7 +62559,7 @@ function ResultadoPesquisa() {
                             lineNumber: 135,
                             columnNumber: 21
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -60614,7 +62579,7 @@ function ResultadoPesquisa() {
                             lineNumber: 143,
                             columnNumber: 21
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -60645,7 +62610,7 @@ function ResultadoPesquisa() {
                       },
                       this
                     ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
                       "a",
                       {
                         href: "#",
@@ -60705,8 +62670,8 @@ function ResultadoPesquisa() {
       lineNumber: 26,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Resultado(S) da Pesquisa" }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Resultado(S) da Pesquisa" }, void 0, !1, {
         fileName: "app/routes/resultadoPesquisa.tsx",
         lineNumber: 180,
         columnNumber: 17
@@ -60715,7 +62680,7 @@ function ResultadoPesquisa() {
         lineNumber: 179,
         columnNumber: 15
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("h3", { className: "text-center text-2xl font-bold tracking-tighter sm:text-2xl lg:text-2xl sm:mb-4 md:mb-4 lg:mb-4", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("span", { className: "block uppercase text-white drop-shadow-md", children: "Teresina - PI" }, void 0, !1, {
+      /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("h3", { className: "text-center text-2xl font-bold tracking-tighter sm:text-2xl lg:text-2xl sm:mb-4 md:mb-4 lg:mb-4", children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("span", { className: "block uppercase text-white drop-shadow-md", children: "Teresina - PI" }, void 0, !1, {
         fileName: "app/routes/resultadoPesquisa.tsx",
         lineNumber: 185,
         columnNumber: 15
@@ -60724,18 +62689,18 @@ function ResultadoPesquisa() {
         lineNumber: 184,
         columnNumber: 15
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8 mb-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "grid flex-row mb-4", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("button", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "py-2 px-4 mt-4 mb-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("p", { className: "font-bold", children: "Est\xFAdio de Massagem Kotai - Relaxamento Japon\xEAs \u{1F1EF}\u{1F1F5}" }, void 0, !1, {
+      /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8 mb-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { className: "grid flex-row mb-4", children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("button", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { className: "py-2 px-4 mt-4 mb-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("p", { className: "font-bold", children: "Est\xFAdio de Massagem Kotai - Relaxamento Japon\xEAs \u{1F1EF}\u{1F1F5}" }, void 0, !1, {
           fileName: "app/routes/resultadoPesquisa.tsx",
           lineNumber: 195,
           columnNumber: 23
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("p", { className: "font-medium", children: "Rua : Odon Carlos Leme, 256 - Centro" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("p", { className: "font-medium", children: "Rua : Odon Carlos Leme, 256 - Centro" }, void 0, !1, {
           fileName: "app/routes/resultadoPesquisa.tsx",
           lineNumber: 196,
           columnNumber: 23
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("p", { className: "font-regular", children: "Coroat\xE1 - MA" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("p", { className: "font-regular", children: "Coroat\xE1 - MA" }, void 0, !1, {
           fileName: "app/routes/resultadoPesquisa.tsx",
           lineNumber: 197,
           columnNumber: 23
@@ -60781,1877 +62746,45 @@ function ResultadoPesquisa() {
   }, this);
 }
 
-// app/routes/empresas._index.tsx
-var empresas_index_exports = {};
-__export(empresas_index_exports, {
-  default: () => EmpresasIndexPage,
-  loader: () => loader9,
-  meta: () => meta9
-});
-var import_node15 = __toESM(require_dist());
-var import_jsx_dev_runtime14 = __toESM(require_jsx_dev_runtime()), meta9 = () => [{ title: "EncontraTudo" }], loader9 = async ({ request: request3 }) => {
-  let userId = await requireUserId(request3), empresas = await getEmpresaListItems({ userId });
-  return (0, import_node15.json)({ empresas });
-};
-function EmpresasIndexPage() {
-  let data = useLoaderData2();
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-          "img",
-          {
-            src: "https://flowbite.com/docs/images/logo.svg",
-            className: "h-8 mr-3",
-            alt: "Flowbite Logo"
-          },
-          void 0,
-          !1,
-          {
-            fileName: "app/routes/empresas._index.tsx",
-            lineNumber: 26,
-            columnNumber: 25
-          },
-          this
-        ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
-          fileName: "app/routes/empresas._index.tsx",
-          lineNumber: 31,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/empresas._index.tsx",
-        lineNumber: 25,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-        "button",
-        {
-          "data-collapse-toggle": "navbar-dropdown",
-          type: "button",
-          className: "inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600",
-          "aria-controls": "navbar-dropdown",
-          "aria-expanded": "false",
-          children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
-              fileName: "app/routes/empresas._index.tsx",
-              lineNumber: 42,
-              columnNumber: 25
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-              "svg",
-              {
-                className: "w-5 h-5",
-                "aria-hidden": "true",
-                xmlns: "http://www.w3.org/2000/svg",
-                fill: "none",
-                viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-                  "path",
-                  {
-                    stroke: "currentColor",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": "2",
-                    d: "M1 1h15M1 7h15M1 13h15"
-                  },
-                  void 0,
-                  !1,
-                  {
-                    fileName: "app/routes/empresas._index.tsx",
-                    lineNumber: 50,
-                    columnNumber: 29
-                  },
-                  this
-                )
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/empresas._index.tsx",
-                lineNumber: 43,
-                columnNumber: 25
-              },
-              this
-            )
-          ]
-        },
-        void 0,
-        !0,
-        {
-          fileName: "app/routes/empresas._index.tsx",
-          lineNumber: 35,
-          columnNumber: 21
-        },
-        this
-      ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-        "div",
-        {
-          className: "hidden w-full md:block md:w-auto",
-          id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-              Link2,
-              {
-                to: "/cidades",
-                className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
-                children: "Cidades"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/empresas._index.tsx",
-                lineNumber: 65,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/empresas._index.tsx",
-              lineNumber: 64,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-              Link2,
-              {
-                to: "/usuarios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Usu\xE1rios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/empresas._index.tsx",
-                lineNumber: 73,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/empresas._index.tsx",
-              lineNumber: 72,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-              Link2,
-              {
-                to: "/negocios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Neg\xF3cios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/empresas._index.tsx",
-                lineNumber: 80,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/empresas._index.tsx",
-              lineNumber: 79,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-              Link2,
-              {
-                to: "/anuncios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "An\xFAncios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/empresas._index.tsx",
-                lineNumber: 87,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/empresas._index.tsx",
-              lineNumber: 86,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-                "button",
-                {
-                  id: "dropdownNavbarLink",
-                  "data-dropdown-toggle": "dropdownNavbar",
-                  className: "flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent",
-                  children: [
-                    "Meus Dados",
-                    " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-                      "svg",
-                      {
-                        className: "w-2.5 h-2.5 ml-2.5",
-                        "aria-hidden": "true",
-                        xmlns: "http://www.w3.org/2000/svg",
-                        fill: "none",
-                        viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-                          "path",
-                          {
-                            stroke: "currentColor",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round",
-                            "stroke-width": "2",
-                            d: "m1 1 4 4 4-4"
-                          },
-                          void 0,
-                          !1,
-                          {
-                            fileName: "app/routes/empresas._index.tsx",
-                            lineNumber: 108,
-                            columnNumber: 41
-                          },
-                          this
-                        )
-                      },
-                      void 0,
-                      !1,
-                      {
-                        fileName: "app/routes/empresas._index.tsx",
-                        lineNumber: 101,
-                        columnNumber: 37
-                      },
-                      this
-                    )
-                  ]
-                },
-                void 0,
-                !0,
-                {
-                  fileName: "app/routes/empresas._index.tsx",
-                  lineNumber: 95,
-                  columnNumber: 33
-                },
-                this
-              ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-                "div",
-                {
-                  id: "dropdownNavbar",
-                  className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-                      "ul",
-                      {
-                        className: "py-2 text-sm text-gray-700 dark:text-gray-400",
-                        "aria-labelledby": "dropdownLargeButton",
-                        children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-                            "a",
-                            {
-                              href: "/",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Painel de Controle"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/empresas._index.tsx",
-                              lineNumber: 127,
-                              columnNumber: 45
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/empresas._index.tsx",
-                            lineNumber: 126,
-                            columnNumber: 41
-                          }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-                            "a",
-                            {
-                              href: "/",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Settings"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/empresas._index.tsx",
-                              lineNumber: 135,
-                              columnNumber: 45
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/empresas._index.tsx",
-                            lineNumber: 134,
-                            columnNumber: 41
-                          }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-                            "a",
-                            {
-                              href: "/",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Earnings"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/empresas._index.tsx",
-                              lineNumber: 143,
-                              columnNumber: 45
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/empresas._index.tsx",
-                            lineNumber: 142,
-                            columnNumber: 41
-                          }, this)
-                        ]
-                      },
-                      void 0,
-                      !0,
-                      {
-                        fileName: "app/routes/empresas._index.tsx",
-                        lineNumber: 122,
-                        columnNumber: 37
-                      },
-                      this
-                    ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-                      "a",
-                      {
-                        href: "/",
-                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
-                        children: "Sair"
-                      },
-                      void 0,
-                      !1,
-                      {
-                        fileName: "app/routes/empresas._index.tsx",
-                        lineNumber: 152,
-                        columnNumber: 41
-                      },
-                      this
-                    ) }, void 0, !1, {
-                      fileName: "app/routes/empresas._index.tsx",
-                      lineNumber: 151,
-                      columnNumber: 37
-                    }, this),
-                    "**"
-                  ]
-                },
-                void 0,
-                !0,
-                {
-                  fileName: "app/routes/empresas._index.tsx",
-                  lineNumber: 118,
-                  columnNumber: 33
-                },
-                this
-              )
-            ] }, void 0, !0, {
-              fileName: "app/routes/empresas._index.tsx",
-              lineNumber: 94,
-              columnNumber: 29
-            }, this)
-          ] }, void 0, !0, {
-            fileName: "app/routes/empresas._index.tsx",
-            lineNumber: 63,
-            columnNumber: 25
-          }, this)
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/routes/empresas._index.tsx",
-          lineNumber: 59,
-          columnNumber: 21
-        },
-        this
-      )
-    ] }, void 0, !0, {
-      fileName: "app/routes/empresas._index.tsx",
-      lineNumber: 24,
-      columnNumber: 17
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/empresas._index.tsx",
-      lineNumber: 23,
-      columnNumber: 13
-    }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Empresas" }, void 0, !1, {
-        fileName: "app/routes/empresas._index.tsx",
-        lineNumber: 171,
-        columnNumber: 33
-      }, this) }, void 0, !1, {
-        fileName: "app/routes/empresas._index.tsx",
-        lineNumber: 170,
-        columnNumber: 29
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "grid grid-rows-4 grid-flow-col gap-4 mb-4", children: data.empresas.length === 0 ? /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("p", { children: [
-        "Nenhuma empresa encontrada. V\xE1 at\xE9 a aba Categoria na barra de navega\xE7\xE3o e",
-        " ",
-        /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(Link2, { to: "novaempresa", className: "text-white underline", children: "cadastre uma." }, void 0, !1, {
-          fileName: "app/routes/empresas._index.tsx",
-          lineNumber: 181,
-          columnNumber: 45
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/empresas._index.tsx",
-        lineNumber: 179,
-        columnNumber: 41
-      }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "", children: data.empresas.map((empresa) => /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("div", { className: "py-2 px-4 mb-4 bg-green-500 text-white justify-center font-semibold rounded-md shadown-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("button", { children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(
-          NavLink2,
-          {
-            to: empresa.id,
-            children: empresa.nomeEmpresa
-          },
-          void 0,
-          !1,
-          {
-            fileName: "app/routes/empresas._index.tsx",
-            lineNumber: 192,
-            columnNumber: 57
-          },
-          this
-        ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("p", { children: empresa.descricaoEmpresa }, void 0, !1, {
-          fileName: "app/routes/empresas._index.tsx",
-          lineNumber: 197,
-          columnNumber: 57
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)("p", { children: empresa.enderecoEmpresa }, void 0, !1, {
-          fileName: "app/routes/empresas._index.tsx",
-          lineNumber: 198,
-          columnNumber: 57
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/empresas._index.tsx",
-        lineNumber: 191,
-        columnNumber: 53
-      }, this) }, empresa.id, !1, {
-        fileName: "app/routes/empresas._index.tsx",
-        lineNumber: 189,
-        columnNumber: 49
-      }, this)) }, void 0, !1, {
-        fileName: "app/routes/empresas._index.tsx",
-        lineNumber: 186,
-        columnNumber: 41
-      }, this) }, void 0, !1, {
-        fileName: "app/routes/empresas._index.tsx",
-        lineNumber: 177,
-        columnNumber: 33
-      }, this) }, void 0, !1, {
-        fileName: "app/routes/empresas._index.tsx",
-        lineNumber: 176,
-        columnNumber: 29
-      }, this)
-    ] }, void 0, !0, {
-      fileName: "app/routes/empresas._index.tsx",
-      lineNumber: 169,
-      columnNumber: 25
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/empresas._index.tsx",
-      lineNumber: 168,
-      columnNumber: 21
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/empresas._index.tsx",
-      lineNumber: 167,
-      columnNumber: 17
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/empresas._index.tsx",
-      lineNumber: 166,
-      columnNumber: 13
-    }, this)
-  ] }, void 0, !0, {
-    fileName: "app/routes/empresas._index.tsx",
-    lineNumber: 22,
-    columnNumber: 9
-  }, this);
-}
-
-// app/routes/negocios._index.tsx
-var negocios_index_exports = {};
-__export(negocios_index_exports, {
-  default: () => NegociosIndexPage,
-  loader: () => loader10,
-  meta: () => meta10
-});
-var import_node16 = __toESM(require_dist());
-var import_jsx_dev_runtime15 = __toESM(require_jsx_dev_runtime()), meta10 = () => [{ title: "EncontraTudo" }], loader10 = async ({ request: request3 }) => {
-  let userId = await requireUserId(request3), cidadeListItems = await getCidadeListItems({ userId });
-  return (0, import_node16.json)({ cidadeListItems });
-};
-function NegociosIndexPage() {
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-          "img",
-          {
-            src: "https://flowbite.com/docs/images/logo.svg",
-            className: "h-8 mr-3",
-            alt: "Flowbite Logo"
-          },
-          void 0,
-          !1,
-          {
-            fileName: "app/routes/negocios._index.tsx",
-            lineNumber: 26,
-            columnNumber: 25
-          },
-          this
-        ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
-          fileName: "app/routes/negocios._index.tsx",
-          lineNumber: 31,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/negocios._index.tsx",
-        lineNumber: 25,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-        "button",
-        {
-          "data-collapse-toggle": "navbar-dropdown",
-          type: "button",
-          className: "inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600",
-          "aria-controls": "navbar-dropdown",
-          "aria-expanded": "false",
-          children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
-              fileName: "app/routes/negocios._index.tsx",
-              lineNumber: 42,
-              columnNumber: 25
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-              "svg",
-              {
-                className: "w-5 h-5",
-                "aria-hidden": "true",
-                xmlns: "http://www.w3.org/2000/svg",
-                fill: "none",
-                viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-                  "path",
-                  {
-                    stroke: "currentColor",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": "2",
-                    d: "M1 1h15M1 7h15M1 13h15"
-                  },
-                  void 0,
-                  !1,
-                  {
-                    fileName: "app/routes/negocios._index.tsx",
-                    lineNumber: 50,
-                    columnNumber: 29
-                  },
-                  this
-                )
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/negocios._index.tsx",
-                lineNumber: 43,
-                columnNumber: 25
-              },
-              this
-            )
-          ]
-        },
-        void 0,
-        !0,
-        {
-          fileName: "app/routes/negocios._index.tsx",
-          lineNumber: 35,
-          columnNumber: 21
-        },
-        this
-      ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-        "div",
-        {
-          className: "hidden w-full md:block md:w-auto",
-          id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-              Link2,
-              {
-                to: "/cidades",
-                className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
-                children: "Cidades"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/negocios._index.tsx",
-                lineNumber: 65,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/negocios._index.tsx",
-              lineNumber: 64,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-              Link2,
-              {
-                to: "/usuarios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Usu\xE1rios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/negocios._index.tsx",
-                lineNumber: 73,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/negocios._index.tsx",
-              lineNumber: 72,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-              Link2,
-              {
-                to: "/negocios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Neg\xF3cios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/negocios._index.tsx",
-                lineNumber: 80,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/negocios._index.tsx",
-              lineNumber: 79,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-              Link2,
-              {
-                to: "/anuncios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "An\xFAncios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/negocios._index.tsx",
-                lineNumber: 87,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/negocios._index.tsx",
-              lineNumber: 86,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-                "button",
-                {
-                  id: "dropdownNavbarLink",
-                  "data-dropdown-toggle": "dropdownNavbar",
-                  className: "flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent",
-                  children: [
-                    "Meus Dados",
-                    " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-                      "svg",
-                      {
-                        className: "w-2.5 h-2.5 ml-2.5",
-                        "aria-hidden": "true",
-                        xmlns: "http://www.w3.org/2000/svg",
-                        fill: "none",
-                        viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-                          "path",
-                          {
-                            stroke: "currentColor",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round",
-                            "stroke-width": "2",
-                            d: "m1 1 4 4 4-4"
-                          },
-                          void 0,
-                          !1,
-                          {
-                            fileName: "app/routes/negocios._index.tsx",
-                            lineNumber: 108,
-                            columnNumber: 41
-                          },
-                          this
-                        )
-                      },
-                      void 0,
-                      !1,
-                      {
-                        fileName: "app/routes/negocios._index.tsx",
-                        lineNumber: 101,
-                        columnNumber: 37
-                      },
-                      this
-                    )
-                  ]
-                },
-                void 0,
-                !0,
-                {
-                  fileName: "app/routes/negocios._index.tsx",
-                  lineNumber: 95,
-                  columnNumber: 33
-                },
-                this
-              ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-                "div",
-                {
-                  id: "dropdownNavbar",
-                  className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-                      "ul",
-                      {
-                        className: "py-2 text-sm text-gray-700 dark:text-gray-400",
-                        "aria-labelledby": "dropdownLargeButton",
-                        children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-                            "a",
-                            {
-                              href: "#",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Painel de Controle"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/negocios._index.tsx",
-                              lineNumber: 127,
-                              columnNumber: 45
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/negocios._index.tsx",
-                            lineNumber: 126,
-                            columnNumber: 41
-                          }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-                            "a",
-                            {
-                              href: "#",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Settings"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/negocios._index.tsx",
-                              lineNumber: 135,
-                              columnNumber: 45
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/negocios._index.tsx",
-                            lineNumber: 134,
-                            columnNumber: 41
-                          }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-                            "a",
-                            {
-                              href: "#",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Earnings"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/negocios._index.tsx",
-                              lineNumber: 143,
-                              columnNumber: 45
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/negocios._index.tsx",
-                            lineNumber: 142,
-                            columnNumber: 41
-                          }, this)
-                        ]
-                      },
-                      void 0,
-                      !0,
-                      {
-                        fileName: "app/routes/negocios._index.tsx",
-                        lineNumber: 122,
-                        columnNumber: 37
-                      },
-                      this
-                    ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(
-                      "a",
-                      {
-                        href: "#",
-                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
-                        children: "Sair"
-                      },
-                      void 0,
-                      !1,
-                      {
-                        fileName: "app/routes/negocios._index.tsx",
-                        lineNumber: 152,
-                        columnNumber: 41
-                      },
-                      this
-                    ) }, void 0, !1, {
-                      fileName: "app/routes/negocios._index.tsx",
-                      lineNumber: 151,
-                      columnNumber: 37
-                    }, this)
-                  ]
-                },
-                void 0,
-                !0,
-                {
-                  fileName: "app/routes/negocios._index.tsx",
-                  lineNumber: 118,
-                  columnNumber: 33
-                },
-                this
-              )
-            ] }, void 0, !0, {
-              fileName: "app/routes/negocios._index.tsx",
-              lineNumber: 94,
-              columnNumber: 29
-            }, this)
-          ] }, void 0, !0, {
-            fileName: "app/routes/negocios._index.tsx",
-            lineNumber: 63,
-            columnNumber: 25
-          }, this)
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/routes/negocios._index.tsx",
-          lineNumber: 59,
-          columnNumber: 21
-        },
-        this
-      )
-    ] }, void 0, !0, {
-      fileName: "app/routes/negocios._index.tsx",
-      lineNumber: 24,
-      columnNumber: 17
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/negocios._index.tsx",
-      lineNumber: 23,
-      columnNumber: 13
-    }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Neg\xF3cios" }, void 0, !1, {
-        fileName: "app/routes/negocios._index.tsx",
-        lineNumber: 171,
-        columnNumber: 33
-      }, this) }, void 0, !1, {
-        fileName: "app/routes/negocios._index.tsx",
-        lineNumber: 170,
-        columnNumber: 29
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)("p", { children: [
-        "Nenhum neg\xF3cio encontrado. V\xE1 at\xE9 a aba Neg\xF3cios na barra de navega\xE7\xE3o e",
-        " ",
-        /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(Link2, { to: "novonegocio", className: "text-white underline", children: "crie uma nova." }, void 0, !1, {
-          fileName: "app/routes/negocios._index.tsx",
-          lineNumber: 179,
-          columnNumber: 37
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/negocios._index.tsx",
-        lineNumber: 177,
-        columnNumber: 33
-      }, this) }, void 0, !1, {
-        fileName: "app/routes/negocios._index.tsx",
-        lineNumber: 176,
-        columnNumber: 29
-      }, this)
-    ] }, void 0, !0, {
-      fileName: "app/routes/negocios._index.tsx",
-      lineNumber: 169,
-      columnNumber: 25
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/negocios._index.tsx",
-      lineNumber: 168,
-      columnNumber: 21
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/negocios._index.tsx",
-      lineNumber: 167,
-      columnNumber: 17
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/negocios._index.tsx",
-      lineNumber: 166,
-      columnNumber: 13
-    }, this)
-  ] }, void 0, !0, {
-    fileName: "app/routes/negocios._index.tsx",
-    lineNumber: 22,
-    columnNumber: 9
-  }, this);
-}
-
-// app/routes/usuarios._index.tsx
-var usuarios_index_exports = {};
-__export(usuarios_index_exports, {
-  default: () => UsuariosIndexPage,
-  loader: () => loader11,
-  meta: () => meta11
-});
-var import_node17 = __toESM(require_dist());
-var import_jsx_dev_runtime16 = __toESM(require_jsx_dev_runtime()), meta11 = () => [{ title: "EncontraTudo" }], loader11 = async ({ request: request3 }) => {
-  let id = await requireUserId(request3), users = await getUsers({ id });
-  return (0, import_node17.json)({ users });
-};
-function UsuariosIndexPage() {
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-          "img",
-          {
-            src: "https://flowbite.com/docs/images/logo.svg",
-            className: "h-8 mr-3",
-            alt: "Flowbite Logo"
-          },
-          void 0,
-          !1,
-          {
-            fileName: "app/routes/usuarios._index.tsx",
-            lineNumber: 26,
-            columnNumber: 25
-          },
-          this
-        ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
-          fileName: "app/routes/usuarios._index.tsx",
-          lineNumber: 31,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/usuarios._index.tsx",
-        lineNumber: 25,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-        "button",
-        {
-          "data-collapse-toggle": "navbar-dropdown",
-          type: "button",
-          className: "inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600",
-          "aria-controls": "navbar-dropdown",
-          "aria-expanded": "false",
-          children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
-              fileName: "app/routes/usuarios._index.tsx",
-              lineNumber: 42,
-              columnNumber: 25
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-              "svg",
-              {
-                className: "w-5 h-5",
-                "aria-hidden": "true",
-                xmlns: "http://www.w3.org/2000/svg",
-                fill: "none",
-                viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-                  "path",
-                  {
-                    stroke: "currentColor",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": "2",
-                    d: "M1 1h15M1 7h15M1 13h15"
-                  },
-                  void 0,
-                  !1,
-                  {
-                    fileName: "app/routes/usuarios._index.tsx",
-                    lineNumber: 50,
-                    columnNumber: 29
-                  },
-                  this
-                )
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/usuarios._index.tsx",
-                lineNumber: 43,
-                columnNumber: 25
-              },
-              this
-            )
-          ]
-        },
-        void 0,
-        !0,
-        {
-          fileName: "app/routes/usuarios._index.tsx",
-          lineNumber: 35,
-          columnNumber: 21
-        },
-        this
-      ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-        "div",
-        {
-          className: "hidden w-full md:block md:w-auto",
-          id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-              Link2,
-              {
-                to: "/cidades",
-                className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
-                children: "Cidades"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/usuarios._index.tsx",
-                lineNumber: 65,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/usuarios._index.tsx",
-              lineNumber: 64,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-              Link2,
-              {
-                to: "/usuarios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Usu\xE1rios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/usuarios._index.tsx",
-                lineNumber: 73,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/usuarios._index.tsx",
-              lineNumber: 72,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-              Link2,
-              {
-                to: "/negocios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Neg\xF3cios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/usuarios._index.tsx",
-                lineNumber: 80,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/usuarios._index.tsx",
-              lineNumber: 79,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-              Link2,
-              {
-                to: "/anuncios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "An\xFAncios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/usuarios._index.tsx",
-                lineNumber: 87,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/usuarios._index.tsx",
-              lineNumber: 86,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-                "button",
-                {
-                  id: "dropdownNavbarLink",
-                  "data-dropdown-toggle": "dropdownNavbar",
-                  className: "flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent",
-                  children: [
-                    "Meus Dados",
-                    " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-                      "svg",
-                      {
-                        className: "w-2.5 h-2.5 ml-2.5",
-                        "aria-hidden": "true",
-                        xmlns: "http://www.w3.org/2000/svg",
-                        fill: "none",
-                        viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-                          "path",
-                          {
-                            stroke: "currentColor",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round",
-                            "stroke-width": "2",
-                            d: "m1 1 4 4 4-4"
-                          },
-                          void 0,
-                          !1,
-                          {
-                            fileName: "app/routes/usuarios._index.tsx",
-                            lineNumber: 108,
-                            columnNumber: 41
-                          },
-                          this
-                        )
-                      },
-                      void 0,
-                      !1,
-                      {
-                        fileName: "app/routes/usuarios._index.tsx",
-                        lineNumber: 101,
-                        columnNumber: 37
-                      },
-                      this
-                    )
-                  ]
-                },
-                void 0,
-                !0,
-                {
-                  fileName: "app/routes/usuarios._index.tsx",
-                  lineNumber: 95,
-                  columnNumber: 33
-                },
-                this
-              ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-                "div",
-                {
-                  id: "dropdownNavbar",
-                  className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-                      "ul",
-                      {
-                        className: "py-2 text-sm text-gray-700 dark:text-gray-400",
-                        "aria-labelledby": "dropdownLargeButton",
-                        children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-                            "a",
-                            {
-                              href: "/",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Painel de Controle"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/usuarios._index.tsx",
-                              lineNumber: 127,
-                              columnNumber: 45
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/usuarios._index.tsx",
-                            lineNumber: 126,
-                            columnNumber: 41
-                          }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-                            "a",
-                            {
-                              href: "/",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Settings"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/usuarios._index.tsx",
-                              lineNumber: 135,
-                              columnNumber: 45
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/usuarios._index.tsx",
-                            lineNumber: 134,
-                            columnNumber: 41
-                          }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-                            "a",
-                            {
-                              href: "/",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Earnings"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/usuarios._index.tsx",
-                              lineNumber: 143,
-                              columnNumber: 45
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/usuarios._index.tsx",
-                            lineNumber: 142,
-                            columnNumber: 41
-                          }, this)
-                        ]
-                      },
-                      void 0,
-                      !0,
-                      {
-                        fileName: "app/routes/usuarios._index.tsx",
-                        lineNumber: 122,
-                        columnNumber: 37
-                      },
-                      this
-                    ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(
-                      "a",
-                      {
-                        href: "/",
-                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
-                        children: "Sair"
-                      },
-                      void 0,
-                      !1,
-                      {
-                        fileName: "app/routes/usuarios._index.tsx",
-                        lineNumber: 152,
-                        columnNumber: 41
-                      },
-                      this
-                    ) }, void 0, !1, {
-                      fileName: "app/routes/usuarios._index.tsx",
-                      lineNumber: 151,
-                      columnNumber: 37
-                    }, this)
-                  ]
-                },
-                void 0,
-                !0,
-                {
-                  fileName: "app/routes/usuarios._index.tsx",
-                  lineNumber: 118,
-                  columnNumber: 33
-                },
-                this
-              )
-            ] }, void 0, !0, {
-              fileName: "app/routes/usuarios._index.tsx",
-              lineNumber: 94,
-              columnNumber: 29
-            }, this)
-          ] }, void 0, !0, {
-            fileName: "app/routes/usuarios._index.tsx",
-            lineNumber: 63,
-            columnNumber: 25
-          }, this)
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/routes/usuarios._index.tsx",
-          lineNumber: 59,
-          columnNumber: 21
-        },
-        this
-      )
-    ] }, void 0, !0, {
-      fileName: "app/routes/usuarios._index.tsx",
-      lineNumber: 24,
-      columnNumber: 17
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/usuarios._index.tsx",
-      lineNumber: 23,
-      columnNumber: 13
-    }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Usu\xE1rios" }, void 0, !1, {
-        fileName: "app/routes/usuarios._index.tsx",
-        lineNumber: 171,
-        columnNumber: 33
-      }, this) }, void 0, !1, {
-        fileName: "app/routes/usuarios._index.tsx",
-        lineNumber: 170,
-        columnNumber: 29
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)("p", { children: [
-        "Nenhum usu\xE1rio encontrado. V\xE1 at\xE9 a aba Usu\xE1rios na barra de navega\xE7\xE3o e",
-        " ",
-        /* @__PURE__ */ (0, import_jsx_dev_runtime16.jsxDEV)(Link2, { to: "novousuario", className: "text-white underline", children: "cadastre um." }, void 0, !1, {
-          fileName: "app/routes/usuarios._index.tsx",
-          lineNumber: 179,
-          columnNumber: 37
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/usuarios._index.tsx",
-        lineNumber: 177,
-        columnNumber: 33
-      }, this) }, void 0, !1, {
-        fileName: "app/routes/usuarios._index.tsx",
-        lineNumber: 176,
-        columnNumber: 29
-      }, this)
-    ] }, void 0, !0, {
-      fileName: "app/routes/usuarios._index.tsx",
-      lineNumber: 169,
-      columnNumber: 25
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/usuarios._index.tsx",
-      lineNumber: 168,
-      columnNumber: 21
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/usuarios._index.tsx",
-      lineNumber: 167,
-      columnNumber: 17
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/usuarios._index.tsx",
-      lineNumber: 166,
-      columnNumber: 13
-    }, this)
-  ] }, void 0, !0, {
-    fileName: "app/routes/usuarios._index.tsx",
-    lineNumber: 22,
-    columnNumber: 9
-  }, this);
-}
-
-// app/routes/cidades._index.tsx
-var cidades_index_exports = {};
-__export(cidades_index_exports, {
-  default: () => CidadesIndexPage2,
-  loader: () => loader12,
-  meta: () => meta12
-});
-var import_node18 = __toESM(require_dist());
-var import_jsx_dev_runtime17 = __toESM(require_jsx_dev_runtime()), meta12 = () => [{ title: "EncontraTudo" }], loader12 = async ({ request: request3 }) => {
-  let userId = await requireUserId(request3), cidadeListItems = await getCidadeListItems({ userId });
-  return (0, import_node18.json)({ cidadeListItems });
-};
-function CidadesIndexPage2() {
-  let data = useLoaderData2();
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-          "img",
-          {
-            src: "https://flowbite.com/docs/images/logo.svg",
-            className: "h-8 mr-3",
-            alt: "Flowbite Logo"
-          },
-          void 0,
-          !1,
-          {
-            fileName: "app/routes/cidades._index.tsx",
-            lineNumber: 27,
-            columnNumber: 25
-          },
-          this
-        ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
-          fileName: "app/routes/cidades._index.tsx",
-          lineNumber: 32,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/cidades._index.tsx",
-        lineNumber: 26,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-        "button",
-        {
-          "data-collapse-toggle": "navbar-dropdown",
-          type: "button",
-          className: "inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600",
-          "aria-controls": "navbar-dropdown",
-          "aria-expanded": "false",
-          children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
-              fileName: "app/routes/cidades._index.tsx",
-              lineNumber: 43,
-              columnNumber: 25
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-              "svg",
-              {
-                className: "w-5 h-5",
-                "aria-hidden": "true",
-                xmlns: "http://www.w3.org/2000/svg",
-                fill: "none",
-                viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-                  "path",
-                  {
-                    stroke: "currentColor",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": "2",
-                    d: "M1 1h15M1 7h15M1 13h15"
-                  },
-                  void 0,
-                  !1,
-                  {
-                    fileName: "app/routes/cidades._index.tsx",
-                    lineNumber: 51,
-                    columnNumber: 29
-                  },
-                  this
-                )
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/cidades._index.tsx",
-                lineNumber: 44,
-                columnNumber: 25
-              },
-              this
-            )
-          ]
-        },
-        void 0,
-        !0,
-        {
-          fileName: "app/routes/cidades._index.tsx",
-          lineNumber: 36,
-          columnNumber: 21
-        },
-        this
-      ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-        "div",
-        {
-          className: "hidden w-full md:block md:w-auto",
-          id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-              Link2,
-              {
-                to: "/cidades",
-                className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
-                children: "Cidades"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/cidades._index.tsx",
-                lineNumber: 66,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/cidades._index.tsx",
-              lineNumber: 65,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-              Link2,
-              {
-                to: "/usuarios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Usu\xE1rios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/cidades._index.tsx",
-                lineNumber: 74,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/cidades._index.tsx",
-              lineNumber: 73,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-              Link2,
-              {
-                to: "/negocios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Neg\xF3cios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/cidades._index.tsx",
-                lineNumber: 81,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/cidades._index.tsx",
-              lineNumber: 80,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-              Link2,
-              {
-                to: "/anuncios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "An\xFAncios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/cidades._index.tsx",
-                lineNumber: 88,
-                columnNumber: 33
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/cidades._index.tsx",
-              lineNumber: 87,
-              columnNumber: 29
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-                "button",
-                {
-                  id: "dropdownNavbarLink",
-                  "data-dropdown-toggle": "dropdownNavbar",
-                  className: "flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent",
-                  children: [
-                    "Meus Dados",
-                    " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-                      "svg",
-                      {
-                        className: "w-2.5 h-2.5 ml-2.5",
-                        "aria-hidden": "true",
-                        xmlns: "http://www.w3.org/2000/svg",
-                        fill: "none",
-                        viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-                          "path",
-                          {
-                            stroke: "currentColor",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round",
-                            "stroke-width": "2",
-                            d: "m1 1 4 4 4-4"
-                          },
-                          void 0,
-                          !1,
-                          {
-                            fileName: "app/routes/cidades._index.tsx",
-                            lineNumber: 109,
-                            columnNumber: 41
-                          },
-                          this
-                        )
-                      },
-                      void 0,
-                      !1,
-                      {
-                        fileName: "app/routes/cidades._index.tsx",
-                        lineNumber: 102,
-                        columnNumber: 37
-                      },
-                      this
-                    )
-                  ]
-                },
-                void 0,
-                !0,
-                {
-                  fileName: "app/routes/cidades._index.tsx",
-                  lineNumber: 96,
-                  columnNumber: 33
-                },
-                this
-              ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-                "div",
-                {
-                  id: "dropdownNavbar",
-                  className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-                      "ul",
-                      {
-                        className: "py-2 text-sm text-gray-700 dark:text-gray-400",
-                        "aria-labelledby": "dropdownLargeButton",
-                        children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-                            "a",
-                            {
-                              href: "/",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Painel de Controle"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/cidades._index.tsx",
-                              lineNumber: 128,
-                              columnNumber: 45
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/cidades._index.tsx",
-                            lineNumber: 127,
-                            columnNumber: 41
-                          }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-                            "a",
-                            {
-                              href: "/",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Settings"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/cidades._index.tsx",
-                              lineNumber: 136,
-                              columnNumber: 45
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/cidades._index.tsx",
-                            lineNumber: 135,
-                            columnNumber: 41
-                          }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-                            "a",
-                            {
-                              href: "/",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Earnings"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/cidades._index.tsx",
-                              lineNumber: 144,
-                              columnNumber: 45
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/cidades._index.tsx",
-                            lineNumber: 143,
-                            columnNumber: 41
-                          }, this)
-                        ]
-                      },
-                      void 0,
-                      !0,
-                      {
-                        fileName: "app/routes/cidades._index.tsx",
-                        lineNumber: 123,
-                        columnNumber: 37
-                      },
-                      this
-                    ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-                      "a",
-                      {
-                        href: "/",
-                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
-                        children: "Sair"
-                      },
-                      void 0,
-                      !1,
-                      {
-                        fileName: "app/routes/cidades._index.tsx",
-                        lineNumber: 153,
-                        columnNumber: 41
-                      },
-                      this
-                    ) }, void 0, !1, {
-                      fileName: "app/routes/cidades._index.tsx",
-                      lineNumber: 152,
-                      columnNumber: 37
-                    }, this)
-                  ]
-                },
-                void 0,
-                !0,
-                {
-                  fileName: "app/routes/cidades._index.tsx",
-                  lineNumber: 119,
-                  columnNumber: 33
-                },
-                this
-              )
-            ] }, void 0, !0, {
-              fileName: "app/routes/cidades._index.tsx",
-              lineNumber: 95,
-              columnNumber: 29
-            }, this)
-          ] }, void 0, !0, {
-            fileName: "app/routes/cidades._index.tsx",
-            lineNumber: 64,
-            columnNumber: 25
-          }, this)
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/routes/cidades._index.tsx",
-          lineNumber: 60,
-          columnNumber: 21
-        },
-        this
-      )
-    ] }, void 0, !0, {
-      fileName: "app/routes/cidades._index.tsx",
-      lineNumber: 25,
-      columnNumber: 17
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/cidades._index.tsx",
-      lineNumber: 24,
-      columnNumber: 13
-    }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Cidades" }, void 0, !1, {
-        fileName: "app/routes/cidades._index.tsx",
-        lineNumber: 172,
-        columnNumber: 33
-      }, this) }, void 0, !1, {
-        fileName: "app/routes/cidades._index.tsx",
-        lineNumber: 171,
-        columnNumber: 29
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: data.cidadeListItems.length === 0 ? /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("p", { children: [
-        "Nenhuma cidade encontrada. V\xE1 at\xE9 a aba Cidade na barra de navega\xE7\xE3o e",
-        " ",
-        /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(Link2, { to: "novacidade", className: "text-white underline", children: "cadastre uma." }, void 0, !1, {
-          fileName: "app/routes/cidades._index.tsx",
-          lineNumber: 181,
-          columnNumber: 41
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/cidades._index.tsx",
-        lineNumber: 179,
-        columnNumber: 37
-      }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("ol", { children: data.cidadeListItems.map((cidades) => /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)("button", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(
-        NavLink2,
-        {
-          className: ({ isActive }) => `rounded border-b p-2 text-xl ${isActive ? "bg-green-500" : "bg-green-700"}`,
-          to: cidades.id,
-          children: cidades.nomeCidade
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/routes/cidades._index.tsx",
-          lineNumber: 192,
-          columnNumber: 53
-        },
-        this
-      ) }, void 0, !1, {
-        fileName: "app/routes/cidades._index.tsx",
-        lineNumber: 191,
-        columnNumber: 49
-      }, this) }, cidades.id, !1, {
-        fileName: "app/routes/cidades._index.tsx",
-        lineNumber: 190,
-        columnNumber: 45
-      }, this)) }, void 0, !1, {
-        fileName: "app/routes/cidades._index.tsx",
-        lineNumber: 186,
-        columnNumber: 37
-      }, this) }, void 0, !1, {
-        fileName: "app/routes/cidades._index.tsx",
-        lineNumber: 177,
-        columnNumber: 29
-      }, this)
-    ] }, void 0, !0, {
-      fileName: "app/routes/cidades._index.tsx",
-      lineNumber: 170,
-      columnNumber: 25
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/cidades._index.tsx",
-      lineNumber: 169,
-      columnNumber: 21
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/cidades._index.tsx",
-      lineNumber: 168,
-      columnNumber: 17
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/cidades._index.tsx",
-      lineNumber: 167,
-      columnNumber: 13
-    }, this)
-  ] }, void 0, !0, {
-    fileName: "app/routes/cidades._index.tsx",
-    lineNumber: 23,
-    columnNumber: 9
-  }, this);
-}
-
 // app/routes/notes.$noteId.tsx
 var notes_noteId_exports = {};
 __export(notes_noteId_exports, {
-  ErrorBoundary: () => ErrorBoundary4,
-  action: () => action8,
+  ErrorBoundary: () => ErrorBoundary5,
+  action: () => action9,
   default: () => NoteDetailsPage,
-  loader: () => loader13
+  loader: () => loader14
 });
-var import_node19 = __toESM(require_dist());
-var import_jsx_dev_runtime18 = __toESM(require_jsx_dev_runtime()), loader13 = async ({ params, request: request3 }) => {
+var import_node20 = __toESM(require_dist());
+var import_jsx_dev_runtime19 = __toESM(require_jsx_dev_runtime()), loader14 = async ({ params, request: request3 }) => {
   let userId = await requireUserId(request3);
   invariant4(params.noteId, "noteId not found");
   let note = await getNote({ id: params.noteId, userId });
   if (!note)
     throw new Response("Not Found", { status: 404 });
-  return (0, import_node19.json)({ note });
-}, action8 = async ({ params, request: request3 }) => {
+  return (0, import_node20.json)({ note });
+}, action9 = async ({ params, request: request3 }) => {
   let userId = await requireUserId(request3);
-  return invariant4(params.noteId, "noteId not found"), await deleteNote({ id: params.noteId, userId }), (0, import_node19.redirect)("/notes");
+  return invariant4(params.noteId, "noteId not found"), await deleteNote({ id: params.noteId, userId }), (0, import_node20.redirect)("/notes");
 };
 function NoteDetailsPage() {
   let data = useLoaderData2();
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("h3", { className: "text-2xl font-bold", children: data.note.title }, void 0, !1, {
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)("div", { children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)("h3", { className: "text-2xl font-bold", children: data.note.title }, void 0, !1, {
       fileName: "app/routes/notes.$noteId.tsx",
       lineNumber: 39,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("p", { className: "py-6", children: data.note.body }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)("p", { className: "py-6", children: data.note.body }, void 0, !1, {
       fileName: "app/routes/notes.$noteId.tsx",
       lineNumber: 40,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("hr", { className: "my-4" }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)("hr", { className: "my-4" }, void 0, !1, {
       fileName: "app/routes/notes.$noteId.tsx",
       lineNumber: 41,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(Form, { method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(
+    /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)(Form, { method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)(
       "button",
       {
         type: "submit",
@@ -62677,27 +62810,27 @@ function NoteDetailsPage() {
     columnNumber: 5
   }, this);
 }
-function ErrorBoundary4() {
+function ErrorBoundary5() {
   let error = useRouteError();
-  return error instanceof Error ? /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { children: [
+  return error instanceof Error ? /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)("div", { children: [
     "An unexpected error occurred: ",
     error.message
   ] }, void 0, !0, {
     fileName: "app/routes/notes.$noteId.tsx",
     lineNumber: 58,
     columnNumber: 12
-  }, this) : isRouteErrorResponse(error) ? error.status === 404 ? /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { children: "Note not found" }, void 0, !1, {
+  }, this) : isRouteErrorResponse(error) ? error.status === 404 ? /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)("div", { children: "Note not found" }, void 0, !1, {
     fileName: "app/routes/notes.$noteId.tsx",
     lineNumber: 66,
     columnNumber: 12
-  }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("div", { children: [
+  }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)("div", { children: [
     "An unexpected error occurred: ",
     error.statusText
   ] }, void 0, !0, {
     fileName: "app/routes/notes.$noteId.tsx",
     lineNumber: 69,
     columnNumber: 10
-  }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)("h1", { children: "Unknown Error" }, void 0, !1, {
+  }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)("h1", { children: "Unknown Error" }, void 0, !1, {
     fileName: "app/routes/notes.$noteId.tsx",
     lineNumber: 62,
     columnNumber: 12
@@ -62709,12 +62842,12 @@ var notes_index_exports = {};
 __export(notes_index_exports, {
   default: () => NoteIndexPage
 });
-var import_jsx_dev_runtime19 = __toESM(require_jsx_dev_runtime());
+var import_jsx_dev_runtime20 = __toESM(require_jsx_dev_runtime());
 function NoteIndexPage() {
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)("p", { children: [
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: [
     "No note selected. Select a note on the left, or",
     " ",
-    /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)(Link2, { to: "new", className: "text-blue-500 underline", children: "create a new note." }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(Link2, { to: "new", className: "text-blue-500 underline", children: "create a new note." }, void 0, !1, {
       fileName: "app/routes/notes._index.tsx",
       lineNumber: 7,
       columnNumber: 7
@@ -62726,12 +62859,417 @@ function NoteIndexPage() {
   }, this);
 }
 
+// app/routes/Admin/admin.tsx
+var admin_exports = {};
+__export(admin_exports, {
+  default: () => AdminPage,
+  loader: () => loader15,
+  meta: () => meta13
+});
+var import_node21 = __toESM(require_dist());
+var import_jsx_dev_runtime21 = __toESM(require_jsx_dev_runtime()), meta13 = () => [{ title: "EncontraTudo" }], loader15 = async ({ request: request3 }) => {
+  let userId = await requireUserId(request3), cidadeListItems = await getCidadeListItems({ userId });
+  return (0, import_node21.json)({ cidadeListItems });
+};
+function AdminPage() {
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+          "img",
+          {
+            src: "https://flowbite.com/docs/images/logo.svg",
+            className: "h-8 mr-3",
+            alt: "Flowbite Logo"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/Admin/admin.tsx",
+            lineNumber: 26,
+            columnNumber: 13
+          },
+          this
+        ),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+          fileName: "app/routes/Admin/admin.tsx",
+          lineNumber: 31,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/Admin/admin.tsx",
+        lineNumber: 25,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+        "button",
+        {
+          "data-collapse-toggle": "navbar-dropdown",
+          type: "button",
+          className: "inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600",
+          "aria-controls": "navbar-dropdown",
+          "aria-expanded": "false",
+          children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+              fileName: "app/routes/Admin/admin.tsx",
+              lineNumber: 42,
+              columnNumber: 13
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+              "svg",
+              {
+                className: "w-5 h-5",
+                "aria-hidden": "true",
+                xmlns: "http://www.w3.org/2000/svg",
+                fill: "none",
+                viewBox: "0 0 17 14",
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+                  "path",
+                  {
+                    stroke: "currentColor",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-width": "2",
+                    d: "M1 1h15M1 7h15M1 13h15"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/routes/Admin/admin.tsx",
+                    lineNumber: 50,
+                    columnNumber: 15
+                  },
+                  this
+                )
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Admin/admin.tsx",
+                lineNumber: 43,
+                columnNumber: 13
+              },
+              this
+            )
+          ]
+        },
+        void 0,
+        !0,
+        {
+          fileName: "app/routes/Admin/admin.tsx",
+          lineNumber: 35,
+          columnNumber: 11
+        },
+        this
+      ),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+        "div",
+        {
+          className: "hidden w-full md:block md:w-auto",
+          id: "navbar-dropdown",
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+              Link2,
+              {
+                to: "/cidades",
+                className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
+                children: "Cidades"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Admin/admin.tsx",
+                lineNumber: 65,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Admin/admin.tsx",
+              lineNumber: 64,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+              Link2,
+              {
+                to: "/usuarios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Usu\xE1rios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Admin/admin.tsx",
+                lineNumber: 73,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Admin/admin.tsx",
+              lineNumber: 72,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+              Link2,
+              {
+                to: "/negocios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "Neg\xF3cios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Admin/admin.tsx",
+                lineNumber: 80,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Admin/admin.tsx",
+              lineNumber: 79,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+              Link2,
+              {
+                to: "/anuncios",
+                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
+                children: "An\xFAncios"
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/routes/Admin/admin.tsx",
+                lineNumber: 87,
+                columnNumber: 17
+              },
+              this
+            ) }, void 0, !1, {
+              fileName: "app/routes/Admin/admin.tsx",
+              lineNumber: 86,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+                "button",
+                {
+                  id: "dropdownNavbarLink",
+                  "data-dropdown-toggle": "dropdownNavbar",
+                  className: "flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent",
+                  children: [
+                    "Meus Dados",
+                    " ",
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+                      "svg",
+                      {
+                        className: "w-2.5 h-2.5 ml-2.5",
+                        "aria-hidden": "true",
+                        xmlns: "http://www.w3.org/2000/svg",
+                        fill: "none",
+                        viewBox: "0 0 10 6",
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+                          "path",
+                          {
+                            stroke: "currentColor",
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
+                            "stroke-width": "2",
+                            d: "m1 1 4 4 4-4"
+                          },
+                          void 0,
+                          !1,
+                          {
+                            fileName: "app/routes/Admin/admin.tsx",
+                            lineNumber: 108,
+                            columnNumber: 21
+                          },
+                          this
+                        )
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/Admin/admin.tsx",
+                        lineNumber: 101,
+                        columnNumber: 19
+                      },
+                      this
+                    )
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/Admin/admin.tsx",
+                  lineNumber: 95,
+                  columnNumber: 17
+                },
+                this
+              ),
+              /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+                "div",
+                {
+                  id: "dropdownNavbar",
+                  className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+                      "ul",
+                      {
+                        className: "py-2 text-sm text-gray-700 dark:text-gray-400",
+                        "aria-labelledby": "dropdownLargeButton",
+                        children: [
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+                            "a",
+                            {
+                              href: "#",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Painel de Controle"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Admin/admin.tsx",
+                              lineNumber: 127,
+                              columnNumber: 23
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Admin/admin.tsx",
+                            lineNumber: 126,
+                            columnNumber: 21
+                          }, this),
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+                            "a",
+                            {
+                              href: "#",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Settings"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Admin/admin.tsx",
+                              lineNumber: 135,
+                              columnNumber: 23
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Admin/admin.tsx",
+                            lineNumber: 134,
+                            columnNumber: 21
+                          }, this),
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+                            "a",
+                            {
+                              href: "#",
+                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                              children: "Earnings"
+                            },
+                            void 0,
+                            !1,
+                            {
+                              fileName: "app/routes/Admin/admin.tsx",
+                              lineNumber: 143,
+                              columnNumber: 23
+                            },
+                            this
+                          ) }, void 0, !1, {
+                            fileName: "app/routes/Admin/admin.tsx",
+                            lineNumber: 142,
+                            columnNumber: 21
+                          }, this)
+                        ]
+                      },
+                      void 0,
+                      !0,
+                      {
+                        fileName: "app/routes/Admin/admin.tsx",
+                        lineNumber: 122,
+                        columnNumber: 19
+                      },
+                      this
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+                      "a",
+                      {
+                        href: "#",
+                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
+                        children: "Sair"
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/Admin/admin.tsx",
+                        lineNumber: 152,
+                        columnNumber: 21
+                      },
+                      this
+                    ) }, void 0, !1, {
+                      fileName: "app/routes/Admin/admin.tsx",
+                      lineNumber: 151,
+                      columnNumber: 19
+                    }, this)
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/Admin/admin.tsx",
+                  lineNumber: 118,
+                  columnNumber: 17
+                },
+                this
+              )
+            ] }, void 0, !0, {
+              fileName: "app/routes/Admin/admin.tsx",
+              lineNumber: 94,
+              columnNumber: 15
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/routes/Admin/admin.tsx",
+            lineNumber: 63,
+            columnNumber: 13
+          }, this)
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/routes/Admin/admin.tsx",
+          lineNumber: 59,
+          columnNumber: 11
+        },
+        this
+      )
+    ] }, void 0, !0, {
+      fileName: "app/routes/Admin/admin.tsx",
+      lineNumber: 24,
+      columnNumber: 9
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Admin/admin.tsx",
+      lineNumber: 23,
+      columnNumber: 10
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("div", { className: "flex-1 p-6", children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(Outlet, {}, void 0, !1, {
+      fileName: "app/routes/Admin/admin.tsx",
+      lineNumber: 167,
+      columnNumber: 11
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/Admin/admin.tsx",
+      lineNumber: 166,
+      columnNumber: 9
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/routes/Admin/admin.tsx",
+    lineNumber: 22,
+    columnNumber: 7
+  }, this);
+}
+
 // app/routes/healthcheck.tsx
 var healthcheck_exports = {};
 __export(healthcheck_exports, {
-  loader: () => loader14
+  loader: () => loader16
 });
-var loader14 = async ({ request: request3 }) => {
+var loader16 = async ({ request: request3 }) => {
   let host = request3.headers.get("X-Forwarded-Host") ?? request3.headers.get("host");
   try {
     let url = new URL("/", `http://${host}`);
@@ -62751,19 +63289,19 @@ var loader14 = async ({ request: request3 }) => {
 var franquias_exports = {};
 __export(franquias_exports, {
   default: () => Franquias,
-  loader: () => loader15,
-  meta: () => meta13
+  loader: () => loader17,
+  meta: () => meta14
 });
-var import_node20 = __toESM(require_dist());
-var import_jsx_dev_runtime20 = __toESM(require_jsx_dev_runtime()), meta13 = () => [{ title: "EncontraTudo" }], loader15 = async ({ request: request3 }) => {
+var import_node22 = __toESM(require_dist());
+var import_jsx_dev_runtime22 = __toESM(require_jsx_dev_runtime()), meta14 = () => [{ title: "EncontraTudo" }], loader17 = async ({ request: request3 }) => {
   let userId = await requireUserId(request3), noteListItems = await getNoteListItems({ userId });
-  return (0, import_node20.json)({ noteListItems });
+  return (0, import_node22.json)({ noteListItems });
 };
 function Franquias() {
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
           "img",
           {
             src: "https://flowbite.com/docs/images/logo.svg",
@@ -62779,7 +63317,7 @@ function Franquias() {
           },
           this
         ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 34,
           columnNumber: 13
@@ -62789,7 +63327,7 @@ function Franquias() {
         lineNumber: 28,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
         "button",
         {
           "data-collapse-toggle": "navbar-dropdown",
@@ -62798,12 +63336,12 @@ function Franquias() {
           "aria-controls": "navbar-dropdown",
           "aria-expanded": "false",
           children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
               fileName: "app/routes/franquias.tsx",
               lineNumber: 45,
               columnNumber: 13
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
               "svg",
               {
                 className: "w-5 h-5",
@@ -62811,7 +63349,7 @@ function Franquias() {
                 xmlns: "http://www.w3.org/2000/svg",
                 fill: "none",
                 viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
                   "path",
                   {
                     stroke: "currentColor",
@@ -62850,13 +63388,13 @@ function Franquias() {
         },
         this
       ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
         "div",
         {
           className: "hidden w-full md:block md:w-auto",
           id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
               Link2,
               {
                 to: "/busca",
@@ -62876,7 +63414,7 @@ function Franquias() {
               lineNumber: 67,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
               Link2,
               {
                 to: "/categorias",
@@ -62896,7 +63434,7 @@ function Franquias() {
               lineNumber: 75,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
               Link2,
               {
                 to: "/sobre",
@@ -62916,7 +63454,7 @@ function Franquias() {
               lineNumber: 82,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
               Link2,
               {
                 to: "/contato",
@@ -62936,7 +63474,7 @@ function Franquias() {
               lineNumber: 89,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
               Link2,
               {
                 to: "/franquias",
@@ -62956,8 +63494,8 @@ function Franquias() {
               lineNumber: 96,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
                 "button",
                 {
                   id: "dropdownNavbarLink",
@@ -62966,7 +63504,7 @@ function Franquias() {
                   children: [
                     "Meus Dados",
                     " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
                       "svg",
                       {
                         className: "w-2.5 h-2.5 ml-2.5",
@@ -62974,7 +63512,7 @@ function Franquias() {
                         xmlns: "http://www.w3.org/2000/svg",
                         fill: "none",
                         viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
                           "path",
                           {
                             stroke: "currentColor",
@@ -63013,19 +63551,19 @@ function Franquias() {
                 },
                 this
               ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+              /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
                 "div",
                 {
                   id: "dropdownNavbar",
                   className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
                       "ul",
                       {
                         className: "py-2 text-sm text-gray-700 dark:text-gray-400",
                         "aria-labelledby": "dropdownLargeButton",
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -63045,7 +63583,7 @@ function Franquias() {
                             lineNumber: 135,
                             columnNumber: 21
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -63065,7 +63603,7 @@ function Franquias() {
                             lineNumber: 143,
                             columnNumber: 21
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -63096,7 +63634,7 @@ function Franquias() {
                       },
                       this
                     ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
                       "a",
                       {
                         href: "#",
@@ -63156,8 +63694,8 @@ function Franquias() {
       lineNumber: 26,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Franquias" }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Franquias" }, void 0, !1, {
         fileName: "app/routes/franquias.tsx",
         lineNumber: 180,
         columnNumber: 17
@@ -63166,8 +63704,8 @@ function Franquias() {
         lineNumber: 179,
         columnNumber: 15
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8 mb-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "grid grid-rows-4 grid-flow-col gap-4 mb-4", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { className: "", children: "Save changes" }, void 0, !1, {
+      /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8 mb-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "grid grid-rows-4 grid-flow-col gap-4 mb-4", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { className: "", children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 190,
           columnNumber: 23
@@ -63180,7 +63718,7 @@ function Franquias() {
           lineNumber: 188,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 195,
           columnNumber: 23
@@ -63193,7 +63731,7 @@ function Franquias() {
           lineNumber: 193,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 200,
           columnNumber: 23
@@ -63206,7 +63744,7 @@ function Franquias() {
           lineNumber: 198,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 205,
           columnNumber: 23
@@ -63219,7 +63757,7 @@ function Franquias() {
           lineNumber: 203,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 209,
           columnNumber: 23
@@ -63232,7 +63770,7 @@ function Franquias() {
           lineNumber: 207,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 214,
           columnNumber: 23
@@ -63245,7 +63783,7 @@ function Franquias() {
           lineNumber: 212,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 219,
           columnNumber: 23
@@ -63258,7 +63796,7 @@ function Franquias() {
           lineNumber: 217,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 224,
           columnNumber: 23
@@ -63271,7 +63809,7 @@ function Franquias() {
           lineNumber: 222,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 229,
           columnNumber: 23
@@ -63284,7 +63822,7 @@ function Franquias() {
           lineNumber: 227,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 234,
           columnNumber: 23
@@ -63297,7 +63835,7 @@ function Franquias() {
           lineNumber: 232,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 239,
           columnNumber: 23
@@ -63310,7 +63848,7 @@ function Franquias() {
           lineNumber: 237,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 244,
           columnNumber: 23
@@ -63323,7 +63861,7 @@ function Franquias() {
           lineNumber: 242,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 249,
           columnNumber: 23
@@ -63336,7 +63874,7 @@ function Franquias() {
           lineNumber: 247,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 254,
           columnNumber: 23
@@ -63349,7 +63887,7 @@ function Franquias() {
           lineNumber: 252,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 259,
           columnNumber: 23
@@ -63362,7 +63900,7 @@ function Franquias() {
           lineNumber: 257,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-2 px-4 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("p", { children: "Save changes" }, void 0, !1, {
           fileName: "app/routes/franquias.tsx",
           lineNumber: 264,
           columnNumber: 23
@@ -63411,33 +63949,33 @@ function Franquias() {
 // app/routes/notes.new.tsx
 var notes_new_exports = {};
 __export(notes_new_exports, {
-  action: () => action9,
+  action: () => action10,
   default: () => NewNotePage
 });
-var import_node21 = __toESM(require_dist());
-var import_react27 = __toESM(require_react());
-var import_jsx_dev_runtime21 = __toESM(require_jsx_dev_runtime()), action9 = async ({ request: request3 }) => {
+var import_node23 = __toESM(require_dist());
+var import_react29 = __toESM(require_react());
+var import_jsx_dev_runtime23 = __toESM(require_jsx_dev_runtime()), action10 = async ({ request: request3 }) => {
   let userId = await requireUserId(request3), formData = await request3.formData(), title = formData.get("title"), body = formData.get("body");
   if (typeof title != "string" || title.length === 0)
-    return (0, import_node21.json)(
+    return (0, import_node23.json)(
       { errors: { body: null, title: "Title is required" } },
       { status: 400 }
     );
   if (typeof body != "string" || body.length === 0)
-    return (0, import_node21.json)(
+    return (0, import_node23.json)(
       { errors: { body: "Body is required", title: null } },
       { status: 400 }
     );
   let note = await createNote({ body, title, userId });
-  return (0, import_node21.redirect)(`/notes/${note.id}`);
+  return (0, import_node23.redirect)(`/notes/${note.id}`);
 };
 function NewNotePage() {
   var _a2, _b, _c, _d, _e, _f;
-  let actionData = useActionData2(), titleRef = (0, import_react27.useRef)(null), bodyRef = (0, import_react27.useRef)(null);
-  return (0, import_react27.useEffect)(() => {
+  let actionData = useActionData2(), titleRef = (0, import_react29.useRef)(null), bodyRef = (0, import_react29.useRef)(null);
+  return (0, import_react29.useEffect)(() => {
     var _a3, _b2, _c2, _d2;
     (_a3 = actionData == null ? void 0 : actionData.errors) != null && _a3.title ? (_b2 = titleRef.current) == null || _b2.focus() : (_c2 = actionData == null ? void 0 : actionData.errors) != null && _c2.body && ((_d2 = bodyRef.current) == null || _d2.focus());
-  }, [actionData]), /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+  }, [actionData]), /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
     Form,
     {
       method: "post",
@@ -63448,14 +63986,14 @@ function NewNotePage() {
         width: "100%"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("label", { className: "flex w-full flex-col gap-1", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("span", { children: "Nome: " }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("label", { className: "flex w-full flex-col gap-1", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("span", { children: "Nome: " }, void 0, !1, {
               fileName: "app/routes/notes.new.tsx",
               lineNumber: 60,
               columnNumber: 11
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
               "input",
               {
                 ref: titleRef,
@@ -63478,7 +64016,7 @@ function NewNotePage() {
             lineNumber: 59,
             columnNumber: 9
           }, this),
-          (_c = actionData == null ? void 0 : actionData.errors) != null && _c.title ? /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("div", { className: "pt-1 text-red-700", id: "title-error", children: actionData.errors.title }, void 0, !1, {
+          (_c = actionData == null ? void 0 : actionData.errors) != null && _c.title ? /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "pt-1 text-red-700", id: "title-error", children: actionData.errors.title }, void 0, !1, {
             fileName: "app/routes/notes.new.tsx",
             lineNumber: 72,
             columnNumber: 11
@@ -63488,14 +64026,14 @@ function NewNotePage() {
           lineNumber: 58,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("label", { className: "flex w-full flex-col gap-1", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("span", { children: "Conte\xFAdo: " }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("label", { className: "flex w-full flex-col gap-1", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("span", { children: "Conte\xFAdo: " }, void 0, !1, {
               fileName: "app/routes/notes.new.tsx",
               lineNumber: 80,
               columnNumber: 11
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
               "textarea",
               {
                 ref: bodyRef,
@@ -63519,7 +64057,7 @@ function NewNotePage() {
             lineNumber: 79,
             columnNumber: 9
           }, this),
-          (_f = actionData == null ? void 0 : actionData.errors) != null && _f.body ? /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("div", { className: "pt-1 text-red-700", id: "body-error", children: actionData.errors.body }, void 0, !1, {
+          (_f = actionData == null ? void 0 : actionData.errors) != null && _f.body ? /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "pt-1 text-red-700", id: "body-error", children: actionData.errors.body }, void 0, !1, {
             fileName: "app/routes/notes.new.tsx",
             lineNumber: 93,
             columnNumber: 11
@@ -63529,7 +64067,7 @@ function NewNotePage() {
           lineNumber: 78,
           columnNumber: 7
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)("div", { className: "text-right", children: /* @__PURE__ */ (0, import_jsx_dev_runtime21.jsxDEV)(
+        /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "text-right", children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
           "button",
           {
             type: "submit",
@@ -63566,19 +64104,19 @@ function NewNotePage() {
 var contato_exports = {};
 __export(contato_exports, {
   default: () => Contato,
-  loader: () => loader16,
-  meta: () => meta14
+  loader: () => loader18,
+  meta: () => meta15
 });
-var import_node22 = __toESM(require_dist());
-var import_jsx_dev_runtime22 = __toESM(require_jsx_dev_runtime()), meta14 = () => [{ title: "EncontraTudo" }], loader16 = async ({ request: request3 }) => {
+var import_node24 = __toESM(require_dist());
+var import_jsx_dev_runtime24 = __toESM(require_jsx_dev_runtime()), meta15 = () => [{ title: "EncontraTudo" }], loader18 = async ({ request: request3 }) => {
   let userId = await requireUserId(request3), noteListItems = await getNoteListItems({ userId });
-  return (0, import_node22.json)({ noteListItems });
+  return (0, import_node24.json)({ noteListItems });
 };
 function Contato() {
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("a", { href: "#", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("a", { href: "#", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
           "img",
           {
             src: "https://flowbite.com/docs/images/logo.svg",
@@ -63594,7 +64132,7 @@ function Contato() {
           },
           this
         ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
           fileName: "app/routes/contato.tsx",
           lineNumber: 34,
           columnNumber: 13
@@ -63604,7 +64142,7 @@ function Contato() {
         lineNumber: 28,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
         "button",
         {
           "data-collapse-toggle": "navbar-dropdown",
@@ -63613,12 +64151,12 @@ function Contato() {
           "aria-controls": "navbar-dropdown",
           "aria-expanded": "false",
           children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
               fileName: "app/routes/contato.tsx",
               lineNumber: 45,
               columnNumber: 13
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
               "svg",
               {
                 className: "w-5 h-5",
@@ -63626,7 +64164,7 @@ function Contato() {
                 xmlns: "http://www.w3.org/2000/svg",
                 fill: "none",
                 viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
                   "path",
                   {
                     stroke: "currentColor",
@@ -63665,13 +64203,13 @@ function Contato() {
         },
         this
       ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
         "div",
         {
           className: "hidden w-full md:block md:w-auto",
           id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
               Link2,
               {
                 to: "/busca",
@@ -63691,7 +64229,7 @@ function Contato() {
               lineNumber: 67,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
               Link2,
               {
                 to: "/categorias",
@@ -63711,7 +64249,7 @@ function Contato() {
               lineNumber: 75,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
               Link2,
               {
                 to: "/sobre",
@@ -63731,7 +64269,7 @@ function Contato() {
               lineNumber: 82,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
               Link2,
               {
                 to: "/contato",
@@ -63751,7 +64289,7 @@ function Contato() {
               lineNumber: 89,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
               Link2,
               {
                 to: "/franquias",
@@ -63771,8 +64309,8 @@ function Contato() {
               lineNumber: 96,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
                 "button",
                 {
                   id: "dropdownNavbarLink",
@@ -63781,7 +64319,7 @@ function Contato() {
                   children: [
                     "Meus Dados",
                     " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
                       "svg",
                       {
                         className: "w-2.5 h-2.5 ml-2.5",
@@ -63789,7 +64327,7 @@ function Contato() {
                         xmlns: "http://www.w3.org/2000/svg",
                         fill: "none",
                         viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
                           "path",
                           {
                             stroke: "currentColor",
@@ -63828,19 +64366,19 @@ function Contato() {
                 },
                 this
               ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+              /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
                 "div",
                 {
                   id: "dropdownNavbar",
                   className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
                       "ul",
                       {
                         className: "py-2 text-sm text-gray-700 dark:text-gray-400",
                         "aria-labelledby": "dropdownLargeButton",
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -63860,7 +64398,7 @@ function Contato() {
                             lineNumber: 135,
                             columnNumber: 21
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -63880,7 +64418,7 @@ function Contato() {
                             lineNumber: 143,
                             columnNumber: 21
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -63911,7 +64449,7 @@ function Contato() {
                       },
                       this
                     ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
                       "a",
                       {
                         href: "#",
@@ -63971,8 +64509,8 @@ function Contato() {
       lineNumber: 26,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Contato" }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Contato" }, void 0, !1, {
         fileName: "app/routes/contato.tsx",
         lineNumber: 180,
         columnNumber: 17
@@ -63981,7 +64519,7 @@ function Contato() {
         lineNumber: 179,
         columnNumber: 15
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime22.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8" }, void 0, !1, {
+      /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8" }, void 0, !1, {
         fileName: "app/routes/contato.tsx",
         lineNumber: 185,
         columnNumber: 15
@@ -64013,34 +64551,31 @@ function Contato() {
 // app/routes/logout.tsx
 var logout_exports = {};
 __export(logout_exports, {
-  action: () => action10,
-  loader: () => loader17
+  action: () => action11,
+  loader: () => loader19
 });
-var import_node23 = __toESM(require_dist());
-var action10 = async ({ request: request3 }) => logout(request3), loader17 = async () => (0, import_node23.redirect)("/");
-
-// server-entry-module:@remix-run/dev/server-build
-var route23 = __toESM(require_sketch());
+var import_node25 = __toESM(require_dist());
+var action11 = async ({ request: request3 }) => logout(request3), loader19 = async () => (0, import_node25.redirect)("/");
 
 // app/routes/_index.tsx
 var index_exports = {};
 __export(index_exports, {
   default: () => Index,
-  loader: () => loader18,
-  meta: () => meta15
+  loader: () => loader20,
+  meta: () => meta16
 });
-var import_node24 = __toESM(require_dist());
-var import_react30 = __toESM(require_react());
-var import_jsx_dev_runtime23 = __toESM(require_jsx_dev_runtime()), meta15 = () => [{ title: "EncontraTudo" }], loader18 = async ({ request: request3 }) => {
+var import_node26 = __toESM(require_dist());
+var import_react32 = __toESM(require_react());
+var import_jsx_dev_runtime25 = __toESM(require_jsx_dev_runtime()), meta16 = () => [{ title: "EncontraTudo" }], loader20 = async ({ request: request3 }) => {
   let userId = await requireUserId(request3), noteListItems = await getNoteListItems({ userId });
-  return (0, import_node24.json)({ noteListItems });
+  return (0, import_node26.json)({ noteListItems });
 };
 function Index() {
-  let [text, setText] = (0, import_react30.useState)(""), data = useLoaderData2();
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("a", { href: "/", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+  let [text, setText] = (0, import_react32.useState)(""), data = useLoaderData2();
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("a", { href: "/", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
           "img",
           {
             src: "https://flowbite.com/docs/images/logo.svg",
@@ -64056,7 +64591,7 @@ function Index() {
           },
           this
         ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
           lineNumber: 36,
           columnNumber: 13
@@ -64066,7 +64601,7 @@ function Index() {
         lineNumber: 30,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
         "button",
         {
           "data-collapse-toggle": "navbar-dropdown",
@@ -64075,12 +64610,12 @@ function Index() {
           "aria-controls": "navbar-dropdown",
           "aria-expanded": "false",
           children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
               lineNumber: 47,
               columnNumber: 13
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
               "svg",
               {
                 className: "w-5 h-5",
@@ -64088,7 +64623,7 @@ function Index() {
                 xmlns: "http://www.w3.org/2000/svg",
                 fill: "none",
                 viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
                   "path",
                   {
                     stroke: "currentColor",
@@ -64127,13 +64662,13 @@ function Index() {
         },
         this
       ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
         "div",
         {
           className: "hidden w-full md:block md:w-auto",
           id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
               Link2,
               {
                 to: "/busca",
@@ -64153,7 +64688,7 @@ function Index() {
               lineNumber: 69,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
               Link2,
               {
                 to: "/categorias",
@@ -64173,7 +64708,7 @@ function Index() {
               lineNumber: 77,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
               Link2,
               {
                 to: "/sobre",
@@ -64193,7 +64728,7 @@ function Index() {
               lineNumber: 84,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
               Link2,
               {
                 to: "/contato",
@@ -64213,7 +64748,7 @@ function Index() {
               lineNumber: 91,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
               Link2,
               {
                 to: "/franquias",
@@ -64233,8 +64768,8 @@ function Index() {
               lineNumber: 98,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
                 "button",
                 {
                   id: "dropdownNavbarLink",
@@ -64243,7 +64778,7 @@ function Index() {
                   children: [
                     "Meus Dados",
                     " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
                       "svg",
                       {
                         className: "w-2.5 h-2.5 ml-2.5",
@@ -64251,7 +64786,7 @@ function Index() {
                         xmlns: "http://www.w3.org/2000/svg",
                         fill: "none",
                         viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
                           "path",
                           {
                             stroke: "currentColor",
@@ -64290,19 +64825,19 @@ function Index() {
                 },
                 this
               ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+              /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
                 "div",
                 {
                   id: "dropdownNavbar",
                   className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
                       "ul",
                       {
                         className: "py-2 text-sm text-gray-700 dark:text-gray-400",
                         "aria-labelledby": "dropdownLargeButton",
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
                             "a",
                             {
                               href: "/",
@@ -64322,7 +64857,7 @@ function Index() {
                             lineNumber: 137,
                             columnNumber: 21
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
                             "a",
                             {
                               href: "/",
@@ -64342,7 +64877,7 @@ function Index() {
                             lineNumber: 145,
                             columnNumber: 21
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
                             "a",
                             {
                               href: "/",
@@ -64373,7 +64908,7 @@ function Index() {
                       },
                       this
                     ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
                       "a",
                       {
                         href: "/",
@@ -64433,8 +64968,8 @@ function Index() {
       lineNumber: 28,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Encontra Tudo" }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Encontra Tudo" }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
         lineNumber: 182,
         columnNumber: 17
@@ -64443,24 +64978,24 @@ function Index() {
         lineNumber: 181,
         columnNumber: 15
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("p", { className: "mx-auto mt-6 max-w-lg text-center text-xl text-black sm:max-w-3xl", children: "Encontre tudo que h\xE1 na sua cidade" }, void 0, !1, {
+      /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("p", { className: "mx-auto mt-6 max-w-lg text-center text-xl text-black sm:max-w-3xl", children: "Encontre tudo que h\xE1 na sua cidade" }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
         lineNumber: 186,
         columnNumber: 15
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("form", { method: "get", action: "/busca", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("br", {}, void 0, !1, {
+      /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("form", { method: "get", action: "/busca", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("br", {}, void 0, !1, {
           fileName: "app/routes/_index.tsx",
           lineNumber: 192,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "relative", children: [
-          /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "relative", children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none" }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
             lineNumber: 194,
             columnNumber: 21
           }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+          /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
             "input",
             {
               value: text,
@@ -64486,38 +65021,38 @@ function Index() {
           lineNumber: 193,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("br", {}, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("br", {}, void 0, !1, {
           fileName: "app/routes/_index.tsx",
           lineNumber: 206,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)(
+        /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
           "select",
           {
             id: "default",
             className: "bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
             children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("option", { selected: !0, children: "Escolha a cidade" }, void 0, !1, {
+              /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("option", { selected: !0, children: "Escolha a cidade" }, void 0, !1, {
                 fileName: "app/routes/_index.tsx",
                 lineNumber: 212,
                 columnNumber: 23
               }, this),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("option", { value: "US", children: "Itaituba - PA" }, void 0, !1, {
+              /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("option", { value: "US", children: "Itaituba - PA" }, void 0, !1, {
                 fileName: "app/routes/_index.tsx",
                 lineNumber: 213,
                 columnNumber: 23
               }, this),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("option", { value: "CA", children: "Santos - SP" }, void 0, !1, {
+              /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("option", { value: "CA", children: "Santos - SP" }, void 0, !1, {
                 fileName: "app/routes/_index.tsx",
                 lineNumber: 214,
                 columnNumber: 23
               }, this),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("option", { value: "FR", children: "Oeiras - PI" }, void 0, !1, {
+              /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("option", { value: "FR", children: "Oeiras - PI" }, void 0, !1, {
                 fileName: "app/routes/_index.tsx",
                 lineNumber: 215,
                 columnNumber: 23
               }, this),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("option", { value: "DE", children: "Teresina - PI" }, void 0, !1, {
+              /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("option", { value: "DE", children: "Teresina - PI" }, void 0, !1, {
                 fileName: "app/routes/_index.tsx",
                 lineNumber: 216,
                 columnNumber: 23
@@ -64537,7 +65072,7 @@ function Index() {
           lineNumber: 207,
           columnNumber: 19
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("div", { className: "mx-auto mt-10 flex max-w-none justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime23.jsxDEV)("button", { className: "bg-green-800 hover:bg-green-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded", children: "Pesquisar" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "mx-auto mt-10 flex max-w-none justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("button", { className: "bg-green-800 hover:bg-green-700 text-white flex items-center justify-center font-regular py-2 px-4 border border-blue-700 rounded", children: "Pesquisar" }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
           lineNumber: 220,
           columnNumber: 21
@@ -64579,428 +65114,23 @@ function Index() {
   }, this);
 }
 
-// app/routes/admin.tsx
-var admin_exports = {};
-__export(admin_exports, {
-  default: () => AdminPage,
-  loader: () => loader19,
-  meta: () => meta16
-});
-var import_node25 = __toESM(require_dist());
-var import_jsx_dev_runtime24 = __toESM(require_jsx_dev_runtime()), meta16 = () => [{ title: "EncontraTudo" }], loader19 = async ({ request: request3 }) => {
-  let userId = await requireUserId(request3), cidadeListItems = await getCidadeListItems({ userId });
-  return (0, import_node25.json)({ cidadeListItems });
-};
-function AdminPage() {
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(Link2, { to: "/", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-          "img",
-          {
-            src: "https://flowbite.com/docs/images/logo.svg",
-            className: "h-8 mr-3",
-            alt: "Flowbite Logo"
-          },
-          void 0,
-          !1,
-          {
-            fileName: "app/routes/admin.tsx",
-            lineNumber: 26,
-            columnNumber: 13
-          },
-          this
-        ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
-          fileName: "app/routes/admin.tsx",
-          lineNumber: 31,
-          columnNumber: 13
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/routes/admin.tsx",
-        lineNumber: 25,
-        columnNumber: 11
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-        "button",
-        {
-          "data-collapse-toggle": "navbar-dropdown",
-          type: "button",
-          className: "inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600",
-          "aria-controls": "navbar-dropdown",
-          "aria-expanded": "false",
-          children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
-              fileName: "app/routes/admin.tsx",
-              lineNumber: 42,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-              "svg",
-              {
-                className: "w-5 h-5",
-                "aria-hidden": "true",
-                xmlns: "http://www.w3.org/2000/svg",
-                fill: "none",
-                viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-                  "path",
-                  {
-                    stroke: "currentColor",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": "2",
-                    d: "M1 1h15M1 7h15M1 13h15"
-                  },
-                  void 0,
-                  !1,
-                  {
-                    fileName: "app/routes/admin.tsx",
-                    lineNumber: 50,
-                    columnNumber: 15
-                  },
-                  this
-                )
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/admin.tsx",
-                lineNumber: 43,
-                columnNumber: 13
-              },
-              this
-            )
-          ]
-        },
-        void 0,
-        !0,
-        {
-          fileName: "app/routes/admin.tsx",
-          lineNumber: 35,
-          columnNumber: 11
-        },
-        this
-      ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-        "div",
-        {
-          className: "hidden w-full md:block md:w-auto",
-          id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-              Link2,
-              {
-                to: "/cidades",
-                className: "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent",
-                children: "Cidades"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/admin.tsx",
-                lineNumber: 65,
-                columnNumber: 17
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/admin.tsx",
-              lineNumber: 64,
-              columnNumber: 15
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-              Link2,
-              {
-                to: "/usuarios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Usu\xE1rios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/admin.tsx",
-                lineNumber: 73,
-                columnNumber: 17
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/admin.tsx",
-              lineNumber: 72,
-              columnNumber: 15
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-              Link2,
-              {
-                to: "/negocios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "Neg\xF3cios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/admin.tsx",
-                lineNumber: 80,
-                columnNumber: 17
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/admin.tsx",
-              lineNumber: 79,
-              columnNumber: 15
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-              Link2,
-              {
-                to: "/anuncios",
-                className: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                children: "An\xFAncios"
-              },
-              void 0,
-              !1,
-              {
-                fileName: "app/routes/admin.tsx",
-                lineNumber: 87,
-                columnNumber: 17
-              },
-              this
-            ) }, void 0, !1, {
-              fileName: "app/routes/admin.tsx",
-              lineNumber: 86,
-              columnNumber: 15
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-                "button",
-                {
-                  id: "dropdownNavbarLink",
-                  "data-dropdown-toggle": "dropdownNavbar",
-                  className: "flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent",
-                  children: [
-                    "Meus Dados",
-                    " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-                      "svg",
-                      {
-                        className: "w-2.5 h-2.5 ml-2.5",
-                        "aria-hidden": "true",
-                        xmlns: "http://www.w3.org/2000/svg",
-                        fill: "none",
-                        viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-                          "path",
-                          {
-                            stroke: "currentColor",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round",
-                            "stroke-width": "2",
-                            d: "m1 1 4 4 4-4"
-                          },
-                          void 0,
-                          !1,
-                          {
-                            fileName: "app/routes/admin.tsx",
-                            lineNumber: 108,
-                            columnNumber: 21
-                          },
-                          this
-                        )
-                      },
-                      void 0,
-                      !1,
-                      {
-                        fileName: "app/routes/admin.tsx",
-                        lineNumber: 101,
-                        columnNumber: 19
-                      },
-                      this
-                    )
-                  ]
-                },
-                void 0,
-                !0,
-                {
-                  fileName: "app/routes/admin.tsx",
-                  lineNumber: 95,
-                  columnNumber: 17
-                },
-                this
-              ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-                "div",
-                {
-                  id: "dropdownNavbar",
-                  className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-                      "ul",
-                      {
-                        className: "py-2 text-sm text-gray-700 dark:text-gray-400",
-                        "aria-labelledby": "dropdownLargeButton",
-                        children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-                            "a",
-                            {
-                              href: "#",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Painel de Controle"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/admin.tsx",
-                              lineNumber: 127,
-                              columnNumber: 23
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/admin.tsx",
-                            lineNumber: 126,
-                            columnNumber: 21
-                          }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-                            "a",
-                            {
-                              href: "#",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Settings"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/admin.tsx",
-                              lineNumber: 135,
-                              columnNumber: 23
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/admin.tsx",
-                            lineNumber: 134,
-                            columnNumber: 21
-                          }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-                            "a",
-                            {
-                              href: "#",
-                              className: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                              children: "Earnings"
-                            },
-                            void 0,
-                            !1,
-                            {
-                              fileName: "app/routes/admin.tsx",
-                              lineNumber: 143,
-                              columnNumber: 23
-                            },
-                            this
-                          ) }, void 0, !1, {
-                            fileName: "app/routes/admin.tsx",
-                            lineNumber: 142,
-                            columnNumber: 21
-                          }, this)
-                        ]
-                      },
-                      void 0,
-                      !0,
-                      {
-                        fileName: "app/routes/admin.tsx",
-                        lineNumber: 122,
-                        columnNumber: 19
-                      },
-                      this
-                    ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(
-                      "a",
-                      {
-                        href: "#",
-                        className: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white",
-                        children: "Sair"
-                      },
-                      void 0,
-                      !1,
-                      {
-                        fileName: "app/routes/admin.tsx",
-                        lineNumber: 152,
-                        columnNumber: 21
-                      },
-                      this
-                    ) }, void 0, !1, {
-                      fileName: "app/routes/admin.tsx",
-                      lineNumber: 151,
-                      columnNumber: 19
-                    }, this)
-                  ]
-                },
-                void 0,
-                !0,
-                {
-                  fileName: "app/routes/admin.tsx",
-                  lineNumber: 118,
-                  columnNumber: 17
-                },
-                this
-              )
-            ] }, void 0, !0, {
-              fileName: "app/routes/admin.tsx",
-              lineNumber: 94,
-              columnNumber: 15
-            }, this)
-          ] }, void 0, !0, {
-            fileName: "app/routes/admin.tsx",
-            lineNumber: 63,
-            columnNumber: 13
-          }, this)
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/routes/admin.tsx",
-          lineNumber: 59,
-          columnNumber: 11
-        },
-        this
-      )
-    ] }, void 0, !0, {
-      fileName: "app/routes/admin.tsx",
-      lineNumber: 24,
-      columnNumber: 9
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/admin.tsx",
-      lineNumber: 23,
-      columnNumber: 10
-    }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)("div", { className: "flex-1 p-6", children: /* @__PURE__ */ (0, import_jsx_dev_runtime24.jsxDEV)(Outlet, {}, void 0, !1, {
-      fileName: "app/routes/admin.tsx",
-      lineNumber: 167,
-      columnNumber: 11
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/admin.tsx",
-      lineNumber: 166,
-      columnNumber: 9
-    }, this)
-  ] }, void 0, !0, {
-    fileName: "app/routes/admin.tsx",
-    lineNumber: 22,
-    columnNumber: 7
-  }, this);
-}
-
 // app/routes/busca.tsx
 var busca_exports = {};
 __export(busca_exports, {
   default: () => Busca,
-  loader: () => loader20,
+  loader: () => loader21,
   meta: () => meta17
 });
-var import_node26 = __toESM(require_dist());
-var import_jsx_dev_runtime25 = __toESM(require_jsx_dev_runtime()), meta17 = () => [{ title: "EncontraTudo" }], loader20 = async ({ request: request3 }) => {
+var import_node27 = __toESM(require_dist());
+var import_jsx_dev_runtime26 = __toESM(require_jsx_dev_runtime()), meta17 = () => [{ title: "EncontraTudo" }], loader21 = async ({ request: request3 }) => {
   let userId = await requireUserId(request3), noteListItems = await getNoteListItems({ userId });
-  return (0, import_node26.json)({ noteListItems });
+  return (0, import_node27.json)({ noteListItems });
 };
 function Busca() {
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("a", { href: "#", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("a", { href: "#", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
           "img",
           {
             src: "https://flowbite.com/docs/images/logo.svg",
@@ -65016,7 +65146,7 @@ function Busca() {
           },
           this
         ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
           fileName: "app/routes/busca.tsx",
           lineNumber: 34,
           columnNumber: 13
@@ -65026,7 +65156,7 @@ function Busca() {
         lineNumber: 28,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
         "button",
         {
           "data-collapse-toggle": "navbar-dropdown",
@@ -65035,12 +65165,12 @@ function Busca() {
           "aria-controls": "navbar-dropdown",
           "aria-expanded": "false",
           children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+            /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
               fileName: "app/routes/busca.tsx",
               lineNumber: 45,
               columnNumber: 13
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
               "svg",
               {
                 className: "w-5 h-5",
@@ -65048,7 +65178,7 @@ function Busca() {
                 xmlns: "http://www.w3.org/2000/svg",
                 fill: "none",
                 viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
                   "path",
                   {
                     stroke: "currentColor",
@@ -65087,13 +65217,13 @@ function Busca() {
         },
         this
       ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
         "div",
         {
           className: "hidden w-full md:block md:w-auto",
           id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
               Link2,
               {
                 to: "/busca",
@@ -65113,7 +65243,7 @@ function Busca() {
               lineNumber: 67,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
               Link2,
               {
                 to: "/categorias",
@@ -65133,7 +65263,7 @@ function Busca() {
               lineNumber: 75,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
               Link2,
               {
                 to: "/sobre",
@@ -65153,7 +65283,7 @@ function Busca() {
               lineNumber: 82,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
               Link2,
               {
                 to: "/contato",
@@ -65173,7 +65303,7 @@ function Busca() {
               lineNumber: 89,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
               Link2,
               {
                 to: "/franquias",
@@ -65193,8 +65323,8 @@ function Busca() {
               lineNumber: 96,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
                 "button",
                 {
                   id: "dropdownNavbarLink",
@@ -65203,7 +65333,7 @@ function Busca() {
                   children: [
                     "Meus Dados",
                     " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
                       "svg",
                       {
                         className: "w-2.5 h-2.5 ml-2.5",
@@ -65211,7 +65341,7 @@ function Busca() {
                         xmlns: "http://www.w3.org/2000/svg",
                         fill: "none",
                         viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
                           "path",
                           {
                             stroke: "currentColor",
@@ -65250,19 +65380,19 @@ function Busca() {
                 },
                 this
               ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+              /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
                 "div",
                 {
                   id: "dropdownNavbar",
                   className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
                       "ul",
                       {
                         className: "py-2 text-sm text-gray-700 dark:text-gray-400",
                         "aria-labelledby": "dropdownLargeButton",
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -65282,7 +65412,7 @@ function Busca() {
                             lineNumber: 135,
                             columnNumber: 21
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -65302,7 +65432,7 @@ function Busca() {
                             lineNumber: 143,
                             columnNumber: 21
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -65333,7 +65463,7 @@ function Busca() {
                       },
                       this
                     ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
                       "a",
                       {
                         href: "#",
@@ -65393,8 +65523,8 @@ function Busca() {
       lineNumber: 26,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Busca" }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Busca" }, void 0, !1, {
         fileName: "app/routes/busca.tsx",
         lineNumber: 180,
         columnNumber: 17
@@ -65403,7 +65533,7 @@ function Busca() {
         lineNumber: 179,
         columnNumber: 15
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime25.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8" }, void 0, !1, {
+      /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8" }, void 0, !1, {
         fileName: "app/routes/busca.tsx",
         lineNumber: 185,
         columnNumber: 15
@@ -65435,21 +65565,21 @@ function Busca() {
 // app/routes/login.tsx
 var login_exports = {};
 __export(login_exports, {
-  action: () => action11,
+  action: () => action12,
   default: () => LoginPage,
-  loader: () => loader21,
+  loader: () => loader22,
   meta: () => meta18
 });
-var import_node27 = __toESM(require_dist());
-var import_react36 = __toESM(require_react());
+var import_node28 = __toESM(require_dist());
+var import_react37 = __toESM(require_react());
 
 // app/utils.ts
-var import_react34 = __toESM(require_react()), DEFAULT_REDIRECT = "/";
+var import_react35 = __toESM(require_react()), DEFAULT_REDIRECT = "/";
 function safeRedirect(to, defaultRedirect = DEFAULT_REDIRECT) {
   return !to || typeof to != "string" || !to.startsWith("/") || to.startsWith("//") ? defaultRedirect : to;
 }
 function useMatchesData(id) {
-  let matchingRoutes = useMatches2(), route = (0, import_react34.useMemo)(
+  let matchingRoutes = useMatches2(), route = (0, import_react35.useMemo)(
     () => matchingRoutes.find((route2) => route2.id === id),
     [matchingRoutes, id]
   );
@@ -65476,20 +65606,20 @@ function validateEmail(email) {
 }
 
 // app/routes/login.tsx
-var import_jsx_dev_runtime26 = __toESM(require_jsx_dev_runtime()), loader21 = async ({ request: request3 }) => await getUserId(request3) ? (0, import_node27.redirect)("/") : (0, import_node27.json)({}), action11 = async ({ request: request3 }) => {
+var import_jsx_dev_runtime27 = __toESM(require_jsx_dev_runtime()), loader22 = async ({ request: request3 }) => await getUserId(request3) ? (0, import_node28.redirect)("/") : (0, import_node28.json)({}), action12 = async ({ request: request3 }) => {
   let formData = await request3.formData(), email = formData.get("email"), password = formData.get("password"), redirectTo = safeRedirect(formData.get("redirectTo"), "/"), remember = formData.get("remember");
   if (!validateEmail(email))
-    return (0, import_node27.json)(
+    return (0, import_node28.json)(
       { errors: { email: "Email is invalid", password: null } },
       { status: 400 }
     );
   if (typeof password != "string" || password.length === 0)
-    return (0, import_node27.json)(
+    return (0, import_node28.json)(
       { errors: { email: null, password: "Password is required" } },
       { status: 400 }
     );
   if (password.length < 8)
-    return (0, import_node27.json)(
+    return (0, import_node28.json)(
       { errors: { email: null, password: "Password is too short" } },
       { status: 400 }
     );
@@ -65499,20 +65629,20 @@ var import_jsx_dev_runtime26 = __toESM(require_jsx_dev_runtime()), loader21 = as
     remember: remember === "on",
     request: request3,
     userId: user.id
-  }) : (0, import_node27.json)(
+  }) : (0, import_node28.json)(
     { errors: { email: "Invalid email or password", password: null } },
     { status: 400 }
   );
 }, meta18 = () => [{ title: "Login" }];
 function LoginPage() {
   var _a2, _b, _c, _d;
-  let [searchParams] = useSearchParams(), redirectTo = searchParams.get("redirectTo") || "/notes", actionData = useActionData2(), emailRef = (0, import_react36.useRef)(null), passwordRef = (0, import_react36.useRef)(null);
-  return (0, import_react36.useEffect)(() => {
+  let [searchParams] = useSearchParams(), redirectTo = searchParams.get("redirectTo") || "/notes", actionData = useActionData2(), emailRef = (0, import_react37.useRef)(null), passwordRef = (0, import_react37.useRef)(null);
+  return (0, import_react37.useEffect)(() => {
     var _a3, _b2, _c2, _d2;
     (_a3 = actionData == null ? void 0 : actionData.errors) != null && _a3.email ? (_b2 = emailRef.current) == null || _b2.focus() : (_c2 = actionData == null ? void 0 : actionData.errors) != null && _c2.password && ((_d2 = passwordRef.current) == null || _d2.focus());
-  }, [actionData]), /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "flex min-h-full flex-col justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "mx-auto w-full max-w-md px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(Form, { method: "post", className: "space-y-6", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
+  }, [actionData]), /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { className: "flex min-h-full flex-col justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { className: "mx-auto w-full max-w-md px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(Form, { method: "post", className: "space-y-6", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(
         "label",
         {
           htmlFor: "email",
@@ -65528,8 +65658,8 @@ function LoginPage() {
         },
         this
       ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "mt-1", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { className: "mt-1", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(
           "input",
           {
             ref: emailRef,
@@ -65552,7 +65682,7 @@ function LoginPage() {
           },
           this
         ),
-        (_b = actionData == null ? void 0 : actionData.errors) != null && _b.email ? /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "pt-1 text-red-700", id: "email-error", children: actionData.errors.email }, void 0, !1, {
+        (_b = actionData == null ? void 0 : actionData.errors) != null && _b.email ? /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { className: "pt-1 text-red-700", id: "email-error", children: actionData.errors.email }, void 0, !1, {
           fileName: "app/routes/login.tsx",
           lineNumber: 103,
           columnNumber: 17
@@ -65567,8 +65697,8 @@ function LoginPage() {
       lineNumber: 82,
       columnNumber: 11
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
+    /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(
         "label",
         {
           htmlFor: "password",
@@ -65584,8 +65714,8 @@ function LoginPage() {
         },
         this
       ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "mt-1", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { className: "mt-1", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(
           "input",
           {
             id: "password",
@@ -65606,7 +65736,7 @@ function LoginPage() {
           },
           this
         ),
-        (_d = actionData == null ? void 0 : actionData.errors) != null && _d.password ? /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "pt-1 text-red-700", id: "password-error", children: actionData.errors.password }, void 0, !1, {
+        (_d = actionData == null ? void 0 : actionData.errors) != null && _d.password ? /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { className: "pt-1 text-red-700", id: "password-error", children: actionData.errors.password }, void 0, !1, {
           fileName: "app/routes/login.tsx",
           lineNumber: 129,
           columnNumber: 17
@@ -65621,12 +65751,12 @@ function LoginPage() {
       lineNumber: 110,
       columnNumber: 11
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("input", { type: "hidden", name: "redirectTo", value: redirectTo }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("input", { type: "hidden", name: "redirectTo", value: redirectTo }, void 0, !1, {
       fileName: "app/routes/login.tsx",
       lineNumber: 136,
       columnNumber: 11
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
+    /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(
       "button",
       {
         type: "submit",
@@ -65642,9 +65772,9 @@ function LoginPage() {
       },
       this
     ),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "flex items-center justify-between", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
+    /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { className: "flex items-center justify-between", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(
           "input",
           {
             id: "remember",
@@ -65661,7 +65791,7 @@ function LoginPage() {
           },
           this
         ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
+        /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(
           "label",
           {
             htmlFor: "remember",
@@ -65682,10 +65812,10 @@ function LoginPage() {
         lineNumber: 144,
         columnNumber: 13
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)("div", { className: "text-center text-sm text-gray-500", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { className: "text-center text-sm text-gray-500", children: [
         "Don't have an account?",
         " ",
-        /* @__PURE__ */ (0, import_jsx_dev_runtime26.jsxDEV)(
+        /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(
           Link2,
           {
             className: "text-blue-500 underline",
@@ -65733,18 +65863,18 @@ function LoginPage() {
 var notes_exports = {};
 __export(notes_exports, {
   default: () => NotesPage,
-  loader: () => loader22
+  loader: () => loader23
 });
-var import_node28 = __toESM(require_dist());
-var import_jsx_dev_runtime27 = __toESM(require_jsx_dev_runtime()), loader22 = async ({ request: request3 }) => {
+var import_node29 = __toESM(require_dist());
+var import_jsx_dev_runtime28 = __toESM(require_jsx_dev_runtime()), loader23 = async ({ request: request3 }) => {
   let userId = await requireUserId(request3), noteListItems = await getNoteListItems({ userId });
-  return (0, import_node28.json)({ noteListItems });
+  return (0, import_node29.json)({ noteListItems });
 };
 function NotesPage() {
   let data = useLoaderData2(), user = useUser();
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { className: "flex h-full min-h-screen flex-col", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("header", { className: "flex items-center justify-between bg-slate-800 p-4 text-white", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("h1", { className: "text-3xl font-bold", children: /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(Link2, { to: ".", children: "Endere\xE7os" }, void 0, !1, {
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("div", { className: "flex h-full min-h-screen flex-col", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("header", { className: "flex items-center justify-between bg-slate-800 p-4 text-white", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("h1", { className: "text-3xl font-bold", children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(Link2, { to: ".", children: "Endere\xE7os" }, void 0, !1, {
         fileName: "app/routes/notes.tsx",
         lineNumber: 23,
         columnNumber: 11
@@ -65753,12 +65883,12 @@ function NotesPage() {
         lineNumber: 22,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("p", { children: user.email }, void 0, !1, {
+      /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("p", { children: user.email }, void 0, !1, {
         fileName: "app/routes/notes.tsx",
         lineNumber: 25,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(Form, { action: "/logout", method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(Form, { action: "/logout", method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
         "button",
         {
           type: "submit",
@@ -65783,23 +65913,23 @@ function NotesPage() {
       lineNumber: 21,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("main", { className: "flex h-full bg-white", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { className: "h-full w-80 border-r bg-gray-50", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(Link2, { to: "new", className: "block p-4 text-xl text-blue-500", children: "+ Novo endere\xE7o" }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("main", { className: "flex h-full bg-white", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("div", { className: "h-full w-80 border-r bg-gray-50", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(Link2, { to: "new", className: "block p-4 text-xl text-blue-500", children: "+ Novo endere\xE7o" }, void 0, !1, {
           fileName: "app/routes/notes.tsx",
           lineNumber: 38,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("hr", {}, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("hr", {}, void 0, !1, {
           fileName: "app/routes/notes.tsx",
           lineNumber: 42,
           columnNumber: 11
         }, this),
-        data.noteListItems.length === 0 ? /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("p", { className: "p-4", children: "Nenhum endere\xE7o ainda" }, void 0, !1, {
+        data.noteListItems.length === 0 ? /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("p", { className: "p-4", children: "Nenhum endere\xE7o ainda" }, void 0, !1, {
           fileName: "app/routes/notes.tsx",
           lineNumber: 45,
           columnNumber: 13
-        }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("ol", { children: data.noteListItems.map((note) => /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(
+        }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("ol", { children: data.noteListItems.map((note) => /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
           NavLink2,
           {
             className: ({ isActive }) => `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`,
@@ -65831,7 +65961,7 @@ function NotesPage() {
         lineNumber: 37,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)("div", { className: "flex-1 p-6", children: /* @__PURE__ */ (0, import_jsx_dev_runtime27.jsxDEV)(Outlet, {}, void 0, !1, {
+      /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("div", { className: "flex-1 p-6", children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(Outlet, {}, void 0, !1, {
         fileName: "app/routes/notes.tsx",
         lineNumber: 65,
         columnNumber: 11
@@ -65856,19 +65986,19 @@ function NotesPage() {
 var sobre_exports = {};
 __export(sobre_exports, {
   default: () => Sobre,
-  loader: () => loader23,
+  loader: () => loader24,
   meta: () => meta19
 });
-var import_node29 = __toESM(require_dist());
-var import_jsx_dev_runtime28 = __toESM(require_jsx_dev_runtime()), meta19 = () => [{ title: "EncontraTudo" }], loader23 = async ({ request: request3 }) => {
+var import_node30 = __toESM(require_dist());
+var import_jsx_dev_runtime29 = __toESM(require_jsx_dev_runtime()), meta19 = () => [{ title: "EncontraTudo" }], loader24 = async ({ request: request3 }) => {
   let userId = await requireUserId(request3), noteListItems = await getNoteListItems({ userId });
-  return (0, import_node29.json)({ noteListItems });
+  return (0, import_node30.json)({ noteListItems });
 };
 function Sobre() {
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("a", { href: "#", className: "flex items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("main", { className: "h-screen bg-gray-600", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("nav", { className: "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700", children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("a", { href: "#", className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
           "img",
           {
             src: "https://flowbite.com/docs/images/logo.svg",
@@ -65884,7 +66014,7 @@ function Sobre() {
           },
           this
         ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("span", { className: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white", children: "EncontraTudo" }, void 0, !1, {
           fileName: "app/routes/sobre.tsx",
           lineNumber: 34,
           columnNumber: 13
@@ -65894,7 +66024,7 @@ function Sobre() {
         lineNumber: 28,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
         "button",
         {
           "data-collapse-toggle": "navbar-dropdown",
@@ -65903,12 +66033,12 @@ function Sobre() {
           "aria-controls": "navbar-dropdown",
           "aria-expanded": "false",
           children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
+            /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("span", { className: "sr-only", children: "Open main menu" }, void 0, !1, {
               fileName: "app/routes/sobre.tsx",
               lineNumber: 45,
               columnNumber: 13
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
               "svg",
               {
                 className: "w-5 h-5",
@@ -65916,7 +66046,7 @@ function Sobre() {
                 xmlns: "http://www.w3.org/2000/svg",
                 fill: "none",
                 viewBox: "0 0 17 14",
-                children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+                children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
                   "path",
                   {
                     stroke: "currentColor",
@@ -65955,13 +66085,13 @@ function Sobre() {
         },
         this
       ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
         "div",
         {
           className: "hidden w-full md:block md:w-auto",
           id: "navbar-dropdown",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("ul", { className: "flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700", children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
               Link2,
               {
                 to: "/busca",
@@ -65981,7 +66111,7 @@ function Sobre() {
               lineNumber: 67,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
               Link2,
               {
                 to: "/categorias",
@@ -66001,7 +66131,7 @@ function Sobre() {
               lineNumber: 75,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
               Link2,
               {
                 to: "/sobre",
@@ -66021,7 +66151,7 @@ function Sobre() {
               lineNumber: 82,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
               Link2,
               {
                 to: "/contato",
@@ -66041,7 +66171,7 @@ function Sobre() {
               lineNumber: 89,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
               Link2,
               {
                 to: "/franquias",
@@ -66061,8 +66191,8 @@ function Sobre() {
               lineNumber: 96,
               columnNumber: 15
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("li", { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+            /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
                 "button",
                 {
                   id: "dropdownNavbarLink",
@@ -66071,7 +66201,7 @@ function Sobre() {
                   children: [
                     "Meus Dados",
                     " ",
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
                       "svg",
                       {
                         className: "w-2.5 h-2.5 ml-2.5",
@@ -66079,7 +66209,7 @@ function Sobre() {
                         xmlns: "http://www.w3.org/2000/svg",
                         fill: "none",
                         viewBox: "0 0 10 6",
-                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+                        children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
                           "path",
                           {
                             stroke: "currentColor",
@@ -66118,19 +66248,19 @@ function Sobre() {
                 },
                 this
               ),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+              /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
                 "div",
                 {
                   id: "dropdownNavbar",
                   className: "z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600",
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
                       "ul",
                       {
                         className: "py-2 text-sm text-gray-700 dark:text-gray-400",
                         "aria-labelledby": "dropdownLargeButton",
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -66150,7 +66280,7 @@ function Sobre() {
                             lineNumber: 135,
                             columnNumber: 21
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -66170,7 +66300,7 @@ function Sobre() {
                             lineNumber: 143,
                             columnNumber: 21
                           }, this),
-                          /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+                          /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("li", { children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
                             "a",
                             {
                               href: "#",
@@ -66201,7 +66331,7 @@ function Sobre() {
                       },
                       this
                     ),
-                    /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)(
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "py-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
                       "a",
                       {
                         href: "#",
@@ -66261,8 +66391,8 @@ function Sobre() {
       lineNumber: 26,
       columnNumber: 7
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Sobre" }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "relative", children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "mx-auto flex space-x-2 justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "relative  overflow-hidden rounded-2xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("h1", { className: "text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl", children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("span", { className: "block uppercase text-black drop-shadow-md", children: "Sobre" }, void 0, !1, {
         fileName: "app/routes/sobre.tsx",
         lineNumber: 180,
         columnNumber: 17
@@ -66271,7 +66401,7 @@ function Sobre() {
         lineNumber: 179,
         columnNumber: 15
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime28.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8" }, void 0, !1, {
+      /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8" }, void 0, !1, {
         fileName: "app/routes/sobre.tsx",
         lineNumber: 185,
         columnNumber: 15
@@ -66303,32 +66433,32 @@ function Sobre() {
 // app/routes/join.tsx
 var join_exports = {};
 __export(join_exports, {
-  action: () => action12,
+  action: () => action13,
   default: () => Join,
-  loader: () => loader24,
+  loader: () => loader25,
   meta: () => meta20
 });
-var import_node30 = __toESM(require_dist());
-var import_react40 = __toESM(require_react());
-var import_jsx_dev_runtime29 = __toESM(require_jsx_dev_runtime()), loader24 = async ({ request: request3 }) => await getUserId(request3) ? (0, import_node30.redirect)("/") : (0, import_node30.json)({}), action12 = async ({ request: request3 }) => {
+var import_node31 = __toESM(require_dist());
+var import_react41 = __toESM(require_react());
+var import_jsx_dev_runtime30 = __toESM(require_jsx_dev_runtime()), loader25 = async ({ request: request3 }) => await getUserId(request3) ? (0, import_node31.redirect)("/") : (0, import_node31.json)({}), action13 = async ({ request: request3 }) => {
   let formData = await request3.formData(), email = formData.get("email"), password = formData.get("password"), redirectTo = safeRedirect(formData.get("redirectTo"), "/");
   if (!validateEmail(email))
-    return (0, import_node30.json)(
+    return (0, import_node31.json)(
       { errors: { email: "Email is invalid", password: null } },
       { status: 400 }
     );
   if (typeof password != "string" || password.length === 0)
-    return (0, import_node30.json)(
+    return (0, import_node31.json)(
       { errors: { email: null, password: "Password is required" } },
       { status: 400 }
     );
   if (password.length < 8)
-    return (0, import_node30.json)(
+    return (0, import_node31.json)(
       { errors: { email: null, password: "Password is too short" } },
       { status: 400 }
     );
   if (await getUserByEmail(email))
-    return (0, import_node30.json)(
+    return (0, import_node31.json)(
       {
         errors: {
           email: "A user already exists with this email",
@@ -66347,13 +66477,13 @@ var import_jsx_dev_runtime29 = __toESM(require_jsx_dev_runtime()), loader24 = as
 }, meta20 = () => [{ title: "Sign Up" }];
 function Join() {
   var _a2, _b, _c, _d;
-  let [searchParams] = useSearchParams(), redirectTo = searchParams.get("redirectTo") ?? void 0, actionData = useActionData2(), emailRef = (0, import_react40.useRef)(null), passwordRef = (0, import_react40.useRef)(null);
-  return (0, import_react40.useEffect)(() => {
+  let [searchParams] = useSearchParams(), redirectTo = searchParams.get("redirectTo") ?? void 0, actionData = useActionData2(), emailRef = (0, import_react41.useRef)(null), passwordRef = (0, import_react41.useRef)(null);
+  return (0, import_react41.useEffect)(() => {
     var _a3, _b2, _c2, _d2;
     (_a3 = actionData == null ? void 0 : actionData.errors) != null && _a3.email ? (_b2 = emailRef.current) == null || _b2.focus() : (_c2 = actionData == null ? void 0 : actionData.errors) != null && _c2.password && ((_d2 = passwordRef.current) == null || _d2.focus());
-  }, [actionData]), /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "flex min-h-full flex-col justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "mx-auto w-full max-w-md px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(Form, { method: "post", className: "space-y-6", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
+  }, [actionData]), /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)("div", { className: "flex min-h-full flex-col justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)("div", { className: "mx-auto w-full max-w-md px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)(Form, { method: "post", className: "space-y-6", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)(
         "label",
         {
           htmlFor: "email",
@@ -66369,8 +66499,8 @@ function Join() {
         },
         this
       ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "mt-1", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)("div", { className: "mt-1", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)(
           "input",
           {
             ref: emailRef,
@@ -66393,7 +66523,7 @@ function Join() {
           },
           this
         ),
-        (_b = actionData == null ? void 0 : actionData.errors) != null && _b.email ? /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "pt-1 text-red-700", id: "email-error", children: actionData.errors.email }, void 0, !1, {
+        (_b = actionData == null ? void 0 : actionData.errors) != null && _b.email ? /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)("div", { className: "pt-1 text-red-700", id: "email-error", children: actionData.errors.email }, void 0, !1, {
           fileName: "app/routes/join.tsx",
           lineNumber: 108,
           columnNumber: 17
@@ -66408,8 +66538,8 @@ function Join() {
       lineNumber: 87,
       columnNumber: 11
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
+    /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)(
         "label",
         {
           htmlFor: "password",
@@ -66425,8 +66555,8 @@ function Join() {
         },
         this
       ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "mt-1", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)("div", { className: "mt-1", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)(
           "input",
           {
             id: "password",
@@ -66447,7 +66577,7 @@ function Join() {
           },
           this
         ),
-        (_d = actionData == null ? void 0 : actionData.errors) != null && _d.password ? /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "pt-1 text-red-700", id: "password-error", children: actionData.errors.password }, void 0, !1, {
+        (_d = actionData == null ? void 0 : actionData.errors) != null && _d.password ? /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)("div", { className: "pt-1 text-red-700", id: "password-error", children: actionData.errors.password }, void 0, !1, {
           fileName: "app/routes/join.tsx",
           lineNumber: 134,
           columnNumber: 17
@@ -66462,12 +66592,12 @@ function Join() {
       lineNumber: 115,
       columnNumber: 11
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("input", { type: "hidden", name: "redirectTo", value: redirectTo }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)("input", { type: "hidden", name: "redirectTo", value: redirectTo }, void 0, !1, {
       fileName: "app/routes/join.tsx",
       lineNumber: 141,
       columnNumber: 11
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
+    /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)(
       "button",
       {
         type: "submit",
@@ -66483,10 +66613,10 @@ function Join() {
       },
       this
     ),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "flex items-center justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)("div", { className: "text-center text-sm text-gray-500", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)("div", { className: "flex items-center justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)("div", { className: "text-center text-sm text-gray-500", children: [
       "Already have an account?",
       " ",
-      /* @__PURE__ */ (0, import_jsx_dev_runtime29.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime30.jsxDEV)(
         Link2,
         {
           className: "text-blue-500 underline",
@@ -66530,10 +66660,10 @@ function Join() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-OLCRETAB.js", imports: ["/build/_shared/chunk-GOPRYB7V.js", "/build/_shared/chunk-IU43IUTG.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-4DWWSE37.js", imports: ["/build/_shared/chunk-CK4HXECU.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-FLP3MUQ3.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/admin": { id: "routes/admin", parentId: "root", path: "admin", index: void 0, caseSensitive: void 0, module: "/build/routes/admin-X3XFSKPN.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/busca": { id: "routes/busca", parentId: "root", path: "busca", index: void 0, caseSensitive: void 0, module: "/build/routes/busca-PLFASGSV.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/categorias.$categoriaId": { id: "routes/categorias.$categoriaId", parentId: "root", path: "categorias/:categoriaId", index: void 0, caseSensitive: void 0, module: "/build/routes/categorias.$categoriaId-F6I3CX53.js", imports: ["/build/_shared/chunk-AUYLHJJM.js", "/build/_shared/chunk-IGGPEEMB.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/categorias._index": { id: "routes/categorias._index", parentId: "root", path: "categorias", index: !0, caseSensitive: void 0, module: "/build/routes/categorias._index-7PTTZ4O3.js", imports: ["/build/_shared/chunk-IGGPEEMB.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/categorias.novacategoria": { id: "routes/categorias.novacategoria", parentId: "root", path: "categorias/novacategoria", index: void 0, caseSensitive: void 0, module: "/build/routes/categorias.novacategoria-DQ5RROII.js", imports: ["/build/_shared/chunk-IGGPEEMB.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/cidades.$cidadeId": { id: "routes/cidades.$cidadeId", parentId: "root", path: "cidades/:cidadeId", index: void 0, caseSensitive: void 0, module: "/build/routes/cidades.$cidadeId-VKFZ6EOM.js", imports: ["/build/_shared/chunk-AUYLHJJM.js", "/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/cidades._index": { id: "routes/cidades._index", parentId: "root", path: "cidades", index: !0, caseSensitive: void 0, module: "/build/routes/cidades._index-QPHJFQYT.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/cidades.novacidade": { id: "routes/cidades.novacidade", parentId: "root", path: "cidades/novacidade", index: void 0, caseSensitive: void 0, module: "/build/routes/cidades.novacidade-UGBY3PPJ.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/contato": { id: "routes/contato", parentId: "root", path: "contato", index: void 0, caseSensitive: void 0, module: "/build/routes/contato-24JGG2VK.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/empresas.$empresaId": { id: "routes/empresas.$empresaId", parentId: "root", path: "empresas/:empresaId", index: void 0, caseSensitive: void 0, module: "/build/routes/empresas.$empresaId-BQLIKWCS.js", imports: ["/build/_shared/chunk-AUYLHJJM.js", "/build/_shared/chunk-ZCUTMPIA.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/empresas._index": { id: "routes/empresas._index", parentId: "root", path: "empresas", index: !0, caseSensitive: void 0, module: "/build/routes/empresas._index-MI7G5KIA.js", imports: ["/build/_shared/chunk-ZCUTMPIA.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/empresas.novaempresa": { id: "routes/empresas.novaempresa", parentId: "root", path: "empresas/novaempresa", index: void 0, caseSensitive: void 0, module: "/build/routes/empresas.novaempresa-DAOAR3RV.js", imports: ["/build/_shared/chunk-ZCUTMPIA.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/franquias": { id: "routes/franquias", parentId: "root", path: "franquias", index: void 0, caseSensitive: void 0, module: "/build/routes/franquias-XTDM3VG2.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/healthcheck": { id: "routes/healthcheck", parentId: "root", path: "healthcheck", index: void 0, caseSensitive: void 0, module: "/build/routes/healthcheck-JO7RAI4L.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/join": { id: "routes/join", parentId: "root", path: "join", index: void 0, caseSensitive: void 0, module: "/build/routes/join-FRQHRUFT.js", imports: ["/build/_shared/chunk-3QDLCZZY.js", "/build/_shared/chunk-CMWXK6I4.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/login": { id: "routes/login", parentId: "root", path: "login", index: void 0, caseSensitive: void 0, module: "/build/routes/login-MNHALIQJ.js", imports: ["/build/_shared/chunk-3QDLCZZY.js", "/build/_shared/chunk-CMWXK6I4.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/logout": { id: "routes/logout", parentId: "root", path: "logout", index: void 0, caseSensitive: void 0, module: "/build/routes/logout-S5LWYBEX.js", imports: void 0, hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/negocios._index": { id: "routes/negocios._index", parentId: "root", path: "negocios", index: !0, caseSensitive: void 0, module: "/build/routes/negocios._index-ZSGXECNM.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/negocios.novonegocio": { id: "routes/negocios.novonegocio", parentId: "root", path: "negocios/novonegocio", index: void 0, caseSensitive: void 0, module: "/build/routes/negocios.novonegocio-S2ZIAS3G.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/notes": { id: "routes/notes", parentId: "root", path: "notes", index: void 0, caseSensitive: void 0, module: "/build/routes/notes-PT3M6N65.js", imports: ["/build/_shared/chunk-3QDLCZZY.js", "/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/notes.$noteId": { id: "routes/notes.$noteId", parentId: "routes/notes", path: ":noteId", index: void 0, caseSensitive: void 0, module: "/build/routes/notes.$noteId-TAHZSWP2.js", imports: ["/build/_shared/chunk-AUYLHJJM.js", "/build/_shared/chunk-CK4HXECU.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/notes._index": { id: "routes/notes._index", parentId: "routes/notes", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/notes._index-5P6WOYGQ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/notes.new": { id: "routes/notes.new", parentId: "routes/notes", path: "new", index: void 0, caseSensitive: void 0, module: "/build/routes/notes.new-2FNQDB7L.js", imports: ["/build/_shared/chunk-CK4HXECU.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/resultadoPesquisa": { id: "routes/resultadoPesquisa", parentId: "root", path: "resultadoPesquisa", index: void 0, caseSensitive: void 0, module: "/build/routes/resultadoPesquisa-3XVXMIWM.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/sketch": { id: "routes/sketch", parentId: "root", path: "sketch", index: void 0, caseSensitive: void 0, module: "/build/routes/sketch-P3WNUORJ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/sobre": { id: "routes/sobre", parentId: "root", path: "sobre", index: void 0, caseSensitive: void 0, module: "/build/routes/sobre-GRXGY7BU.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/usuarios._index": { id: "routes/usuarios._index", parentId: "root", path: "usuarios", index: !0, caseSensitive: void 0, module: "/build/routes/usuarios._index-UXB5HFHT.js", imports: ["/build/_shared/chunk-CMWXK6I4.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/usuarios.editarUsuario": { id: "routes/usuarios.editarUsuario", parentId: "root", path: "usuarios/editarUsuario", index: void 0, caseSensitive: void 0, module: "/build/routes/usuarios.editarUsuario-26JUJ6IC.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/usuarios.novousuario": { id: "routes/usuarios.novousuario", parentId: "root", path: "usuarios/novousuario", index: void 0, caseSensitive: void 0, module: "/build/routes/usuarios.novousuario-RO5VOAQ4.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 } }, version: "8a0a7bc1", hmr: void 0, url: "/build/manifest-8A0A7BC1.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-OLCRETAB.js", imports: ["/build/_shared/chunk-GOPRYB7V.js", "/build/_shared/chunk-IU43IUTG.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-4DWWSE37.js", imports: ["/build/_shared/chunk-CK4HXECU.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/Admin/admin": { id: "routes/Admin/admin", parentId: "root", path: "Admin/admin", index: void 0, caseSensitive: void 0, module: "/build/routes/Admin/admin-G6K3J5RJ.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/Anuncios/anuncios._index": { id: "routes/Anuncios/anuncios._index", parentId: "root", path: "Anuncios/anuncios/_index", index: void 0, caseSensitive: void 0, module: "/build/routes/Anuncios/anuncios._index-YLUF3M2D.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/Anuncios/anuncios.novoanuncio": { id: "routes/Anuncios/anuncios.novoanuncio", parentId: "root", path: "Anuncios/anuncios/novoanuncio", index: void 0, caseSensitive: void 0, module: "/build/routes/Anuncios/anuncios.novoanuncio-BA3WZ4JE.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/Anuncios/anuncios_$anuncioId": { id: "routes/Anuncios/anuncios_$anuncioId", parentId: "root", path: "Anuncios/anuncios_:anuncioId", index: void 0, caseSensitive: void 0, module: "/build/routes/Anuncios/anuncios_$anuncioId-5BZYL4VJ.js", imports: ["/build/_shared/chunk-AUYLHJJM.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/Categorias/categorias.$categoriaId": { id: "routes/Categorias/categorias.$categoriaId", parentId: "root", path: "Categorias/categorias/:categoriaId", index: void 0, caseSensitive: void 0, module: "/build/routes/Categorias/categorias.$categoriaId-ISVTHJU2.js", imports: ["/build/_shared/chunk-AUYLHJJM.js", "/build/_shared/chunk-IGGPEEMB.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/Categorias/categorias._index": { id: "routes/Categorias/categorias._index", parentId: "root", path: "Categorias/categorias/_index", index: void 0, caseSensitive: void 0, module: "/build/routes/Categorias/categorias._index-MXZ7UEKZ.js", imports: ["/build/_shared/chunk-IGGPEEMB.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/Categorias/categorias.novacategoria": { id: "routes/Categorias/categorias.novacategoria", parentId: "root", path: "Categorias/categorias/novacategoria", index: void 0, caseSensitive: void 0, module: "/build/routes/Categorias/categorias.novacategoria-PL3F2P45.js", imports: ["/build/_shared/chunk-IGGPEEMB.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/Cidades/cidades.$cidadeId": { id: "routes/Cidades/cidades.$cidadeId", parentId: "root", path: "Cidades/cidades/:cidadeId", index: void 0, caseSensitive: void 0, module: "/build/routes/Cidades/cidades.$cidadeId-6YSUHQ6R.js", imports: ["/build/_shared/chunk-AUYLHJJM.js", "/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/Cidades/cidades._index": { id: "routes/Cidades/cidades._index", parentId: "root", path: "Cidades/cidades/_index", index: void 0, caseSensitive: void 0, module: "/build/routes/Cidades/cidades._index-5EF34LJZ.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/Cidades/cidades.novacidade": { id: "routes/Cidades/cidades.novacidade", parentId: "root", path: "Cidades/cidades/novacidade", index: void 0, caseSensitive: void 0, module: "/build/routes/Cidades/cidades.novacidade-GSGQBLBQ.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/Empresas/empresas.$empresaId": { id: "routes/Empresas/empresas.$empresaId", parentId: "root", path: "Empresas/empresas/:empresaId", index: void 0, caseSensitive: void 0, module: "/build/routes/Empresas/empresas.$empresaId-XEI7MHKO.js", imports: ["/build/_shared/chunk-AUYLHJJM.js", "/build/_shared/chunk-ZCUTMPIA.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/Empresas/empresas._index": { id: "routes/Empresas/empresas._index", parentId: "root", path: "Empresas/empresas/_index", index: void 0, caseSensitive: void 0, module: "/build/routes/Empresas/empresas._index-2RU5GXRA.js", imports: ["/build/_shared/chunk-ZCUTMPIA.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/Empresas/empresas.novaempresa": { id: "routes/Empresas/empresas.novaempresa", parentId: "root", path: "Empresas/empresas/novaempresa", index: void 0, caseSensitive: void 0, module: "/build/routes/Empresas/empresas.novaempresa-4B7CMNZS.js", imports: ["/build/_shared/chunk-ZCUTMPIA.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/Usuarios/usuarios._index": { id: "routes/Usuarios/usuarios._index", parentId: "root", path: "Usuarios/usuarios/_index", index: void 0, caseSensitive: void 0, module: "/build/routes/Usuarios/usuarios._index-ZCJNIXC5.js", imports: ["/build/_shared/chunk-CMWXK6I4.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/Usuarios/usuarios.editarUsuario": { id: "routes/Usuarios/usuarios.editarUsuario", parentId: "root", path: "Usuarios/usuarios/editarUsuario", index: void 0, caseSensitive: void 0, module: "/build/routes/Usuarios/usuarios.editarUsuario-7BQZXNTC.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/Usuarios/usuarios.novousuario": { id: "routes/Usuarios/usuarios.novousuario", parentId: "root", path: "Usuarios/usuarios/novousuario", index: void 0, caseSensitive: void 0, module: "/build/routes/Usuarios/usuarios.novousuario-OGWXDCYK.js", imports: ["/build/_shared/chunk-VJ6H4M3Y.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: "_index", index: void 0, caseSensitive: void 0, module: "/build/routes/_index-FIEKIC2S.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/busca": { id: "routes/busca", parentId: "root", path: "busca", index: void 0, caseSensitive: void 0, module: "/build/routes/busca-QO5ENKRU.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/contato": { id: "routes/contato", parentId: "root", path: "contato", index: void 0, caseSensitive: void 0, module: "/build/routes/contato-AIDGZSAX.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/franquias": { id: "routes/franquias", parentId: "root", path: "franquias", index: void 0, caseSensitive: void 0, module: "/build/routes/franquias-VTN6CN5X.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/healthcheck": { id: "routes/healthcheck", parentId: "root", path: "healthcheck", index: void 0, caseSensitive: void 0, module: "/build/routes/healthcheck-VJ76YAFX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/join": { id: "routes/join", parentId: "root", path: "join", index: void 0, caseSensitive: void 0, module: "/build/routes/join-3EAYS52J.js", imports: ["/build/_shared/chunk-3QDLCZZY.js", "/build/_shared/chunk-CMWXK6I4.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/login": { id: "routes/login", parentId: "root", path: "login", index: void 0, caseSensitive: void 0, module: "/build/routes/login-EZMKY355.js", imports: ["/build/_shared/chunk-3QDLCZZY.js", "/build/_shared/chunk-CMWXK6I4.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/logout": { id: "routes/logout", parentId: "root", path: "logout", index: void 0, caseSensitive: void 0, module: "/build/routes/logout-7HDFWKM6.js", imports: void 0, hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/notes": { id: "routes/notes", parentId: "root", path: "notes", index: void 0, caseSensitive: void 0, module: "/build/routes/notes-SQTG65Y6.js", imports: ["/build/_shared/chunk-3QDLCZZY.js", "/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/notes.$noteId": { id: "routes/notes.$noteId", parentId: "root", path: "notes/:noteId", index: void 0, caseSensitive: void 0, module: "/build/routes/notes.$noteId-VVDHCGVP.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js", "/build/_shared/chunk-AUYLHJJM.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/notes._index": { id: "routes/notes._index", parentId: "root", path: "notes/_index", index: void 0, caseSensitive: void 0, module: "/build/routes/notes._index-LMGDQ2DK.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/notes.new": { id: "routes/notes.new", parentId: "root", path: "notes/new", index: void 0, caseSensitive: void 0, module: "/build/routes/notes.new-7X5OYIDF.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/resultadoPesquisa": { id: "routes/resultadoPesquisa", parentId: "root", path: "resultadoPesquisa", index: void 0, caseSensitive: void 0, module: "/build/routes/resultadoPesquisa-LX3D2AIA.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/sobre": { id: "routes/sobre", parentId: "root", path: "sobre", index: void 0, caseSensitive: void 0, module: "/build/routes/sobre-RQJUPDVL.js", imports: ["/build/_shared/chunk-OLP4QJ4K.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 } }, version: "697913c6", hmr: void 0, url: "/build/manifest-697913C6.js" };
 
 // server-entry-module:@remix-run/dev/server-build
-var assetsBuildDirectory = "public\\build", future = { v2_dev: !1, unstable_postcss: !1, unstable_tailwind: !1, v2_errorBoundary: !0, v2_headers: !0, v2_meta: !0, v2_normalizeFormMethod: !0, v2_routeConvention: !0 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {
+var assetsBuildDirectory = "public\\build", future = { v2_dev: !1, unstable_postcss: !1, unstable_tailwind: !1, v2_errorBoundary: !0, v2_headers: !0, v2_meta: !0, v2_normalizeFormMethod: !0, v2_routeConvention: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {
   root: {
     id: "root",
     parentId: void 0,
@@ -66542,85 +66672,125 @@ var assetsBuildDirectory = "public\\build", future = { v2_dev: !1, unstable_post
     caseSensitive: void 0,
     module: root_exports
   },
-  "routes/categorias.novacategoria": {
-    id: "routes/categorias.novacategoria",
+  "routes/Categorias/categorias.novacategoria": {
+    id: "routes/Categorias/categorias.novacategoria",
     parentId: "root",
-    path: "categorias/novacategoria",
+    path: "Categorias/categorias/novacategoria",
     index: void 0,
     caseSensitive: void 0,
     module: categorias_novacategoria_exports
   },
-  "routes/categorias.$categoriaId": {
-    id: "routes/categorias.$categoriaId",
+  "routes/Categorias/categorias.$categoriaId": {
+    id: "routes/Categorias/categorias.$categoriaId",
     parentId: "root",
-    path: "categorias/:categoriaId",
+    path: "Categorias/categorias/:categoriaId",
     index: void 0,
     caseSensitive: void 0,
     module: categorias_categoriaId_exports
   },
-  "routes/usuarios.editarUsuario": {
-    id: "routes/usuarios.editarUsuario",
+  "routes/Usuarios/usuarios.editarUsuario": {
+    id: "routes/Usuarios/usuarios.editarUsuario",
     parentId: "root",
-    path: "usuarios/editarUsuario",
+    path: "Usuarios/usuarios/editarUsuario",
     index: void 0,
     caseSensitive: void 0,
     module: usuarios_editarUsuario_exports
   },
-  "routes/empresas.novaempresa": {
-    id: "routes/empresas.novaempresa",
+  "routes/Anuncios/anuncios.novoanuncio": {
+    id: "routes/Anuncios/anuncios.novoanuncio",
     parentId: "root",
-    path: "empresas/novaempresa",
+    path: "Anuncios/anuncios/novoanuncio",
+    index: void 0,
+    caseSensitive: void 0,
+    module: anuncios_novoanuncio_exports
+  },
+  "routes/Empresas/empresas.novaempresa": {
+    id: "routes/Empresas/empresas.novaempresa",
+    parentId: "root",
+    path: "Empresas/empresas/novaempresa",
     index: void 0,
     caseSensitive: void 0,
     module: empresas_novaempresa_exports
   },
-  "routes/negocios.novonegocio": {
-    id: "routes/negocios.novonegocio",
+  "routes/Usuarios/usuarios.novousuario": {
+    id: "routes/Usuarios/usuarios.novousuario",
     parentId: "root",
-    path: "negocios/novonegocio",
-    index: void 0,
-    caseSensitive: void 0,
-    module: negocios_novonegocio_exports
-  },
-  "routes/usuarios.novousuario": {
-    id: "routes/usuarios.novousuario",
-    parentId: "root",
-    path: "usuarios/novousuario",
+    path: "Usuarios/usuarios/novousuario",
     index: void 0,
     caseSensitive: void 0,
     module: usuarios_novousuario_exports
   },
-  "routes/empresas.$empresaId": {
-    id: "routes/empresas.$empresaId",
+  "routes/Anuncios/anuncios_$anuncioId": {
+    id: "routes/Anuncios/anuncios_$anuncioId",
     parentId: "root",
-    path: "empresas/:empresaId",
+    path: "Anuncios/anuncios_:anuncioId",
+    index: void 0,
+    caseSensitive: void 0,
+    module: anuncios_anuncioId_exports
+  },
+  "routes/Categorias/categorias._index": {
+    id: "routes/Categorias/categorias._index",
+    parentId: "root",
+    path: "Categorias/categorias/_index",
+    index: void 0,
+    caseSensitive: void 0,
+    module: categorias_index_exports
+  },
+  "routes/Empresas/empresas.$empresaId": {
+    id: "routes/Empresas/empresas.$empresaId",
+    parentId: "root",
+    path: "Empresas/empresas/:empresaId",
     index: void 0,
     caseSensitive: void 0,
     module: empresas_empresaId_exports
   },
-  "routes/cidades.novacidade": {
-    id: "routes/cidades.novacidade",
+  "routes/Cidades/cidades.novacidade": {
+    id: "routes/Cidades/cidades.novacidade",
     parentId: "root",
-    path: "cidades/novacidade",
+    path: "Cidades/cidades/novacidade",
     index: void 0,
     caseSensitive: void 0,
     module: cidades_novacidade_exports
   },
-  "routes/categorias._index": {
-    id: "routes/categorias._index",
+  "routes/Cidades/cidades.$cidadeId": {
+    id: "routes/Cidades/cidades.$cidadeId",
     parentId: "root",
-    path: "categorias",
-    index: !0,
-    caseSensitive: void 0,
-    module: categorias_index_exports
-  },
-  "routes/cidades.$cidadeId": {
-    id: "routes/cidades.$cidadeId",
-    parentId: "root",
-    path: "cidades/:cidadeId",
+    path: "Cidades/cidades/:cidadeId",
     index: void 0,
     caseSensitive: void 0,
     module: cidades_cidadeId_exports
+  },
+  "routes/Anuncios/anuncios._index": {
+    id: "routes/Anuncios/anuncios._index",
+    parentId: "root",
+    path: "Anuncios/anuncios/_index",
+    index: void 0,
+    caseSensitive: void 0,
+    module: anuncios_index_exports
+  },
+  "routes/Empresas/empresas._index": {
+    id: "routes/Empresas/empresas._index",
+    parentId: "root",
+    path: "Empresas/empresas/_index",
+    index: void 0,
+    caseSensitive: void 0,
+    module: empresas_index_exports
+  },
+  "routes/Usuarios/usuarios._index": {
+    id: "routes/Usuarios/usuarios._index",
+    parentId: "root",
+    path: "Usuarios/usuarios/_index",
+    index: void 0,
+    caseSensitive: void 0,
+    module: usuarios_index_exports
+  },
+  "routes/Cidades/cidades._index": {
+    id: "routes/Cidades/cidades._index",
+    parentId: "root",
+    path: "Cidades/cidades/_index",
+    index: void 0,
+    caseSensitive: void 0,
+    module: cidades_index_exports
   },
   "routes/resultadoPesquisa": {
     id: "routes/resultadoPesquisa",
@@ -66630,53 +66800,29 @@ var assetsBuildDirectory = "public\\build", future = { v2_dev: !1, unstable_post
     caseSensitive: void 0,
     module: resultadoPesquisa_exports
   },
-  "routes/empresas._index": {
-    id: "routes/empresas._index",
-    parentId: "root",
-    path: "empresas",
-    index: !0,
-    caseSensitive: void 0,
-    module: empresas_index_exports
-  },
-  "routes/negocios._index": {
-    id: "routes/negocios._index",
-    parentId: "root",
-    path: "negocios",
-    index: !0,
-    caseSensitive: void 0,
-    module: negocios_index_exports
-  },
-  "routes/usuarios._index": {
-    id: "routes/usuarios._index",
-    parentId: "root",
-    path: "usuarios",
-    index: !0,
-    caseSensitive: void 0,
-    module: usuarios_index_exports
-  },
-  "routes/cidades._index": {
-    id: "routes/cidades._index",
-    parentId: "root",
-    path: "cidades",
-    index: !0,
-    caseSensitive: void 0,
-    module: cidades_index_exports
-  },
   "routes/notes.$noteId": {
     id: "routes/notes.$noteId",
-    parentId: "routes/notes",
-    path: ":noteId",
+    parentId: "root",
+    path: "notes/:noteId",
     index: void 0,
     caseSensitive: void 0,
     module: notes_noteId_exports
   },
   "routes/notes._index": {
     id: "routes/notes._index",
-    parentId: "routes/notes",
-    path: void 0,
-    index: !0,
+    parentId: "root",
+    path: "notes/_index",
+    index: void 0,
     caseSensitive: void 0,
     module: notes_index_exports
+  },
+  "routes/Admin/admin": {
+    id: "routes/Admin/admin",
+    parentId: "root",
+    path: "Admin/admin",
+    index: void 0,
+    caseSensitive: void 0,
+    module: admin_exports
   },
   "routes/healthcheck": {
     id: "routes/healthcheck",
@@ -66696,8 +66842,8 @@ var assetsBuildDirectory = "public\\build", future = { v2_dev: !1, unstable_post
   },
   "routes/notes.new": {
     id: "routes/notes.new",
-    parentId: "routes/notes",
-    path: "new",
+    parentId: "root",
+    path: "notes/new",
     index: void 0,
     caseSensitive: void 0,
     module: notes_new_exports
@@ -66718,29 +66864,13 @@ var assetsBuildDirectory = "public\\build", future = { v2_dev: !1, unstable_post
     caseSensitive: void 0,
     module: logout_exports
   },
-  "routes/sketch": {
-    id: "routes/sketch",
-    parentId: "root",
-    path: "sketch",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route23
-  },
   "routes/_index": {
     id: "routes/_index",
     parentId: "root",
-    path: void 0,
-    index: !0,
-    caseSensitive: void 0,
-    module: index_exports
-  },
-  "routes/admin": {
-    id: "routes/admin",
-    parentId: "root",
-    path: "admin",
+    path: "_index",
     index: void 0,
     caseSensitive: void 0,
-    module: admin_exports
+    module: index_exports
   },
   "routes/busca": {
     id: "routes/busca",
